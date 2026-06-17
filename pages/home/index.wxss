@@ -1,1 +1,356 @@
-/* Page-specific styles are added in later tasks. */
+.home-page {
+  padding-bottom: 176rpx;
+}
+
+.home-top-row {
+  margin-bottom: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+}
+
+.location-pill {
+  min-width: 0;
+  height: 58rpx;
+  padding: 0 20rpx 0 12rpx;
+  border-radius: 29rpx;
+  background: #edf7f6;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.location-mark {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 18rpx;
+  background: #006b68;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  font-weight: 800;
+}
+
+.location-text {
+  color: #315d61;
+  font-size: 25rpx;
+  white-space: nowrap;
+}
+
+.profile-link {
+  height: 58rpx;
+  padding: 0 22rpx;
+  border-radius: 29rpx;
+  background: #fff;
+  color: #006b68;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 25rpx;
+  font-weight: 800;
+  box-shadow: 0 8rpx 22rpx rgba(8, 47, 53, 0.06);
+}
+
+.home-title {
+  justify-content: flex-start;
+  min-height: 56rpx;
+  margin-bottom: 20rpx;
+  font-size: 42rpx;
+  font-weight: 900;
+}
+
+.asset-card {
+  padding: 30rpx;
+  background: #fbffff;
+}
+
+.asset-main-row {
+  display: flex;
+  align-items: stretch;
+  gap: 22rpx;
+}
+
+.asset-main {
+  min-width: 0;
+  flex: 1;
+  padding: 26rpx 28rpx;
+  border-radius: 20rpx;
+  background: #e9f8f7;
+}
+
+.asset-label,
+.asset-side-label,
+.asset-sub-label {
+  color: #657282;
+  font-size: 24rpx;
+  line-height: 1.2;
+}
+
+.asset-amount-row {
+  margin-top: 12rpx;
+  display: flex;
+  align-items: baseline;
+  color: #006b68;
+}
+
+.asset-currency {
+  margin-right: 6rpx;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.asset-amount {
+  font-size: 62rpx;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.asset-side {
+  width: 210rpx;
+  padding: 26rpx 24rpx;
+  border-radius: 20rpx;
+  background: #fff8ee;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14rpx;
+}
+
+.asset-side-value {
+  color: #e85235;
+  font-size: 34rpx;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.asset-sub-grid {
+  margin-top: 24rpx;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1rpx solid #e4eeee;
+}
+
+.asset-sub-item {
+  min-width: 0;
+  padding-top: 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.asset-sub-value {
+  color: #071827;
+  font-size: 32rpx;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.asset-sub-warm {
+  color: #e85235;
+}
+
+.section-row {
+  margin: 32rpx 4rpx 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-row-spaced {
+  margin-top: 36rpx;
+}
+
+.section-title {
+  color: #071827;
+  font-size: 32rpx;
+  font-weight: 900;
+}
+
+.section-more {
+  color: #006b68;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16rpx;
+}
+
+.quick-action {
+  min-height: 136rpx;
+  border: 1rpx solid #d8e9e9;
+  border-radius: 20rpx;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14rpx;
+  box-shadow: 0 12rpx 28rpx rgba(9, 48, 55, 0.05);
+}
+
+.quick-icon {
+  width: 58rpx;
+  height: 58rpx;
+  border-radius: 29rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: 900;
+}
+
+.quick-icon-coupon,
+.quick-icon-exchange {
+  background: #e7f4f3;
+  color: #006b68;
+}
+
+.quick-icon-lottery {
+  background: #fff3d9;
+  color: #a25b00;
+}
+
+.quick-icon-profile {
+  background: #eef3f4;
+  color: #657282;
+}
+
+.quick-label {
+  color: #071827;
+  font-size: 25rpx;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.benefit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.benefit-card {
+  min-height: 156rpx;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.benefit-image {
+  width: 116rpx;
+  height: 116rpx;
+  border-radius: 18rpx;
+  flex-shrink: 0;
+  background: #e7f4f3;
+}
+
+.benefit-copy {
+  min-width: 0;
+  flex: 1;
+  margin-left: 22rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 9rpx;
+}
+
+.benefit-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.benefit-name {
+  min-width: 0;
+  flex: 1;
+  color: #071827;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.benefit-amount {
+  color: #e85235;
+  font-size: 28rpx;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.benefit-store {
+  color: #657282;
+  font-size: 24rpx;
+  line-height: 1.25;
+}
+
+.tag-row {
+  min-height: 38rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.coupon-preview {
+  min-height: 156rpx;
+  padding: 28rpx;
+  display: flex;
+  align-items: center;
+}
+
+.coupon-preview-main {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.coupon-preview-title {
+  color: #071827;
+  font-size: 32rpx;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coupon-preview-store,
+.coupon-preview-expiry {
+  color: #657282;
+  font-size: 24rpx;
+  line-height: 1.25;
+}
+
+.coupon-preview-side {
+  width: 150rpx;
+  margin-left: 18rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10rpx;
+}
+
+.coupon-preview-amount {
+  color: #e85235;
+  font-size: 40rpx;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.coupon-preview-threshold {
+  color: #657282;
+  font-size: 23rpx;
+  white-space: nowrap;
+}
