@@ -1,3 +1,78 @@
-<view class="page">
-  <view class="nav-title">出示券码</view>
+<view class="page coupon-code-page">
+  <view class="top-nav">
+    <view class="nav-back" bindtap="goBack" aria-label="返回">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-heading">出示券码</text>
+    <text class="nav-rule" bindtap="showRules">使用规则</text>
+  </view>
+
+  <view wx:if="{{fallbackMessage}}" class="fallback-message">
+    <text>{{fallbackMessage}}</text>
+  </view>
+
+  <view wx:if="{{coupon}}" class="merchant-card card">
+    <image class="merchant-image" src="{{coupon.image}}" mode="aspectFill"></image>
+    <view class="merchant-copy">
+      <view class="merchant-title-row">
+        <text class="merchant-name">{{coupon.merchantName}}</text>
+        <text class="status-pill status-{{statusLabel.tone}}">{{statusLabel.text}}</text>
+      </view>
+      <text class="coupon-title">{{coupon.title}}</text>
+      <view class="tag-row">
+        <block wx:for="{{coupon.tags}}" wx:for-item="tag" wx:key="*this">
+          <text class="tag">{{tag}}</text>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{coupon}}" class="code-card card">
+    <text class="code-heading">到店出示核销码</text>
+
+    <view class="qr-pattern">
+      <view class="qr-corner qr-corner-tl">
+        <view class="qr-corner-inner"></view>
+      </view>
+      <view class="qr-corner qr-corner-tr">
+        <view class="qr-corner-inner"></view>
+      </view>
+      <view class="qr-corner qr-corner-bl">
+        <view class="qr-corner-inner"></view>
+      </view>
+      <view class="qr-tile qr-tile-a"></view>
+      <view class="qr-tile qr-tile-b"></view>
+      <view class="qr-tile qr-tile-c"></view>
+      <view class="qr-tile qr-tile-d"></view>
+      <view class="qr-tile qr-tile-e"></view>
+      <view class="qr-tile qr-tile-f"></view>
+      <view class="qr-tile qr-tile-g"></view>
+      <view class="qr-tile qr-tile-h"></view>
+      <view class="qr-tile qr-tile-i"></view>
+    </view>
+
+    <view class="code-section">
+      <text class="code-label">券码</text>
+      <text class="code-number">{{refreshedCode}}</text>
+      <text class="refresh-note">每60秒自动刷新</text>
+    </view>
+
+    <view class="detail-list">
+      <view class="detail-row">
+        <text class="detail-label">适用门店</text>
+        <text class="detail-value">{{coupon.store}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">有效期</text>
+        <text class="detail-value">{{coupon.expiryText}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">本次可抵</text>
+        <text class="detail-value detail-value-strong">{{coupon.amountText}}</text>
+      </view>
+    </view>
+
+    <button class="primary-btn bright-btn" bindtap="openBrightMode">打开亮屏模式</button>
+    <button class="outline-btn order-btn" bindtap="returnOrder">返回订单</button>
+  </view>
 </view>
