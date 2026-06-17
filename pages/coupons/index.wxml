@@ -1,3 +1,115 @@
-<view class="page">
-  <view class="nav-title">现金券</view>
+<view class="page coupons-page">
+  <view class="nav-title coupons-title">现金券资产</view>
+
+  <view class="summary-card card">
+    <view class="summary-grid">
+      <view class="summary-item">
+        <text class="summary-label">可用现金券</text>
+        <view class="summary-value-row">
+          <text class="summary-number">{{summary.availableCount}}</text>
+          <text class="summary-unit">张</text>
+        </view>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">总面值</text>
+        <view class="summary-value-row">
+          <text class="summary-currency">¥</text>
+          <text class="summary-number summary-number-teal">{{summary.totalValue}}</text>
+        </view>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">已核销</text>
+        <view class="summary-value-row">
+          <text class="summary-number">{{summary.usedCount}}</text>
+          <text class="summary-unit">张</text>
+        </view>
+      </view>
+      <view class="summary-item summary-item-last">
+        <text class="summary-label">即将过期</text>
+        <view class="summary-value-row">
+          <text class="summary-number summary-number-orange">{{summary.expiringCount}}</text>
+          <text class="summary-unit">张</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="summary-divider"></view>
+
+    <view class="source-row">
+      <text class="source-title">来源统计</text>
+      <view class="source-pill source-pill-lottery">
+        <text class="source-icon">礼</text>
+        <text class="source-label">抽奖获得</text>
+        <text class="source-count">{{summary.lotteryCount}}张</text>
+      </view>
+      <view class="source-pill source-pill-self">
+        <text class="source-icon">券</text>
+        <text class="source-label">自主购买</text>
+        <text class="source-count">{{summary.selfCount}}张</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="tabs">
+    <block wx:for="{{tabs}}" wx:key="label">
+      <view class="tab-item {{item.activeClass}}" data-tab="{{item.label}}" bindtap="switchTab">
+        <text>{{item.label}}</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="coupon-list card">
+    <block wx:if="{{coupons.length}}">
+      <block wx:for="{{coupons}}" wx:key="id">
+        <view class="coupon-row">
+          <view class="coupon-icon {{item.iconClass}}">
+            <text>{{item.iconText}}</text>
+          </view>
+
+          <view class="coupon-main">
+            <text class="coupon-title">{{item.title}}</text>
+            <text class="coupon-value-text">{{item.valueText}}</text>
+            <view class="tag-row">
+              <block wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
+                <text class="tag">{{tag}}</text>
+              </block>
+            </view>
+            <view class="expiry-row">
+              <text class="expiry-icon">时</text>
+              <text>{{item.expiryText}} 到期</text>
+            </view>
+          </view>
+
+          <view class="coupon-side">
+            <text class="status-pill {{item.statusClass}}">{{item.statusText}}</text>
+            <view class="amount-row">
+              <text class="amount-currency">¥</text>
+              <text class="amount-number">{{item.amountText}}</text>
+            </view>
+            <text class="threshold-text">{{item.thresholdText}}</text>
+            <button
+              class="use-btn {{item.useDisabledClass}}"
+              data-id="{{item.id}}"
+              disabled="{{item.useDisabled}}"
+              bindtap="goUse"
+            >
+              去使用
+            </button>
+          </view>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty">暂无现金券</view>
+  </view>
+
+  <view class="exchange-banner card">
+    <view class="exchange-icon">
+      <text>换</text>
+    </view>
+    <view class="exchange-copy">
+      <text class="exchange-title">闲置现金券可置换</text>
+      <text class="exchange-desc">换成更合适的本地权益，避免过期浪费</text>
+    </view>
+    <button class="exchange-btn" bindtap="goExchange">去置换</button>
+  </view>
 </view>
