@@ -1,0 +1,29 @@
+{
+  "description": "现金券项目 C 端微信小程序",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "docs"
+      },
+      {
+        "type": "folder",
+        "value": "tests"
+      },
+      {
+        "type": "folder",
+        "value": "_reference"
+      }
+    ]
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": true,
+    "minified": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.8.8",
+  "appid": "touristappid",
+  "projectname": "cash-coupon-mini-program"
+}
