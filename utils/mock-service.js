@@ -44,8 +44,29 @@ function getCoupons(filter = '全部') {
   return clone(state.coupons.filter((coupon) => coupon.category === filter));
 }
 
+function findCouponById(id) {
+  return state.coupons.find((coupon) => coupon.id === id);
+}
+
 function getCouponById(id) {
-  return clone(state.coupons.find((coupon) => coupon.id === id) || state.coupons[0]);
+  return clone(findCouponById(id) || state.coupons[0]);
+}
+
+function getCouponLookup(id) {
+  const coupon = findCouponById(id);
+
+  if (coupon) {
+    return {
+      coupon: clone(coupon),
+      fallback: false,
+    };
+  }
+
+  return {
+    coupon: clone(state.coupons[0]),
+    fallback: true,
+    message: '未找到券，已显示默认券',
+  };
 }
 
 function getMerchantBenefits() {
@@ -64,11 +85,11 @@ function submitLottery(number) {
   const normalized = String(number ?? '');
 
   if (!/^\d{4}$/.test(normalized)) {
-    return { ok: false, message: '请输入完整四位数字' };
+    return { ok: false, message: '请输入完整四位数' };
   }
 
   if (state.lotteryState.todayLeft <= 0) {
-    return { ok: false, message: '今日抽奖次数已用完' };
+    return { ok: false, message: '今日次数已用完' };
   }
 
   state.lotteryState.todayLeft -= 1;
@@ -145,6 +166,7 @@ function createExchangeRecord(merchantId) {
     status: 'pending',
   };
 
+  state.userProfile.exchangeAmount -= merchant.exchangeAmount;
   state.exchangeRecords.unshift(record);
 
   return {
@@ -166,6 +188,7 @@ module.exports = {
   getCouponSummary,
   getCoupons,
   getCouponById,
+  getCouponLookup,
   getMerchantBenefits,
   getLotteryState,
   getLotteryRecords,

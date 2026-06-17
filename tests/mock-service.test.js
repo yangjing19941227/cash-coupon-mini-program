@@ -50,30 +50,55 @@ test('submitLottery rejects incomplete number and exhausted chances', () => {
   const accepted = service.submitLottery('1111');
   const exhausted = service.submitLottery('2222');
 
-  assert.equal(incomplete.ok, false);
+  assert.deepEqual(incomplete, { ok: false, message: '请输入完整四位数' });
   assert.equal(accepted.ok, true);
-  assert.equal(exhausted.ok, false);
+  assert.deepEqual(exhausted, { ok: false, message: '今日次数已用完' });
   assert.equal(service.getLotteryState().todayLeft, 0);
 });
 
 test('createExchangeRecord appends a pending record', () => {
   service.resetMockState();
   const beforeRecords = service.getExchangeRecords();
+  const beforeProfile = service.getUserProfile();
 
   const result = service.createExchangeRecord('merchant-1');
   const afterRecords = service.getExchangeRecords();
+  const afterProfile = service.getUserProfile();
 
   assert.equal(result.ok, true);
+  assert.equal(result.message, '已提交置换申请，请等待商家确认');
   assert.equal(afterRecords.length, beforeRecords.length + 1);
   assert.equal(afterRecords[0].status, 'pending');
   assert.equal(afterRecords[0].merchantName, '海岛小院');
+  assert.equal(afterProfile.exchangeAmount, beforeProfile.exchangeAmount - 300);
 });
 
 test('createExchangeRecord rejects missing merchants and insufficient balance', () => {
   service.resetMockState();
 
-  assert.equal(service.createExchangeRecord('merchant-missing').ok, false);
-  assert.equal(service.createExchangeRecord('merchant-too-expensive').ok, false);
+  assert.deepEqual(service.createExchangeRecord('merchant-missing'), {
+    ok: false,
+    message: '未找到可置换商家',
+  });
+  assert.deepEqual(service.createExchangeRecord('merchant-too-expensive'), {
+    ok: false,
+    message: '可置换额度不足',
+  });
+});
+
+test('createExchangeRecord fails when repeated exchanges exceed remaining balance', () => {
+  service.resetMockState();
+
+  assert.equal(service.createExchangeRecord('merchant-3').ok, true);
+  assert.equal(service.getUserProfile().exchangeAmount, 360);
+  assert.equal(service.createExchangeRecord('merchant-1').ok, true);
+  assert.equal(service.getUserProfile().exchangeAmount, 60);
+
+  assert.deepEqual(service.createExchangeRecord('merchant-1'), {
+    ok: false,
+    message: '可置换额度不足',
+  });
+  assert.equal(service.getUserProfile().exchangeAmount, 60);
 });
 
 test('getters return cloned data and resetMockState restores seed state', () => {
@@ -98,10 +123,14 @@ test('lookup and derived helpers support page data needs', () => {
   service.resetMockState();
 
   const coupon = service.getCouponById('coupon-qilou-food');
+  const missingCoupon = service.getCouponLookup('coupon-missing');
   const number = service.generateLotteryNumber();
   const stats = service.getExchangeStats();
 
   assert.equal(coupon.title, '骑楼老街美食券');
+  assert.equal(missingCoupon.fallback, true);
+  assert.equal(missingCoupon.message, '未找到券，已显示默认券');
+  assert.equal(missingCoupon.coupon.id, 'coupon-qilou-food');
   assert.match(number, /^\d{4}$/);
   assert.equal(service.getLotteryState().currentNumber, number);
   assert.deepEqual(stats, {
