@@ -87,15 +87,15 @@
 }
 
 .source-title {
-  flex: 0 0 144rpx;
+  flex: 0 0 100%;
   color: #5f6d7d;
   font-size: 28rpx;
   white-space: nowrap;
 }
 
 .source-pill {
-  flex: 1 1 210rpx;
-  min-width: 210rpx;
+  flex: 1 1 260rpx;
+  min-width: 260rpx;
   height: 64rpx;
   padding: 0 18rpx;
   border-radius: 32rpx;
