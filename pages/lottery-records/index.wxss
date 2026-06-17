@@ -2,8 +2,31 @@
   padding-bottom: 80rpx;
 }
 
-.records-nav-title {
+.records-nav {
   margin-bottom: 28rpx;
+  min-height: 80rpx;
+  display: grid;
+  grid-template-columns: 88rpx minmax(0, 1fr) 88rpx;
+  align-items: center;
+}
+
+.back-btn,
+.nav-spacer {
+  min-height: 64rpx;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #006b68;
+  font-size: 48rpx;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.records-nav-title {
+  min-width: 0;
 }
 
 .records-summary {

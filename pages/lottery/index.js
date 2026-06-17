@@ -31,6 +31,10 @@ function splitNumber(number) {
   });
 }
 
+function sanitizeNumberInput(value) {
+  return String(value || '').replace(/\D/g, '').slice(0, 4);
+}
+
 function isCompleteNumber(number) {
   return /^\d{4}$/.test(String(number || ''));
 }
@@ -118,6 +122,18 @@ Page({
   generateNumber() {
     generateLotteryNumber();
     this.loadLotteryState();
+  },
+
+  handleNumberInput(event) {
+    const currentNumber = sanitizeNumberInput(event && event.detail ? event.detail.value : '');
+    const submitDisabled = !isCompleteNumber(currentNumber) || Number(this.data.todayLeft || 0) <= 0;
+
+    this.setData({
+      currentNumber,
+      numberBoxes: splitNumber(currentNumber),
+      submitDisabled,
+      submitDisabledClass: submitDisabled ? 'submit-btn-disabled' : '',
+    });
   },
 
   submitNumber() {

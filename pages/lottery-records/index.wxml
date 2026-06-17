@@ -1,5 +1,9 @@
 <view class="page lottery-records-page">
-  <view class="nav-title records-nav-title">抽奖记录</view>
+  <view class="records-nav">
+    <view class="back-btn" role="button" bindtap="goBack" aria-label="返回">‹</view>
+    <view class="nav-title records-nav-title">抽奖记录</view>
+    <view class="nav-spacer"></view>
+  </view>
 
   <view class="records-summary card">
     <text class="summary-title">抽奖参与记录</text>

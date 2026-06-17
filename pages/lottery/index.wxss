@@ -146,6 +146,21 @@
   color: #9fb7bb;
 }
 
+.manual-number-input {
+  height: 72rpx;
+  margin: 0 0 30rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid #d7e8e8;
+  border-radius: 18rpx;
+  background: #fbffff;
+  box-sizing: border-box;
+  color: #071827;
+  font-size: 30rpx;
+  font-weight: 800;
+  line-height: 72rpx;
+  text-align: center;
+}
+
 .random-row {
   min-height: 64rpx;
   display: flex;

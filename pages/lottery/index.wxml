@@ -38,6 +38,15 @@
       </block>
     </view>
 
+    <input
+      class="manual-number-input"
+      type="number"
+      maxlength="4"
+      value="{{currentNumber}}"
+      bindinput="handleNumberInput"
+      placeholder="请输入四位数字"
+    />
+
     <view class="random-row" role="button" bindtap="generateNumber">
       <text class="random-icon">↻</text>
       <text class="random-title">随机生成一组数字</text>

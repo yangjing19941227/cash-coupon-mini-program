@@ -86,6 +86,95 @@ function createLotteryPageHarness(options = {}) {
   return { calls, page };
 }
 
+function createLotteryRecordsPageHarness(options = {}) {
+  const jsPath = path.join(rootDir, 'pages/lottery-records/index.js');
+  const js = fs.readFileSync(jsPath, 'utf8');
+  const calls = {
+    getLotteryRecords: 0,
+    setData: [],
+    navigateBack: [],
+    switchTab: [],
+    reLaunch: [],
+  };
+  const service = {
+    getLotteryRecords() {
+      calls.getLotteryRecords += 1;
+      return options.records || [];
+    },
+  };
+  const format = {
+    formatDateTime(value) {
+      return `formatted:${value}`;
+    },
+    formatMoney(value) {
+      return `money:${value}`;
+    },
+  };
+  let pageDefinition;
+
+  const wx = {};
+
+  if (options.navigateBack !== false) {
+    wx.navigateBack = (payload) => {
+      calls.navigateBack.push(payload);
+
+      if (options.navigateBackFail && payload.fail) {
+        payload.fail();
+      }
+    };
+  }
+
+  if (options.switchTab !== false) {
+    wx.switchTab = (payload) => {
+      calls.switchTab.push(payload);
+
+      if (options.switchTabFail && payload.fail) {
+        payload.fail();
+      }
+    };
+  }
+
+  if (options.reLaunch !== false) {
+    wx.reLaunch = (payload) => {
+      calls.reLaunch.push(payload);
+    };
+  }
+
+  const context = {
+    require(request) {
+      if (request === '../../utils/mock-service') {
+        return service;
+      }
+
+      if (request === '../../utils/format') {
+        return format;
+      }
+
+      throw new Error(`Unexpected require: ${request}`);
+    },
+    Page(definition) {
+      pageDefinition = definition;
+    },
+    wx,
+  };
+
+  vm.runInNewContext(js, context, { filename: jsPath });
+
+  const page = {
+    ...pageDefinition,
+    data: { ...pageDefinition.data },
+    setData(update) {
+      calls.setData.push(update);
+      this.data = {
+        ...this.data,
+        ...update,
+      };
+    },
+  };
+
+  return { calls, page };
+}
+
 test('lottery page exposes required flow imports, handlers and bindings', () => {
   const js = readProjectFile('pages/lottery/index.js');
   const wxml = readProjectFile('pages/lottery/index.wxml');
@@ -111,6 +200,43 @@ test('lottery page exposes required flow imports, handlers and bindings', () => 
   assert.match(wxml, /bindtap="goRules"/);
   assert.doesNotMatch(wxml, /disabled="{{submitDisabled}}"/);
   assert.match(wxml, /submitDisabledClass/);
+});
+
+test('lottery page binds manual four-digit number input', () => {
+  const js = readProjectFile('pages/lottery/index.js');
+  const wxml = readProjectFile('pages/lottery/index.wxml');
+
+  assert.match(js, /handleNumberInput/);
+  assert.match(wxml, /type="number"/);
+  assert.match(wxml, /maxlength="4"/);
+  assert.match(wxml, /bindinput="handleNumberInput"/);
+});
+
+test('manual number input sanitizes digits and updates submit state', () => {
+  const { calls, page } = createLotteryPageHarness();
+
+  page.data = {
+    ...page.data,
+    currentNumber: '',
+    todayLeft: 1,
+  };
+
+  page.handleNumberInput({ detail: { value: '12a345' } });
+
+  assert.equal(page.data.currentNumber, '1234');
+  assert.deepEqual(Array.from(page.data.numberBoxes, (box) => box.value), ['1', '2', '3', '4']);
+  assert.equal(page.data.submitDisabled, false);
+  assert.equal(page.data.submitDisabledClass, '');
+  assert.equal(calls.setData.length, 1);
+  assert.equal(calls.setData[0].currentNumber, '1234');
+  assert.equal(calls.setData[0].submitDisabled, false);
+
+  page.handleNumberInput({ detail: { value: '9x8' } });
+
+  assert.equal(page.data.currentNumber, '98');
+  assert.deepEqual(Array.from(page.data.numberBoxes, (box) => box.value), ['9', '8', '', '']);
+  assert.equal(page.data.submitDisabled, true);
+  assert.equal(page.data.submitDisabledClass, 'submit-btn-disabled');
 });
 
 test('lottery submit handler declares validation toast messages', () => {
@@ -186,4 +312,45 @@ test('lottery records page loads records and renders a repeated list', () => {
   assert.match(wxml, /{{item\.number}}/);
   assert.match(wxml, /{{item\.amount/);
   assert.match(wxml, /{{item\.createdText}}/);
+});
+
+test('lottery records page exposes a visible back control', () => {
+  const js = readProjectFile('pages/lottery-records/index.js');
+  const wxml = readProjectFile('pages/lottery-records/index.wxml');
+
+  assert.match(js, /goBack/);
+  assert.match(wxml, /bindtap="goBack"/);
+  assert.match(wxml, /back/);
+});
+
+test('lottery records goBack falls back to lottery tab when native back fails', () => {
+  const { calls, page } = createLotteryRecordsPageHarness({
+    navigateBackFail: true,
+  });
+
+  page.goBack();
+
+  assert.equal(calls.navigateBack.length, 1);
+  assert.equal(calls.navigateBack[0].delta, 1);
+  assert.deepEqual(calls.switchTab.map((payload) => payload.url), ['/pages/lottery/index']);
+  assert.deepEqual(calls.reLaunch, []);
+});
+
+test('lottery records goBack falls back home when switchTab is unavailable', () => {
+  const { calls, page } = createLotteryRecordsPageHarness({
+    navigateBack: false,
+    switchTab: false,
+  });
+
+  page.goBack();
+
+  assert.deepEqual(calls.navigateBack, []);
+  assert.deepEqual(calls.switchTab, []);
+  assert.deepEqual(calls.reLaunch.map((payload) => payload.url), ['/pages/home/index']);
+});
+
+test('README does not end with an extra blank line', () => {
+  const readme = readProjectFile('README.md');
+
+  assert.doesNotMatch(readme, /(?:\r?\n){2}$/);
 });
