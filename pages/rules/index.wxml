@@ -1,3 +1,35 @@
 <view class="page">
-  <view class="nav-title">规则</view>
+  <view class="nav-bar">
+    <button class="back-button" bindtap="goBack" aria-label="返回">‹</button>
+    <view class="nav-title">规则说明</view>
+  </view>
+
+  <view class="intro">
+    <view class="intro-title">现金券与抽奖规则</view>
+    <view class="intro-text">本页面用于 C 端开发预览，帮助体验抽奖、现金券、置换确认等主要流程。</view>
+  </view>
+
+  <view class="rule-section">
+    <view class="section-title">抽奖参与</view>
+    <view class="rule-item">用户可在抽奖页生成四位数字并提交参与，页面展示的剩余次数、奖品和开奖信息均来自本地模拟数据。</view>
+    <view class="rule-item">同一用户每日参与次数以页面展示为准，提交后仅更新预览态记录，不产生真实中奖结果或权益发放。</view>
+  </view>
+
+  <view class="rule-section">
+    <view class="section-title">现金券使用</view>
+    <view class="rule-item">现金券用于展示同城消费券包、可用门店、有效期和券码等信息，实际使用以商家现场规则为准。</view>
+    <view class="rule-item">到店核销流程在预览中仅展示券码和状态，不连接真实核销系统，也不扣减真实账户余额。</view>
+  </view>
+
+  <view class="rule-section">
+    <view class="section-title">置换确认</view>
+    <view class="rule-item">用户发起置换后，记录会进入待确认状态；商家确认前可在记录页查看申请信息和当前状态。</view>
+    <view class="rule-item">商家确认、退回、失效等结果均为模拟流程展示，不代表真实商品、服务或补偿承诺。</view>
+  </view>
+
+  <view class="rule-section disclaimer">
+    <view class="section-title">开发预览说明</view>
+    <view class="rule-item">当前版本使用模拟数据完成开发预览，所有金额、券码、抽奖结果、商家权益和用户信息仅用于界面验证。</view>
+    <view class="rule-item">本预览不包含真实支付、真实核销、退款处理或后端 API，请勿作为生产交易凭证使用。</view>
+  </view>
 </view>

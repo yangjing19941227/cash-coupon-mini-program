@@ -1,1 +1,101 @@
-/* Page-specific styles are added in later tasks. */
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 24rpx 28rpx 40rpx;
+  background: #f7fbfb;
+  color: #172b35;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  min-height: 88rpx;
+}
+
+.back-button {
+  width: 64rpx;
+  height: 64rpx;
+  margin: 0;
+  padding: 0;
+  border-radius: 32rpx;
+  background: #ffffff;
+  color: #172b35;
+  font-size: 44rpx;
+  line-height: 60rpx;
+  box-shadow: 0 8rpx 24rpx rgba(21, 57, 64, 0.08);
+}
+
+.back-button::after {
+  border: 0;
+}
+
+.nav-title {
+  flex: 1;
+  margin-right: 64rpx;
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.intro {
+  margin-top: 16rpx;
+  padding: 28rpx;
+  border-radius: 16rpx;
+  background: #006b68;
+  color: #ffffff;
+}
+
+.intro-title {
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.intro-text {
+  margin-top: 14rpx;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 26rpx;
+  line-height: 1.6;
+}
+
+.rule-section {
+  margin-top: 24rpx;
+  padding: 28rpx;
+  border-radius: 16rpx;
+  background: #ffffff;
+  box-shadow: 0 10rpx 30rpx rgba(23, 43, 53, 0.06);
+}
+
+.section-title {
+  margin-bottom: 18rpx;
+  color: #006b68;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.rule-item {
+  position: relative;
+  padding-left: 24rpx;
+  color: #40525d;
+  font-size: 26rpx;
+  line-height: 1.7;
+}
+
+.rule-item + .rule-item {
+  margin-top: 14rpx;
+}
+
+.rule-item::before {
+  position: absolute;
+  top: 18rpx;
+  left: 0;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: #20b2aa;
+  content: '';
+}
+
+.disclaimer {
+  border: 2rpx solid #dcefed;
+  background: #fafffe;
+}
