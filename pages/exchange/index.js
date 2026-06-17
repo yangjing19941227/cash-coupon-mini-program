@@ -56,9 +56,13 @@ function showToast(title) {
 }
 
 Page({
+  _exchangeSubmitting: false,
+
   data: {
     ...createProfileViewModel(EMPTY_PROFILE),
+    exchangeSubmitting: false,
     merchants: [],
+    submittingMerchantId: '',
   },
 
   onLoad() {
@@ -87,32 +91,55 @@ Page({
     showToast('更多同城商家持续接入中');
   },
 
-  goExchangeRecords() {
+  clearExchangeSubmitting() {
+    this._exchangeSubmitting = false;
+    this.setData({
+      exchangeSubmitting: false,
+      submittingMerchantId: '',
+    });
+  },
+
+  goExchangeRecords(options = {}) {
     if (!hasWxApi('navigateTo')) {
+      if (typeof options.complete === 'function') {
+        options.complete();
+      }
       return;
     }
 
     wx.navigateTo({
       url: '/pages/exchange-records/index',
+      ...options,
     });
   },
 
   startExchange(event) {
     const { id } = event.currentTarget.dataset;
 
-    if (!id) {
+    if (!id || this._exchangeSubmitting) {
       return;
     }
+
+    this._exchangeSubmitting = true;
+    this.setData({
+      exchangeSubmitting: true,
+      submittingMerchantId: id,
+    });
 
     const result = createExchangeRecord(id);
 
     showToast(result.message);
 
     if (!result.ok) {
+      this.clearExchangeSubmitting();
       return;
     }
 
     this.loadExchangePage();
-    this.goExchangeRecords();
+    this.goExchangeRecords({
+      complete: () => {
+        this.clearExchangeSubmitting();
+      },
+    });
   },
 });

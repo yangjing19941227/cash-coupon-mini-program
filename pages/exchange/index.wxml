@@ -76,6 +76,8 @@
             <button
               class="exchange-action-btn"
               data-id="{{item.id}}"
+              disabled="{{exchangeSubmitting}}"
+              loading="{{submittingMerchantId === item.id}}"
               bindtap="startExchange"
             >
               发起置换

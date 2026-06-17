@@ -2,9 +2,10 @@ const {
   getExchangeStats,
   getExchangeRecords,
 } = require('../../utils/mock-service');
+const { formatDateTime } = require('../../utils/format');
 
 const DEFAULT_TAB = '全部';
-const TABS = ['全部', '待确认', '已完成', '已失效'];
+const TABS = ['全部', '待确认', '已完成', '已退回', '已失效'];
 
 const EMPTY_STATS = {
   pendingCount: 0,
@@ -34,27 +35,6 @@ function formatAmount(value) {
   return amount.toFixed(2);
 }
 
-function formatDateTime(value) {
-  if (!value) {
-    return '';
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return String(value).replace('T', ' ').slice(0, 16);
-  }
-
-  const shanghaiDate = new Date(date.getTime() + 8 * 60 * 60 * 1000);
-  const year = shanghaiDate.getUTCFullYear();
-  const month = String(shanghaiDate.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(shanghaiDate.getUTCDate()).padStart(2, '0');
-  const hour = String(shanghaiDate.getUTCHours()).padStart(2, '0');
-  const minute = String(shanghaiDate.getUTCMinutes()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hour}:${minute}`;
-}
-
 function buildTabs(activeTab) {
   return TABS.map((label) => ({
     label,
@@ -70,9 +50,9 @@ function createRecordViewModel(record) {
     amountText: formatAmount(record.amount),
     statusText: status.text,
     statusClass: status.className,
-    appliedText: formatDateTime(record.appliedAt),
-    completedText: formatDateTime(record.completedAt),
-    expiredText: formatDateTime(record.expiredAt),
+    appliedText: record.appliedAt ? formatDateTime(record.appliedAt) : '',
+    completedText: record.completedAt ? formatDateTime(record.completedAt) : '',
+    expiredText: record.expiredAt ? formatDateTime(record.expiredAt) : '',
   };
 }
 

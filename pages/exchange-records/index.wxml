@@ -28,7 +28,7 @@
     <text>退回额度会同步进入资产流水，商家确认后可继续查看处理进度</text>
   </view>
 
-  <view class="tabs" aria-label="全部 待确认 已完成 已失效">
+  <view class="tabs" aria-label="全部 待确认 已完成 已退回 已失效">
     <block wx:for="{{tabs}}" wx:key="label">
       <view class="tab-item {{item.activeClass}}" data-tab="{{item.label}}" bindtap="switchTab">
         <text>{{item.label}}</text>
