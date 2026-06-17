@@ -183,7 +183,7 @@
 
 .coupon-list {
   overflow: hidden;
-  padding: 0 32rpx;
+  padding: 0 28rpx;
 }
 
 .coupon-row {
@@ -200,9 +200,9 @@
 }
 
 .coupon-icon {
-  width: 112rpx;
-  height: 112rpx;
-  border-radius: 56rpx;
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 52rpx;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -238,7 +238,7 @@
 .coupon-main {
   min-width: 0;
   flex: 1;
-  margin: 0 22rpx 0 28rpx;
+  margin: 0 18rpx 0 24rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -306,7 +306,7 @@
 }
 
 .coupon-side {
-  width: 154rpx;
+  width: 176rpx;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -386,7 +386,7 @@
 }
 
 .use-btn {
-  width: 146rpx;
+  width: 164rpx;
   height: 58rpx;
   font-size: 28rpx;
 }

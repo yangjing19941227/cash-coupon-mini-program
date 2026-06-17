@@ -30,22 +30,24 @@
       <text class="leaf-mark">⌁</text>
     </view>
 
-    <view class="number-grid">
-      <block wx:for="{{numberBoxes}}" wx:key="id">
-        <view class="number-box {{item.className}}">
-          <text>{{item.value}}</text>
-        </view>
-      </block>
-    </view>
+    <view class="number-input-wrap">
+      <view class="number-grid">
+        <block wx:for="{{numberBoxes}}" wx:key="id">
+          <view class="number-box {{item.className}}">
+            <text>{{item.value}}</text>
+          </view>
+        </block>
+      </view>
 
-    <input
-      class="manual-number-input"
-      type="number"
-      maxlength="4"
-      value="{{currentNumber}}"
-      bindinput="handleNumberInput"
-      placeholder="请输入四位数字"
-    />
+      <input
+        class="manual-number-input"
+        type="number"
+        maxlength="4"
+        value="{{currentNumber}}"
+        bindinput="handleNumberInput"
+        placeholder="请输入四位数字"
+      />
+    </view>
 
     <view class="random-row" role="button" bindtap="generateNumber">
       <text class="random-icon">↻</text>

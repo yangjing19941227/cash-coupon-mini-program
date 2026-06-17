@@ -1,58 +1,66 @@
 <view class="page profile-page">
-  <view class="nav-title profile-title">我的</view>
+  <view class="profile-topbar">
+    <view class="topbar-spacer"></view>
+    <view class="nav-title profile-title">我的</view>
+    <button class="settings-btn" bindtap="showSettings">设</button>
+  </view>
 
-  <view class="profile-card">
-    <view class="profile-header">
-      <image class="avatar" src="{{profile.avatar}}" mode="aspectFill"></image>
-      <view class="profile-copy">
-        <text class="nickname">{{profile.nickname}}</text>
-        <text class="location">{{locationText}}</text>
-      </view>
-      <button class="settings-btn" bindtap="showSettings">设</button>
+  <view class="profile-header">
+    <image class="avatar" src="{{profile.avatar}}" mode="aspectFill"></image>
+    <view class="profile-copy">
+      <text class="nickname">{{profile.nickname}}</text>
+      <text class="location">◎ {{locationText}}</text>
     </view>
+    <button class="profile-data-btn" bindtap="showProfileData">个人资料 ›</button>
+  </view>
 
+  <view class="profile-asset-card card">
     <view class="profile-visual-row">
       <view class="saved-copy">
-        <text class="saved-label">累计节省</text>
+        <view class="saved-label-row">
+          <text class="saved-label">累计节省</text>
+          <text class="saved-info">i</text>
+        </view>
         <view class="saved-amount-row">
           <text class="saved-currency">¥</text>
           <text class="saved-amount">{{savedAmountText}}</text>
         </view>
-        <text class="saved-helper">当前可用现金券 ¥{{totalValueText}}</text>
+        <text class="saved-helper">精打细算 · 生活更值得</text>
       </view>
-      <image class="profile-visual" src="{{profile.avatar}}" mode="aspectFit"></image>
+      <image class="profile-visual" src="{{profile.profileIllustration}}" mode="aspectFit"></image>
     </view>
 
-    <button class="profile-data-btn" bindtap="showProfileData">个人资料</button>
-  </view>
-
-  <view class="stat-card card">
-    <view class="stat-item">
-      <text class="stat-label">现金券</text>
-      <view class="stat-value-row">
-        <text class="stat-value">{{couponCountText}}</text>
-        <text class="stat-unit">张</text>
+    <view class="stat-card">
+      <view class="stat-item">
+        <text class="stat-icon">券</text>
+        <text class="stat-label">现金券</text>
+        <view class="stat-value-row">
+          <text class="stat-value">{{couponCountText}}</text>
+          <text class="stat-unit">张</text>
+        </view>
       </view>
-    </view>
-    <view class="stat-item">
-      <text class="stat-label">抽奖次数</text>
-      <view class="stat-value-row">
-        <text class="stat-value">{{lotteryLeftText}}</text>
-        <text class="stat-unit">次</text>
+      <view class="stat-item">
+        <text class="stat-icon">礼</text>
+        <text class="stat-label">抽奖次数</text>
+        <view class="stat-value-row">
+          <text class="stat-value">{{lotteryLeftText}}</text>
+          <text class="stat-unit">次</text>
+        </view>
       </view>
-    </view>
-    <view class="stat-item">
-      <text class="stat-label">即将过期</text>
-      <view class="stat-value-row">
-        <text class="stat-value stat-value-warm">{{expiringCountText}}</text>
-        <text class="stat-unit">张</text>
+      <view class="stat-item">
+        <text class="stat-icon">时</text>
+        <text class="stat-label">即将过期</text>
+        <view class="stat-value-row">
+          <text class="stat-value stat-value-warm">{{expiringCountText}}</text>
+          <text class="stat-unit">张</text>
+        </view>
       </view>
-    </view>
-    <view class="stat-item">
-      <text class="stat-label">置换额度</text>
-      <view class="stat-value-row">
-        <text class="stat-value">{{exchangeAmountText}}</text>
-        <text class="stat-unit">元</text>
+      <view class="stat-item">
+        <text class="stat-icon">额</text>
+        <text class="stat-label">置换额度</text>
+        <view class="stat-value-row">
+          <text class="stat-value">{{exchangeAmountText}}</text>
+        </view>
       </view>
     </view>
   </view>
@@ -84,27 +92,42 @@
   <view class="menu-card card">
     <view class="menu-row" role="button" bindtap="goCoupons">
       <view class="menu-icon menu-icon-coupon">券</view>
-      <text class="menu-text">我的现金券</text>
+      <view class="menu-copy">
+        <text class="menu-text">我的现金券</text>
+        <text class="menu-desc">{{couponCountText}}张可用</text>
+      </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-row" role="button" bindtap="goLotteryRecords">
       <view class="menu-icon menu-icon-lottery">奖</view>
-      <text class="menu-text">抽奖记录</text>
+      <view class="menu-copy">
+        <text class="menu-text">抽奖记录</text>
+        <text class="menu-desc">查看我的中奖记录</text>
+      </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-row" role="button" bindtap="goExchangeRecords">
       <view class="menu-icon menu-icon-exchange">换</view>
-      <text class="menu-text">置换记录</text>
+      <view class="menu-copy">
+        <text class="menu-text">置换记录</text>
+        <text class="menu-desc">查看置换进度与记录</text>
+      </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-row" role="button" bindtap="showVerifyRecords">
       <view class="menu-icon menu-icon-verify">核</view>
-      <text class="menu-text">核销记录</text>
+      <view class="menu-copy">
+        <text class="menu-text">核销记录</text>
+        <text class="menu-desc">查看使用与核销明细</text>
+      </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-row menu-row-last" role="button" bindtap="showAssetFlow">
       <view class="menu-icon menu-icon-flow">流</view>
-      <text class="menu-text">资产流水</text>
+      <view class="menu-copy">
+        <text class="menu-text">资产流水</text>
+        <text class="menu-desc">查看资金与额度明细</text>
+      </view>
       <text class="menu-arrow">›</text>
     </view>
   </view>

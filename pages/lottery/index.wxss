@@ -118,8 +118,12 @@
   font-weight: 800;
 }
 
-.number-grid {
+.number-input-wrap {
+  position: relative;
   margin: 48rpx 0 42rpx;
+}
+
+.number-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 28rpx;
@@ -147,18 +151,14 @@
 }
 
 .manual-number-input {
-  height: 72rpx;
-  margin: 0 0 30rpx;
-  padding: 0 24rpx;
-  border: 2rpx solid #d7e8e8;
-  border-radius: 18rpx;
-  background: #fbffff;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  opacity: 0;
   box-sizing: border-box;
-  color: #071827;
-  font-size: 30rpx;
-  font-weight: 800;
-  line-height: 72rpx;
-  text-align: center;
 }
 
 .random-row {
@@ -189,6 +189,8 @@
 }
 
 .submit-btn {
+  width: 596rpx;
+  max-width: 100%;
   height: 96rpx;
   margin: 50rpx auto 30rpx;
   border-radius: 22rpx;

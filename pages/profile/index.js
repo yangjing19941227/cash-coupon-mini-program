@@ -8,7 +8,8 @@ const EMPTY_PROFILE = {
   nickname: '',
   city: '',
   district: '',
-  avatar: '/assets/images/profile.svg',
+  avatar: '/assets/images/profile-avatar.png',
+  profileIllustration: '/assets/images/profile-illustration.png',
   savedAmount: 0,
   couponCount: 0,
   lotteryLeft: 0,
@@ -92,16 +93,21 @@ function createActivityViewModel(item) {
 }
 
 function createProfileViewModel(profile, summary, activityItems) {
+  const completeProfile = {
+    ...EMPTY_PROFILE,
+    ...profile,
+  };
+
   return {
-    profile,
-    locationText: `${profile.city || '同城'} · ${profile.district || '附近'}`,
-    savedAmountText: formatAmount(profile.savedAmount),
+    profile: completeProfile,
+    locationText: `${completeProfile.city || '同城'} · ${completeProfile.district || '附近'}`,
+    savedAmountText: formatAmount(completeProfile.savedAmount),
     totalValueText: formatAmount(summary.totalValue),
-    couponCountText: formatCount(summary.availableCount, profile.couponCount),
-    lotteryLeftText: String(profile.lotteryLeft || 0),
-    expiringCountText: formatCount(summary.expiringCount, profile.expiringCount),
-    exchangeAmountText: formatAmount(profile.exchangeAmount),
-    stats: createStats(profile, summary),
+    couponCountText: formatCount(summary.availableCount, completeProfile.couponCount),
+    lotteryLeftText: String(completeProfile.lotteryLeft || 0),
+    expiringCountText: formatCount(summary.expiringCount, completeProfile.expiringCount),
+    exchangeAmountText: formatAmount(completeProfile.exchangeAmount),
+    stats: createStats(completeProfile, summary),
     activityItems: activityItems.map(createActivityViewModel),
   };
 }
