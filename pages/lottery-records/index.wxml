@@ -1,3 +1,34 @@
-<view class="page">
-  <view class="nav-title">抽奖记录</view>
+<view class="page lottery-records-page">
+  <view class="nav-title records-nav-title">抽奖记录</view>
+
+  <view class="records-summary card">
+    <text class="summary-title">抽奖参与记录</text>
+    <text class="summary-desc">参与记录、开奖号、发券结果都可在此追溯</text>
+  </view>
+
+  <view class="records-list">
+    <block wx:if="{{records.length}}">
+      <block wx:for="{{records}}" wx:key="id">
+        <view class="record-card card">
+          <view class="record-main">
+            <text class="record-prize">{{item.prize}}</text>
+            <text class="record-time">{{item.createdText}}</text>
+          </view>
+          <view class="record-number">
+            <text class="number-label">参与号码</text>
+            <text class="number-value">{{item.number}}</text>
+          </view>
+          <view class="record-amount">
+            <text class="amount-label">中奖现金券</text>
+            <text class="amount-value">{{item.amountText}}</text>
+          </view>
+        </view>
+      </block>
+    </block>
+
+    <view wx:else class="empty records-empty">
+      <text>暂无抽奖记录</text>
+      <text class="empty-desc">参与抽奖后，记录会自动显示在这里</text>
+    </view>
+  </view>
 </view>
