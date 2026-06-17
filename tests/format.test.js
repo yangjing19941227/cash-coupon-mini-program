@@ -29,6 +29,10 @@ test('formatDateTime formats ISO date time to minute precision', () => {
   assert.equal(formatDateTime('2026-06-30T23:59:00+08:00'), '2026-06-30 23:59');
 });
 
+test('formatDateTime converts UTC timestamps to Asia Shanghai local time', () => {
+  assert.equal(formatDateTime('2026-06-17T12:00:00Z'), '2026-06-17 20:00');
+});
+
 test('getStatusLabel returns labels and tones for coupon statuses', () => {
   assert.deepEqual(getStatusLabel('unused'), { text: '未使用', tone: 'success' });
   assert.deepEqual(getStatusLabel('pending'), { text: '待商家确认', tone: 'warning' });
@@ -44,4 +48,20 @@ test('padFourDigits pads values shorter than four digits', () => {
 
 test('padFourDigits leaves four digit values unchanged', () => {
   assert.equal(padFourDigits(3806), '3806');
+});
+
+test('padFourDigits returns the last four digits for larger values', () => {
+  assert.equal(padFourDigits(10000), '0000');
+});
+
+test('padFourDigits uses the non-negative integer part of decimals', () => {
+  assert.equal(padFourDigits(8.5), '0008');
+});
+
+test('padFourDigits sanitizes negative values to zero', () => {
+  assert.equal(padFourDigits(-7), '0000');
+});
+
+test('padFourDigits sanitizes invalid values to zero', () => {
+  assert.equal(padFourDigits(Number.NaN), '0000');
 });

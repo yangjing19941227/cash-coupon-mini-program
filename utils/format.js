@@ -21,16 +21,20 @@ function formatCouponValue(coupon) {
 
 function formatDateTime(value) {
   if (value instanceof Date) {
-    const year = value.getFullYear();
-    const month = padTwoDigits(value.getMonth() + 1);
-    const day = padTwoDigits(value.getDate());
-    const hour = padTwoDigits(value.getHours());
-    const minute = padTwoDigits(value.getMinutes());
-
-    return `${year}-${month}-${day} ${hour}:${minute}`;
+    return formatShanghaiDateTime(value);
   }
 
   const text = String(value);
+  const hasExplicitTimeZone = /(?:Z|[+-]\d{2}:?\d{2})$/.test(text);
+
+  if (hasExplicitTimeZone) {
+    const date = new Date(text);
+
+    if (!Number.isNaN(date.getTime())) {
+      return formatShanghaiDateTime(date);
+    }
+  }
+
   const match = text.match(/^(\d{4}-\d{2}-\d{2})[T\s](\d{2}:\d{2})/);
 
   if (match) {
@@ -54,7 +58,11 @@ function getStatusLabel(status) {
 }
 
 function padFourDigits(value) {
-  return String(value).padStart(4, '0');
+  const number = Number(value);
+  const integer = Number.isFinite(number) && number >= 0 ? Math.floor(number) : 0;
+  const lastFourDigits = integer % 10000;
+
+  return String(lastFourDigits).padStart(4, '0');
 }
 
 function formatNumber(value) {
@@ -69,6 +77,17 @@ function formatNumber(value) {
 
 function padTwoDigits(value) {
   return String(value).padStart(2, '0');
+}
+
+function formatShanghaiDateTime(date) {
+  const shanghaiDate = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+  const year = shanghaiDate.getUTCFullYear();
+  const month = padTwoDigits(shanghaiDate.getUTCMonth() + 1);
+  const day = padTwoDigits(shanghaiDate.getUTCDate());
+  const hour = padTwoDigits(shanghaiDate.getUTCHours());
+  const minute = padTwoDigits(shanghaiDate.getUTCMinutes());
+
+  return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
 module.exports = {
