@@ -25,32 +25,32 @@
       {
         "pagePath": "pages/home/index",
         "text": "首页",
-        "iconPath": "assets/icons/home.svg",
-        "selectedIconPath": "assets/icons/home-active.svg"
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
       },
       {
         "pagePath": "pages/coupons/index",
         "text": "现金券",
-        "iconPath": "assets/icons/ticket.svg",
-        "selectedIconPath": "assets/icons/ticket-active.svg"
+        "iconPath": "assets/icons/ticket.png",
+        "selectedIconPath": "assets/icons/ticket-active.png"
       },
       {
         "pagePath": "pages/exchange/index",
         "text": "置换",
-        "iconPath": "assets/icons/exchange.svg",
-        "selectedIconPath": "assets/icons/exchange-active.svg"
+        "iconPath": "assets/icons/exchange.png",
+        "selectedIconPath": "assets/icons/exchange-active.png"
       },
       {
         "pagePath": "pages/lottery/index",
         "text": "抽奖",
-        "iconPath": "assets/icons/gift.svg",
-        "selectedIconPath": "assets/icons/gift-active.svg"
+        "iconPath": "assets/icons/gift.png",
+        "selectedIconPath": "assets/icons/gift-active.png"
       },
       {
         "pagePath": "pages/profile/index",
         "text": "我的",
-        "iconPath": "assets/icons/user.svg",
-        "selectedIconPath": "assets/icons/user-active.svg"
+        "iconPath": "assets/icons/user.png",
+        "selectedIconPath": "assets/icons/user-active.png"
       }
     ]
   },

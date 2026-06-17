@@ -48,6 +48,13 @@ test('app.json registers required pages and tab bar assets', () => {
   }
 
   for (const item of app.tabBar.list) {
+    for (const key of ['iconPath', 'selectedIconPath']) {
+      assert.match(
+        item[key],
+        /\.(png|jpe?g)$/i,
+        `${key} must use a WeChat tabBar-compatible raster image`,
+      );
+    }
     assert.equal(
       fs.existsSync(path.join(root, item.iconPath)),
       true,
