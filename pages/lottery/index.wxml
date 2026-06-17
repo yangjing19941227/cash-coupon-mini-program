@@ -46,7 +46,6 @@
 
     <button
       class="submit-btn {{submitDisabledClass}}"
-      disabled="{{submitDisabled}}"
       bindtap="submitNumber"
     >
       提交参与

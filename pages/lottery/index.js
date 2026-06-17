@@ -121,7 +121,19 @@ Page({
   },
 
   submitNumber() {
-    const result = submitLottery(this.data.currentNumber);
+    const { currentNumber, todayLeft } = this.data;
+
+    if (!isCompleteNumber(currentNumber)) {
+      showToast('请输入完整四位数');
+      return;
+    }
+
+    if (Number(todayLeft || 0) <= 0) {
+      showToast('今日次数已用完');
+      return;
+    }
+
+    const result = submitLottery(currentNumber);
 
     showToast(result.message);
     this.loadLotteryState();
