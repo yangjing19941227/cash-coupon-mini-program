@@ -82,26 +82,27 @@
 .source-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 20rpx;
 }
 
 .source-title {
-  width: 144rpx;
+  flex: 0 0 144rpx;
   color: #5f6d7d;
   font-size: 28rpx;
   white-space: nowrap;
 }
 
 .source-pill {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 210rpx;
+  min-width: 210rpx;
   height: 64rpx;
-  padding: 0 22rpx;
+  padding: 0 18rpx;
   border-radius: 32rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12rpx;
+  gap: 10rpx;
   box-sizing: border-box;
   font-size: 24rpx;
   white-space: nowrap;

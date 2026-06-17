@@ -65,6 +65,8 @@ function createCouponViewModel(coupon) {
 }
 
 Page({
+  _skipNextShowRefresh: false,
+
   data: {
     activeTab: DEFAULT_TAB,
     tabs: buildTabs(DEFAULT_TAB),
@@ -73,6 +75,16 @@ Page({
   },
 
   onLoad() {
+    this.loadCoupons();
+    this._skipNextShowRefresh = true;
+  },
+
+  onShow() {
+    if (this._skipNextShowRefresh) {
+      this._skipNextShowRefresh = false;
+      return;
+    }
+
     this.loadCoupons();
   },
 
