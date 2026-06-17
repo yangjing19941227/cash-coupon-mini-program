@@ -1,3 +1,89 @@
-<view class="page">
-  <view class="nav-title">置换</view>
+<view class="page exchange-page">
+  <view class="exchange-top-row">
+    <view class="location-pill">
+      <text class="location-mark">城</text>
+      <text class="location-text">{{locationText}}</text>
+    </view>
+    <view class="records-link" role="button" bindtap="goExchangeRecords">置换记录</view>
+  </view>
+
+  <view class="exchange-heading">
+    <text class="exchange-kicker">现金券资产盘活</text>
+    <text class="exchange-title">现金券置换</text>
+    <text class="exchange-helper">把闲置现金券换成更适合你的同城权益</text>
+  </view>
+
+  <view class="exchange-stat-card card">
+    <view class="stat-main-row">
+      <view class="stat-main-copy">
+        <text class="stat-label">可置换额度</text>
+        <view class="stat-amount-row">
+          <text class="stat-currency">¥</text>
+          <text class="stat-amount">{{exchangeAmountText}}</text>
+        </view>
+      </view>
+      <button class="recharge-btn" bindtap="showRechargeTip">充值额度</button>
+    </view>
+
+    <view class="stat-divider"></view>
+
+    <view class="stat-sub-grid">
+      <view class="stat-sub-item">
+        <text class="stat-sub-label">闲置现金券</text>
+        <text class="stat-sub-value">{{couponCountText}} 张</text>
+      </view>
+      <view class="stat-sub-item">
+        <text class="stat-sub-label">临期可盘活</text>
+        <text class="stat-sub-value stat-sub-warm">{{expiringCountText}} 张</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="helper-row">
+    <text>把闲置现金券换成更适合你的同城权益</text>
+  </view>
+
+  <view class="section-row">
+    <text class="section-title">置换商家权益</text>
+    <text class="section-more" role="button" bindtap="showMoreMerchants">更多商家</text>
+  </view>
+
+  <view class="merchant-list">
+    <block wx:if="{{merchants.length}}">
+      <block wx:for="{{merchants}}" wx:key="id">
+        <view class="merchant-card card">
+          <image class="merchant-image" src="{{item.image}}" mode="aspectFill"></image>
+          <view class="merchant-body">
+            <view class="merchant-title-row">
+              <view class="merchant-title-copy">
+                <text class="merchant-name">{{item.name}}</text>
+                <text class="merchant-store">{{item.store}}</text>
+              </view>
+              <view class="merchant-amount">
+                <text class="amount-prefix">¥</text>
+                <text class="amount-value">{{item.exchangeAmountText}}</text>
+              </view>
+            </view>
+
+            <view class="tag-row">
+              <block wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
+                <text class="tag">{{tag}}</text>
+              </block>
+            </view>
+
+            <text class="merchant-desc">{{item.description}}</text>
+
+            <button
+              class="exchange-action-btn"
+              data-id="{{item.id}}"
+              bindtap="startExchange"
+            >
+              发起置换
+            </button>
+          </view>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty">暂无可置换商家权益</view>
+  </view>
 </view>
