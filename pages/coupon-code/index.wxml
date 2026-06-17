@@ -1,10 +1,10 @@
 <view class="page coupon-code-page">
   <view class="top-nav">
-    <view class="nav-back" bindtap="goBack" aria-label="返回">
+    <view class="nav-back" bindtap="goBack" role="button" aria-label="返回">
       <text class="nav-back-icon">‹</text>
     </view>
     <text class="nav-heading">出示券码</text>
-    <text class="nav-rule" bindtap="showRules">使用规则</text>
+    <text class="nav-rule" bindtap="showRules" role="button">使用规则</text>
   </view>
 
   <view wx:if="{{fallbackMessage}}" class="fallback-message">

@@ -122,6 +122,16 @@ Page({
     this.startRefreshTimer();
   },
 
+  onShow() {
+    if (this.data.coupon && !this._refreshTimer) {
+      this.startRefreshTimer();
+    }
+  },
+
+  onHide() {
+    this.clearRefreshTimer();
+  },
+
   onUnload() {
     this.clearRefreshTimer();
   },
