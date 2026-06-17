@@ -118,15 +118,23 @@ function showToast(title) {
 }
 
 Page({
+  _skipNextShowRefresh: false,
+
   data: {
     ...createProfileViewModel(EMPTY_PROFILE, EMPTY_SUMMARY, []),
   },
 
   onLoad() {
     this.loadProfilePage();
+    this._skipNextShowRefresh = true;
   },
 
   onShow() {
+    if (this._skipNextShowRefresh) {
+      this._skipNextShowRefresh = false;
+      return;
+    }
+
     this.loadProfilePage();
   },
 

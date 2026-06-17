@@ -4,6 +4,7 @@ const {
   getMerchantBenefits,
   getCoupons,
 } = require('../../utils/mock-service');
+const { formatDateTime } = require('../../utils/format');
 
 const EMPTY_PROFILE = {
   city: '',
@@ -34,7 +35,7 @@ function formatAmount(value) {
 }
 
 function formatDate(value) {
-  return String(value || '').slice(0, 10);
+  return formatDateTime(value).slice(0, 10);
 }
 
 function createBenefitViewModel(benefit) {
@@ -94,15 +95,23 @@ function navigateTo(payload) {
 }
 
 Page({
+  _skipNextShowRefresh: false,
+
   data: {
     ...createHomeViewModel(EMPTY_PROFILE, EMPTY_SUMMARY, [], []),
   },
 
   onLoad() {
     this.loadHomePage();
+    this._skipNextShowRefresh = true;
   },
 
   onShow() {
+    if (this._skipNextShowRefresh) {
+      this._skipNextShowRefresh = false;
+      return;
+    }
+
     this.loadHomePage();
   },
 
