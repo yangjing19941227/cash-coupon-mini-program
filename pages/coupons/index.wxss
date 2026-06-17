@@ -310,6 +310,7 @@
 .coupon-side {
   width: 148rpx;
   flex-shrink: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -389,9 +390,23 @@
 
 .use-btn {
   width: 132rpx;
+  max-width: 100%;
   height: 58rpx;
   box-sizing: border-box;
+  flex-shrink: 0;
   font-size: 28rpx;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.use-btn text {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.use-btn-hover {
+  background: #005452;
 }
 
 .use-btn-disabled {

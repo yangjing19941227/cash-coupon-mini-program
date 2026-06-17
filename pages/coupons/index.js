@@ -118,6 +118,12 @@ Page({
       return;
     }
 
+    const coupon = this.data.coupons.find((item) => String(item.id) === String(id));
+
+    if (coupon && coupon.useDisabled) {
+      return;
+    }
+
     wx.navigateTo({
       url: `/pages/coupon-code/index?id=${id}`,
     });

@@ -41,7 +41,7 @@ test('coupon assets page keeps behavior bindings explicit in WXML', () => {
     'data-tab="{{item.label}}"',
     'wx:key="id"',
     'data-id="{{item.id}}"',
-    'disabled="{{item.useDisabled}}"',
+    'aria-disabled="{{item.useDisabled}}"',
     'bindtap="goUse"',
     'bindtap="goExchange"',
   ]) {

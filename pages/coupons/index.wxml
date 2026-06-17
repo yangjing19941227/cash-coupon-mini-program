@@ -87,14 +87,16 @@
               <text class="amount-number">{{item.amountText}}</text>
             </view>
             <text class="threshold-text">{{item.thresholdText}}</text>
-            <button
+            <view
               class="use-btn {{item.useDisabledClass}}"
               data-id="{{item.id}}"
-              disabled="{{item.useDisabled}}"
+              aria-role="button"
+              aria-disabled="{{item.useDisabled}}"
+              hover-class="use-btn-hover"
               bindtap="goUse"
             >
-              去使用
-            </button>
+              <text>去使用</text>
+            </view>
           </view>
         </view>
       </block>

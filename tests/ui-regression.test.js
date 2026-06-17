@@ -120,3 +120,14 @@ test('coupon action column stays inside the cash coupon card', () => {
   assert.match(readSelectorBlock(couponsWxss, '.coupon-row'), /min-width:\s*0;/);
   assert.match(readSelectorBlock(couponsWxss, '.use-btn'), /box-sizing:\s*border-box;/);
 });
+
+test('coupon use action avoids native button sizing overflow', () => {
+  const wxml = readProjectFile('pages/coupons/index.wxml');
+  const wxss = readProjectFile('pages/coupons/index.wxss');
+
+  assert.doesNotMatch(wxml, /<button[\s\S]*class="use-btn/);
+  assert.match(wxml, /<view[\s\S]*class="use-btn/);
+  assert.match(wxml, /aria-disabled="{{item\.useDisabled}}"/);
+  assert.match(readSelectorBlock(wxss, '.use-btn'), /max-width:\s*100%;/);
+  assert.match(readSelectorBlock(wxss, '.use-btn'), /overflow:\s*hidden;/);
+});
