@@ -21,6 +21,10 @@ function formatCouponValue(coupon) {
 
 function formatDateTime(value) {
   if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) {
+      return String(value);
+    }
+
     return formatShanghaiDateTime(value);
   }
 

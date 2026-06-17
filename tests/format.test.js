@@ -33,6 +33,12 @@ test('formatDateTime converts UTC timestamps to Asia Shanghai local time', () =>
   assert.equal(formatDateTime('2026-06-17T12:00:00Z'), '2026-06-17 20:00');
 });
 
+test('formatDateTime returns Invalid Date for invalid Date objects', () => {
+  const invalidDate = new Date('bad');
+
+  assert.equal(formatDateTime(invalidDate), 'Invalid Date');
+});
+
 test('getStatusLabel returns labels and tones for coupon statuses', () => {
   assert.deepEqual(getStatusLabel('unused'), { text: '未使用', tone: 'success' });
   assert.deepEqual(getStatusLabel('pending'), { text: '待商家确认', tone: 'warning' });
