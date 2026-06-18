@@ -4,7 +4,6 @@
       <text class="location-mark">城</text>
       <text class="location-text">{{locationText}}</text>
     </view>
-    <view class="profile-link" role="button" bindtap="goProfile">我的</view>
   </view>
 
   <view class="nav-title home-title">首页</view>

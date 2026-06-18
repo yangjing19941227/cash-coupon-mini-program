@@ -40,21 +40,6 @@
   white-space: nowrap;
 }
 
-.profile-link {
-  height: 58rpx;
-  padding: 0 22rpx;
-  border-radius: 29rpx;
-  background: #fff;
-  color: #006b68;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 25rpx;
-  font-weight: 800;
-  box-shadow: 0 8rpx 22rpx rgba(8, 47, 53, 0.06);
-}
-
 .home-title {
   justify-content: flex-start;
   min-height: 56rpx;

@@ -420,3 +420,14 @@ test('home page is an operational first tab with services, actions and previews'
     assert.match(wxml, new RegExp(binding.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
 });
+
+test('home page avoids redundant top profile shortcut', () => {
+  const wxml = readProjectFile('pages/home/index.wxml');
+  const wxss = readProjectFile('pages/home/index.wxss');
+  const profileBindings = wxml.match(/bindtap="goProfile"/g) || [];
+
+  assert.doesNotMatch(wxml, /class="profile-link"/);
+  assert.doesNotMatch(wxss, /\.profile-link\s*{/);
+  assert.equal(profileBindings.length, 1);
+  assert.match(wxml, /quick-icon-profile/);
+});
