@@ -1,0 +1,122 @@
+@import "../../styles/downstream.wxss";
+
+.exchange-summary {
+  height: 208rpx;
+  padding: 48rpx 36rpx;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 192rpx;
+  align-items: center;
+}
+
+.summary-item {
+  min-width: 0;
+  border-right: 1rpx solid rgba(34, 76, 90, 0.18);
+  color: #071426;
+  font-size: 26rpx;
+}
+
+.summary-item:nth-child(3) {
+  border-right: 0;
+}
+
+.summary-num {
+  display: inline-block;
+  margin-top: 22rpx;
+  color: #006b68;
+  font-size: 58rpx;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.summary-unit {
+  margin-left: 6rpx;
+  color: #071426;
+  font-size: 24rpx;
+}
+
+.recharge-btn {
+  height: 64rpx;
+  min-height: 64rpx;
+  padding: 0 20rpx;
+  border-radius: 34rpx;
+  font-size: 28rpx;
+}
+
+.exchange-hint {
+  margin: 40rpx 0;
+  color: #5c6878;
+  font-size: 28rpx;
+  text-align: center;
+}
+
+.merchant-panel {
+  padding: 40rpx 30rpx;
+}
+
+.merchant-row {
+  min-height: 232rpx;
+  padding: 34rpx 0;
+  border-bottom: 1rpx solid rgba(8, 23, 43, 0.08);
+  display: grid;
+  grid-template-columns: 196rpx 1fr 172rpx;
+  gap: 28rpx;
+  box-sizing: border-box;
+}
+
+.merchant-row:last-child {
+  border-bottom: 0;
+}
+
+.merchant-img {
+  width: 196rpx;
+  height: 196rpx;
+  border-radius: 16rpx;
+  background: #e8f4f3;
+}
+
+.merchant-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+  justify-content: center;
+}
+
+.merchant-title {
+  color: #071426;
+  font-size: 36rpx;
+  font-weight: 900;
+}
+
+.tag-row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.amount {
+  color: #006b68;
+  font-size: 40rpx;
+  font-weight: 900;
+}
+
+.swap-cell {
+  border-left: 1rpx dashed #d7e1e4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #006b68;
+  font-size: 28rpx;
+  gap: 18rpx;
+}
+
+.swap-icon {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  background: #e9f4f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+}

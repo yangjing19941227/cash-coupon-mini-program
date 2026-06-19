@@ -1,0 +1,58 @@
+<view class="ds-page with-tab profile-page">
+  <view class="ds-top">
+    <view></view>
+    <view class="ds-title">我的</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="profile-top">
+    <image class="avatar" src="/assets/images/profile-avatar.png" mode="aspectFill"></image>
+    <view class="profile-main">
+      <text class="profile-name">海口生活用户</text>
+      <text class="ds-muted">⌖ 海口 · 龙华区</text>
+    </view>
+    <view class="ds-outline-btn profile-btn">个人资料 ›</view>
+  </view>
+
+  <view class="ds-soft-card save-card">
+    <image class="save-ill" src="/assets/images/profile-illustration.png" mode="aspectFit"></image>
+    <text class="ds-muted">累计已省 ⓘ</text>
+    <text class="save-money">￥236</text>
+    <text class="ds-muted">精打细算 · 生活更值得</text>
+    <view class="profile-stats">
+      <view><text>优惠券</text><text class="stat-value">12</text></view>
+      <view><text>抽奖次数</text><text class="stat-value">1</text></view>
+      <view><text>即将过期</text><text class="stat-value">2</text></view>
+      <view><text>置换额度</text><text class="stat-value">860</text></view>
+    </view>
+  </view>
+
+  <view class="ds-card activity-card">
+    <view class="ds-section-head">
+      <text class="ds-section-title">最近权益动态</text>
+      <text class="ds-muted">全部动态 ›</text>
+    </view>
+    <view class="activity-row">
+      <view class="ds-round-icon">🎁</view>
+      <view><text class="row-title">抽奖获券</text><text class="ds-muted">获得 海口湾下午茶券</text></view>
+      <text class="ds-red row-amount">+ ￥30</text>
+    </view>
+    <view class="activity-row">
+      <view class="ds-round-icon">✓</view>
+      <view><text class="row-title">使用优惠券抵扣</text><text class="ds-muted">海岛小院 · 双人海鲜套餐券</text></view>
+      <text class="row-amount">- ￥68</text>
+    </view>
+    <view class="activity-row">
+      <view class="ds-round-icon">↔</view>
+      <view><text class="row-title">置换申请待确认</text><text class="ds-muted">申请置换 300 额度</text></view>
+      <text class="ds-red row-amount">待确认</text>
+    </view>
+  </view>
+
+  <view class="ds-card menu-card">
+    <view class="menu-line" bindtap="goCouponAssets"><text class="menu-icon">▱</text><text>我的优惠券</text><text class="ds-muted">12张可用</text><text>›</text></view>
+    <view class="menu-line" bindtap="goLotteryRecords"><text class="menu-icon">▣</text><text>抽奖记录</text><text class="ds-muted">查看我的中奖记录</text><text>›</text></view>
+    <view class="menu-line" bindtap="goExchangeRecords"><text class="menu-icon">↔</text><text>置换记录</text><text class="ds-muted">查看置换进度与记录</text><text>›</text></view>
+    <view class="menu-line"><text class="menu-icon">▤</text><text>核销记录</text><text class="ds-muted">查看使用与核销明细</text><text>›</text></view>
+  </view>
+</view>

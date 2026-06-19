@@ -1,0 +1,65 @@
+<view class="ds-page with-tab exchange-page">
+  <view class="ds-top ds-top-main">
+    <view class="ds-location">⌖ 海口可用⌄</view>
+    <view class="ds-title">权益置换</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-soft-card exchange-summary">
+    <view class="summary-item">
+      <text>可置换额度</text>
+      <view><text class="summary-num">860</text></view>
+    </view>
+    <view class="summary-item">
+      <text>闲置优惠券</text>
+      <view><text class="summary-num">4</text><text class="summary-unit">张</text></view>
+    </view>
+    <view class="summary-item">
+      <text>临期可盘活</text>
+      <view><text class="summary-num">2</text><text class="summary-unit">张</text></view>
+    </view>
+    <view class="ds-btn recharge-btn" bindtap="goRecharge">充值额度</view>
+  </view>
+
+  <view class="exchange-hint">↻ 把闲置优惠券换成更适合你的同城权益</view>
+
+  <view class="ds-card merchant-panel">
+    <view class="ds-section-head">
+      <text class="ds-section-title">置换商家权益</text>
+      <text class="ds-muted">更多商家 ›</text>
+    </view>
+
+    <view class="merchant-row" bindtap="goExchangeSubmit">
+      <image class="merchant-img" src="/assets/images/merchant-restaurant.png" mode="aspectFill"></image>
+      <view class="merchant-main">
+        <text class="merchant-title">海岛小院</text>
+        <view class="tag-row"><text class="ds-tag">餐饮美食</text><text class="ds-tag">龙华区</text></view>
+        <view><text class="amount">300</text><text> 额度起置换</text></view>
+        <text class="ds-muted">双人套餐券 · 到店核销</text>
+      </view>
+      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
+    </view>
+
+    <view class="merchant-row" bindtap="goExchangeSubmit">
+      <image class="merchant-img" src="/assets/images/merchant-dessert.png" mode="aspectFill"></image>
+      <view class="merchant-main">
+        <text class="merchant-title">海口湾甜品</text>
+        <view class="tag-row"><text class="ds-tag">甜品饮品</text><text class="ds-tag">秀英区</text></view>
+        <view><text class="amount">120</text><text> 额度起置换</text></view>
+        <text class="ds-muted">下午茶券 · 门店通用</text>
+      </view>
+      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
+    </view>
+
+    <view class="merchant-row" bindtap="goExchangeSubmit">
+      <image class="merchant-img" src="/assets/images/merchant-playground.png" mode="aspectFill"></image>
+      <view class="merchant-main">
+        <text class="merchant-title">亲子乐园</text>
+        <view class="tag-row"><text class="ds-tag">亲子娱乐</text><text class="ds-tag">美兰区</text></view>
+        <view><text class="amount">500</text><text> 额度起置换</text></view>
+        <text class="ds-muted">门票券 · 指定门店可用</text>
+      </view>
+      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
+    </view>
+  </view>
+</view>

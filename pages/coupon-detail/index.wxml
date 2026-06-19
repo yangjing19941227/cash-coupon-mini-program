@@ -1,0 +1,31 @@
+<view class="ds-page coupon-detail-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">优惠券详情</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-card detail-cover">
+    <image src="/assets/images/deal-seafood.png" mode="aspectFill"></image>
+    <view class="detail-main">
+      <text class="detail-title">海岛小院·双人海鲜套餐券</text>
+      <view class="tag-row"><text class="ds-tag">海口</text><text class="ds-tag">餐饮美食</text></view>
+      <text class="ds-red">券后可省 ￥68</text>
+      <view class="price-row"><text class="detail-price">￥128</text><view class="ds-btn buy-btn" bindtap="goOrderConfirm">购买</view></view>
+    </view>
+  </view>
+
+  <view class="ds-card detail-card">
+    <text class="ds-section-title">权益说明</text>
+    <view class="ds-info-line"><text>适用门店</text><text>海岛小院龙华店</text></view>
+    <view class="ds-info-line"><text>有效期</text><text>2026-06-30 23:59</text></view>
+    <view class="ds-info-line"><text>本次可抵</text><text class="ds-teal">￥68</text></view>
+    <view class="ds-info-line"><text>使用方式</text><text>到店出示券码核销</text></view>
+  </view>
+
+  <view class="ds-soft-card benefit-card">
+    <text class="ds-section-title">同城消费优惠</text>
+    <text class="ds-muted">餐饮、娱乐、亲子场景通用权益整合</text>
+    <view class="ds-btn add-btn" bindtap="goCouponCode">加入资产</view>
+  </view>
+</view>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>同城名惠上下游页面 HTML</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #eef4f4;
+      color: #071426;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .board { max-width: 1740px; margin: 0 auto; padding: 32px; }
+    .board-head { margin-bottom: 24px; display: flex; justify-content: space-between; gap: 24px; align-items: end; }
+    h1 { margin: 0; font-size: 32px; line-height: 1.2; }
+    .board-head p { margin: 8px 0 0; color: #667185; }
+    .back-link { color: #006b68; text-decoration: none; font-weight: 800; white-space: nowrap; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(375px, 1fr)); gap: 28px; align-items: start; }
+    .wrap-title { margin: 0 0 10px; color: #283548; font-size: 15px; font-weight: 800; }
+    .phone {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      overflow: hidden;
+      border: 1px solid rgba(7, 20, 38, .08);
+      border-radius: 4px;
+      background:
+        radial-gradient(190px 310px at 6% 0%, rgba(184, 236, 225, .6), rgba(255,255,255,0) 67%),
+        linear-gradient(180deg, #f8fdfc 0%, #f7fbfa 43%, #fff 100%);
+    }
+    .phone.scroll { overflow-y: auto; }
+    .phone.scroll::-webkit-scrollbar { display: none; }
+    .status {
+      position: absolute; z-index: 5; left: 30px; right: 23px; top: 18px; height: 18px;
+      display: flex; justify-content: space-between; align-items: center; color: #000; font-size: 15px; font-weight: 800;
+    }
+    .sys { display: flex; gap: 6px; align-items: center; }
+    .bars { display: flex; gap: 2px; align-items: end; height: 12px; }
+    .bars i { display: block; width: 3px; border-radius: 2px; background: #000; }
+    .bars i:nth-child(1){height:5px}.bars i:nth-child(2){height:8px}.bars i:nth-child(3){height:11px}.bars i:nth-child(4){height:13px}
+    .wifi { width: 17px; height: 12px; border: 3px solid #000; border-left-color: transparent; border-right-color: transparent; border-bottom: 0; border-radius: 16px 16px 0 0; }
+    .battery { width: 23px; height: 12px; border: 1.5px solid #222; border-radius: 3px; padding: 2px; position: relative; }
+    .battery::before { content: ""; position: absolute; right: -4px; top: 3px; width: 2px; height: 5px; border-radius: 1px; background: #222; }
+    .battery::after { content: ""; display: block; width: 16px; height: 6px; border-radius: 1px; background: #111; }
+    .top {
+      position: absolute; z-index: 4; top: 55px; left: 18px; right: 18px; height: 36px;
+      display: grid; grid-template-columns: 70px 1fr 78px; gap: 14px; align-items: center;
+    }
+    .top.main { grid-template-columns: auto 1fr 78px; }
+    .city { font-size: 15px; font-weight: 700; white-space: nowrap; }
+    .title-center { text-align: center; font-size: 19px; font-weight: 900; }
+    .capsule {
+      height: 32px; border: 1px solid rgba(8,23,43,.12); border-radius: 18px; background: rgba(255,255,255,.62);
+      display: flex; justify-content: center; align-items: center; gap: 12px; color: #000; font-weight: 900; font-size: 18px;
+      visibility: hidden;
+    }
+    .capsule::after { content: ""; width: 1px; height: 18px; background: #d8dde2; order: 1; }
+    .mini-dot { order: 0; }
+    .mini-circle { order: 2; width: 19px; height: 19px; border: 3px solid #000; border-radius: 50%; }
+    .back { font-size: 31px; line-height: 1; font-weight: 400; }
+    .content { position: relative; z-index: 2; padding: 104px 16px 94px; }
+    .tabbar {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 78px; border-top: 1px solid rgba(7,20,38,.08);
+      background: rgba(255,255,255,.94); display: grid; grid-template-columns: repeat(5, 1fr); padding-top: 9px; z-index: 6;
+    }
+    .tab { text-align: center; color: #6f7d8c; font-size: 12px; }
+    .tab img { display: block; width: 24px; height: 24px; object-fit: contain; margin: 0 auto 3px; }
+    .tab.active { color: #006b68; font-weight: 800; }
+    .homebar { position: absolute; z-index: 8; bottom: 5px; left: 126px; width: 123px; height: 5px; border-radius: 5px; background: #000; }
+    .card { border: 1px solid rgba(8,23,43,.08); border-radius: 14px; background: rgba(255,255,255,.82); overflow: hidden; }
+    .soft-card { border: 1px solid rgba(0,104,103,.18); border-radius: 14px; background: rgba(255,255,255,.64); }
+    a { text-decoration:none; color:inherit; }
+    .btn {
+      height: 42px; padding: 0 18px; border-radius: 22px; background: linear-gradient(135deg, #007a75, #005f5d);
+      color: #fff; display: inline-flex; justify-content: center; align-items: center; font-weight: 900; font-size: 15px;
+    }
+    .outline-btn {
+      height: 38px; border: 1px solid #00706f; border-radius: 20px; color: #006b68; display: inline-flex;
+      align-items: center; justify-content: center; padding: 0 16px; font-size: 14px; font-weight: 700; background: rgba(255,255,255,.7);
+    }
+    .tag { display: inline-flex; padding: 4px 8px; border-radius: 5px; background: #f0f2f3; color: #596475; font-size: 12px; line-height: 1; }
+    .red { color: #ef4b2e; }
+    .teal { color: #006b68; }
+    .muted { color: #667185; }
+    .feed-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:0 2px; }
+    .metric-card { height:104px; padding:24px 18px; display:grid; grid-template-columns: 1fr 1fr 1fr 96px; align-items:center; }
+    .metric-card .m { border-right:1px solid rgba(34,76,90,.18); padding-right:10px; }
+    .metric-card .m:nth-child(3){ border-right:0; }
+    .m label { display:block; font-size:13px; margin-bottom:12px; }
+    .m b { font-size:29px; color:#006b68; }
+    .hint { margin:20px 0; text-align:center; color:#5c6878; font-size:14px; }
+    .merchant-list { padding:20px 15px; }
+    .merchant { position:relative; display:grid; grid-template-columns:98px 1fr 86px; gap:14px; padding:18px 0; border-bottom:1px solid rgba(7,20,38,.08); }
+    .merchant:last-child{border-bottom:0}
+    .merchant img { width:98px; height:98px; border-radius:8px; object-fit:cover; }
+    .merchant h3 { margin:5px 0 13px; font-size:18px; }
+    .merchant .swap { display:flex; flex-direction:column; align-items:center; justify-content:center; color:#006b68; font-size:14px; border-left:1px dashed #d7e1e4; }
+    .swap-icon { width:46px; height:46px; border-radius:50%; background:#e9f4f2; display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:10px; }
+    .lottery-head { text-align:center; padding-top:48px; }
+    .lottery-head small { font-weight:800; }
+    .lottery-head h2 { margin:18px 0 8px; font-size:32px; line-height:1.1; }
+    .lottery-box { margin-top:36px; padding:24px 24px 28px; text-align:center; }
+    .digits { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:22px 0 16px; }
+    .digit { height:82px; border:1px solid #b7d4d7; border-radius:7px; display:flex; align-items:center; justify-content:center; color:#006b68; font-size:48px; font-weight:900; }
+    .wide-btn { width:100%; height:45px; border-radius:12px; margin-top:18px; }
+    .note-card { margin-top:20px; padding:18px; display:grid; grid-template-columns:42px 1fr 104px; gap:12px; align-items:center; }
+    .round-icon { width:44px; height:44px; border-radius:50%; background:#e9f4f2; color:#006b68; display:flex; align-items:center; justify-content:center; font-size:22px; }
+    .profile-top { display:grid; grid-template-columns:78px 1fr 95px; gap:16px; align-items:center; margin-top:2px; }
+    .avatar { width:78px; height:78px; border-radius:50%; object-fit:cover; }
+    .profile-name { font-size:22px; font-weight:900; margin-bottom:8px; }
+    .save-card { height:182px; margin-top:26px; padding:22px 20px; position:relative; overflow:hidden; }
+    .save-card .ill { position:absolute; right:20px; top:28px; width:180px; opacity:.86; }
+    .save-money { color:#ef4b2e; font-size:34px; font-weight:900; margin-top:12px; }
+    .profile-stats { position:absolute; left:20px; right:20px; bottom:18px; display:grid; grid-template-columns:repeat(4,1fr); }
+    .profile-stats div { border-right:1px solid rgba(34,76,90,.14); font-size:12px; color:#667185; }
+    .profile-stats div:last-child{border-right:0}
+    .profile-stats b { display:block; margin-top:8px; color:#063f42; font-size:24px; }
+    .activity { margin-top:18px; padding:16px; }
+    .row-item { display:grid; grid-template-columns:44px 1fr auto; gap:12px; align-items:center; padding:12px 0; border-bottom:1px solid rgba(7,20,38,.08); }
+    .row-item:last-child{border-bottom:0}
+    .list-menu { margin-top:18px; padding:6px 16px; }
+    .menu-line { height:48px; display:grid; grid-template-columns:28px 1fr auto 14px; gap:10px; align-items:center; border-bottom:1px solid rgba(7,20,38,.08); }
+    .menu-line:last-child{border-bottom:0}
+    .assets-top { height:140px; padding:22px 14px; }
+    .asset-stats4 { display:grid; grid-template-columns:repeat(4,1fr); text-align:center; }
+    .asset-stats4 div:not(:last-child){border-right:1px solid rgba(34,76,90,.16)}
+    .asset-stats4 label { display:block; color:#667185; font-size:13px; margin-bottom:12px; }
+    .asset-stats4 b { font-size:30px; color:#061426; }
+    .tabs4 { height:38px; margin:18px 0; border-radius:20px; background:rgba(255,255,255,.78); display:grid; grid-template-columns:repeat(4,1fr); align-items:center; text-align:center; color:#334153; }
+    .tabs4 b { color:#006b68; }
+    .coupon-asset { display:grid; grid-template-columns:60px 1fr 78px; gap:14px; padding:20px 14px; border-bottom:1px solid rgba(7,20,38,.08); }
+    .coupon-asset:last-child{border-bottom:0}
+    .coupon-asset h3 { margin:0 0 8px; font-size:18px; }
+    .qrbox { text-align:center; padding:24px 18px; }
+    .qr {
+      width:205px; height:205px; margin:18px auto 10px; background:
+        repeating-linear-gradient(90deg,#000 0 7px,#fff 7px 14px),
+        repeating-linear-gradient(0deg,rgba(0,0,0,.55) 0 7px,transparent 7px 14px);
+      background-blend-mode:multiply; border:18px solid #fff; box-shadow:0 0 0 1px rgba(7,20,38,.06);
+    }
+    .detail-cover { height:120px; display:grid; grid-template-columns:96px 1fr; gap:14px; padding:16px; }
+    .detail-cover img { width:96px; height:88px; object-fit:cover; border-radius:8px; }
+    .price-row { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .price { color:#ef4b2e; font-size:22px; line-height:1; font-weight:900; }
+    .info-table { padding:0 16px; }
+    .info-line { height:42px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(7,20,38,.08); color:#667185; font-size:13px; }
+    .submit-box { padding:20px; margin-top:20px; }
+    .input-like { height:58px; border:1px solid #d6e8e8; border-radius:8px; display:flex; align-items:center; padding:0 16px; margin:16px 0; color:#006b68; font-size:26px; font-weight:900; }
+    .record-card { padding:20px 16px; }
+    .record-row { display:grid; grid-template-columns:48px 1fr 84px; gap:12px; padding:17px 0; border-bottom:1px solid rgba(7,20,38,.08); align-items:center; }
+    .record-row:last-child{border-bottom:0}
+    .record-row h3 { margin:0 0 8px; font-size:16px; }
+    .num-pill { width:56px; height:42px; border-radius:8px; background:#e7f4f2; color:#006b68; font-weight:900; display:flex; align-items:center; justify-content:center; }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header class="board-head">
+      <div>
+        <h1>同城名惠上下游页面 HTML</h1>
+        <p>首页和优惠券页沿用你已有的 HTML，不在这里重复生成。这里仅补充其余主页面和二级页面。</p>
+      </div>
+      <a class="back-link" href="index.html">返回总览</a>
+    </header>
+    <section class="grid">
+      <div id="exchange"><h2 class="wrap-title">03 置换</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top main"><div class="city">⌖ 海口可用⌄</div><div class="title-center">权益置换</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content">
+        <section class="soft-card metric-card"><div class="m"><label>可置换额度</label><b>860</b></div><div class="m"><label>闲置优惠券</label><b>4<small>张</small></b></div><div class="m"><label>临期可盘活</label><b>2<small>张</small></b></div><a class="btn" href="payment-flow-ui.html#recharge">充值额度</a></section>
+        <p class="hint">↻ 把闲置优惠券换成更适合你的同城权益</p>
+        <section class="card merchant-list"><div class="feed-head"><b>置换商家权益</b><a class="muted" href="missing-flow-ui.html#merchants">更多商家 ›</a></div>
+          <div class="merchant"><img src="../assets/merchant-restaurant.png"><div><h3>海岛小院</h3><span class="tag">餐饮美食</span> <span class="tag">龙华区</span><p><b class="teal">300</b> 额度起置换</p><p class="muted">双人套餐券 · 到店核销</p></div><div class="swap"><div class="swap-icon">↻</div>发起置换 ›</div></div>
+          <div class="merchant"><img src="../assets/merchant-dessert.png"><div><h3>海口湾甜品</h3><span class="tag">甜品饮品</span> <span class="tag">秀英区</span><p><b class="teal">120</b> 额度起置换</p><p class="muted">下午茶券 · 门店通用</p></div><div class="swap"><div class="swap-icon">↻</div>发起置换 ›</div></div>
+          <div class="merchant"><img src="../assets/merchant-playground.png"><div><h3>亲子乐园</h3><span class="tag">亲子娱乐</span> <span class="tag">美兰区</span><p><b class="teal">500</b> 额度起置换</p><p class="muted">门票券 · 指定门店可用</p></div><div class="swap"><div class="swap-icon">↻</div>发起置换 ›</div></div>
+        </section>
+      </div><footer class="tabbar"><div class="tab"><img src="../assets/home.png">首页</div><div class="tab"><img src="../assets/ticket.png">优惠券</div><div class="tab active"><img src="../assets/exchange-active.png">置换</div><div class="tab"><img src="../assets/gift.png">抽奖</div><div class="tab"><img src="../assets/user.png">我的</div></footer><div class="homebar"></div></div></div>
+
+      <div id="lottery"><h2 class="wrap-title">04 抽奖</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top main"><div class="city">⌖ 海口 · 本期权益开奖</div><div></div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><div class="lottery-head"><small>一 · 四位数抽奖 · 一</small><h2>输入四位数参与</h2><p class="muted">中奖奖励自动发放优惠券</p></div><section class="soft-card lottery-box"><b class="teal">输入4位数字，猜对即可获奖</b><p class="muted">开奖时间为每晚21:38分</p><div class="digits"><div class="digit">3</div><div class="digit">8</div><div class="digit">0</div><div class="digit">6</div></div><p class="teal">↻ 随机生成一组数字</p><a class="btn wide-btn" href="missing-flow-ui.html#submit-success">提交参与</a><p class="muted">ⓘ 开奖规则</p></section><section class="soft-card note-card"><div class="round-icon">▣</div><div><b>参与记录 / 开奖记录 / 发券记录 可追溯</b><p class="muted">所有记录均可在个人中心查看</p></div><a class="outline-btn" href="#lottery-records">查看抽奖记录 ›</a></section></div><footer class="tabbar"><div class="tab"><img src="../assets/home.png">首页</div><div class="tab"><img src="../assets/ticket.png">优惠券</div><div class="tab"><img src="../assets/exchange.png">置换</div><div class="tab active"><img src="../assets/gift-active.png">抽奖</div><div class="tab"><img src="../assets/user.png">我的</div></footer><div class="homebar"></div></div></div>
+
+      <div id="mine"><h2 class="wrap-title">05 我的</h2><div class="phone scroll"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div></div><div class="title-center">我的</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><section class="profile-top"><img class="avatar" src="../assets/profile-avatar.png"><div><div class="profile-name">海口生活用户</div><p class="muted">⌖ 海口 · 龙华区</p></div><a class="outline-btn" href="missing-flow-ui.html#profile">个人资料 ›</a></section><section class="soft-card save-card"><img class="ill" src="../assets/profile-illustration.png"><span class="muted">累计已省 ⓘ</span><div class="save-money">￥236</div><p class="muted">精打细算 · 生活更值得</p><div class="profile-stats"><div>优惠券<b>12</b></div><div>抽奖次数<b>1</b></div><div>即将过期<b>2</b></div><div>置换额度<b>860</b></div></div></section><section class="card activity"><div class="feed-head"><b>最近权益动态</b><a class="muted" href="missing-flow-ui.html#activity">全部动态 ›</a></div><div class="row-item"><div class="round-icon">🎁</div><div><b>抽奖获券</b><p class="muted">获得 海口湾下午茶券</p></div><b class="red">+ ￥30</b></div><div class="row-item"><div class="round-icon">✓</div><div><b>使用优惠券抵扣</b><p class="muted">海岛小院 · 双人海鲜套餐券</p></div><b>- ￥68</b></div><div class="row-item"><div class="round-icon">↔</div><div><b>置换申请待确认</b><p class="muted">申请置换 300 额度</p></div><b class="red">待确认</b></div></section><section class="card list-menu"><a class="menu-line" href="#coupon-assets"><span class="teal">▱</span><b>我的优惠券</b><span class="muted">12张可用</span><span>›</span></a><a class="menu-line" href="#lottery-records"><span class="teal">▣</span><b>抽奖记录</b><span class="muted">查看我的中奖记录</span><span>›</span></a><a class="menu-line" href="#exchange-records"><span class="teal">↔</span><b>置换记录</b><span class="muted">查看置换进度与记录</span><span>›</span></a><a class="menu-line" href="missing-flow-ui.html#asset-flow"><span class="teal">▤</span><b>核销记录</b><span class="muted">查看使用与核销明细</span><span>›</span></a></section></div><footer class="tabbar"><div class="tab"><img src="../assets/home.png">首页</div><div class="tab"><img src="../assets/ticket.png">优惠券</div><div class="tab"><img src="../assets/exchange.png">置换</div><div class="tab"><img src="../assets/gift.png">抽奖</div><div class="tab active"><img src="../assets/user-active.png">我的</div></footer><div class="homebar"></div></div></div>
+
+      <div id="coupon-assets"><h2 class="wrap-title">06 优惠券资产</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">优惠券资产</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><section class="soft-card assets-top"><div class="asset-stats4"><div><label>可用优惠券</label><b>12</b> 张</div><div><label>总面值</label><b class="teal">￥328</b></div><div><label>已核销</label><b>8</b> 张</div><div><label>即将过期</label><b class="red">2</b> 张</div></div></section><div class="tabs4"><b>全部</b><span>餐饮</span><span>娱乐</span><span>即将过期</span></div><section class="card"><div class="coupon-asset"><div class="round-icon">🍴</div><div><h3>骑楼老街美食券</h3><p class="red">满100减30</p><span class="tag">餐饮美食</span> <span class="tag">通用券</span><p class="muted">◷ 2026-06-30 23:59 到期</p></div><div><span class="tag teal">未使用</span><b class="red" style="font-size:28px">￥30</b><div class="btn" style="height:32px;margin-top:12px">去使用</div></div></div><div class="coupon-asset"><div class="round-icon">☕</div><div><h3>海口湾下午茶券</h3><p class="red">立减20</p><span class="tag">休闲饮品</span><p class="muted">◷ 2026-06-25 23:59 到期</p></div><div><span class="tag teal">未使用</span><b class="red" style="font-size:28px">￥20</b><div class="btn" style="height:32px;margin-top:12px">去使用</div></div></div></section></div><div class="homebar"></div></div></div>
+
+      <div id="coupon-code"><h2 class="wrap-title">07 出示券码</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">出示券码</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><section class="card detail-cover"><img src="../assets/merchant-restaurant.png"><div><h3>海岛小院 · 双人海鲜套餐券</h3><span class="tag">海口 · 龙华区</span> <span class="tag">餐饮美食</span><p class="red">券后可省 ￥68</p></div></section><section class="soft-card qrbox" style="margin-top:18px"><h3>到店出示核销码</h3><p class="muted">请将二维码出示给商家扫码核销</p><div class="qr"></div><p><span class="muted">券码</span> <b style="font-size:20px">8362 0948 5170</b> ▢</p><p class="teal">↻ 每 60 秒自动刷新</p><div class="card info-table"><div class="info-line"><span>适用门店</span><b>海岛小院龙华店 ›</b></div><div class="info-line"><span>有效期</span><b>2026-06-30 23:59</b></div><div class="info-line"><span>本次可抵</span><b class="red">￥68</b></div></div><a class="btn wide-btn" href="missing-flow-ui.html#submit-success">打开亮屏模式</a><div class="outline-btn" style="width:100%;margin-top:10px">返回订单</div></section></div><div class="homebar"></div></div></div>
+
+      <div id="coupon-detail"><h2 class="wrap-title">08 优惠券详情</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">优惠券详情</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><section class="card detail-cover" style="height:142px"><img src="../assets/deal-seafood.png"><div><h3>海岛小院·双人海鲜套餐券</h3><span class="tag">海口</span> <span class="tag">餐饮美食</span><p class="red">券后可省 ￥68</p><div class="price-row"><b class="price">￥128</b><a class="btn" style="height:32px" href="payment-flow-ui.html#order">购买</a></div></div></section><section class="card" style="margin-top:18px;padding:18px"><h3>权益说明</h3><div class="info-line"><span>适用门店</span><b>海岛小院龙华店</b></div><div class="info-line"><span>有效期</span><b>2026-06-30 23:59</b></div><div class="info-line"><span>本次可抵</span><b class="teal">￥68</b></div><div class="info-line"><span>使用方式</span><b>到店出示券码核销</b></div></section><section class="soft-card" style="margin-top:18px;padding:18px"><h3>同城消费优惠</h3><p class="muted">餐饮、娱乐、亲子场景通用权益整合</p><a class="btn" href="#coupon-assets">加入资产</a></section></div><div class="homebar"></div></div></div>
+
+      <div id="exchange-submit"><h2 class="wrap-title">09 发起置换</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">发起置换</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><section class="soft-card" style="height:104px;padding:22px"><label class="muted">置换额度</label><div class="price-row"><b class="teal" style="font-size:32px">860</b><span class="muted">可用额度</span><a class="btn" href="payment-flow-ui.html#recharge">充值额度</a></div></section><section class="card submit-box"><h3>海岛小院置换</h3><span class="tag">餐饮美食</span> <span class="tag">龙华区</span><p class="muted">输入置换额度</p><div class="input-like">300 <small style="font-size:14px;margin-left:8px">额度</small></div><p class="muted">最低 300 额度起，可兑换双人套餐券</p><div class="btn wide-btn">提交置换申请</div></section><section class="card" style="margin-top:20px;padding:18px"><h3>申请后等待商家确认</h3><p class="muted">进度可在置换记录中查看</p></section></div><div class="homebar"></div></div></div>
+
+      <div id="exchange-records"><h2 class="wrap-title">10 置换记录</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">置换记录</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><section class="soft-card" style="height:98px;padding:22px"><div style="display:grid;grid-template-columns:repeat(3,1fr);text-align:center"><div><label>待确认</label><b class="teal" style="font-size:30px">1</b> 单</div><div><label>已完成</label><b class="teal" style="font-size:30px">3</b> 单</div><div><label>已退回</label><b class="teal" style="font-size:30px">0</b> 单</div></div></section><div class="tabs4"><b>全部</b><span>待确认</span><span>已完成</span><span>已失效</span></div><section class="card record-card"><div class="record-row"><div class="round-icon">▤</div><div><h3>海岛小院置换申请</h3><p class="muted">申请时间：今天 14:20</p></div><div><span class="tag" style="background:#fff1d9;color:#c77a00">待商家确认</span><b class="teal">300</b><span class="outline-btn" style="height:28px">查看详情</span></div></div><div class="record-row"><div class="round-icon">☕</div><div><h3>海口湾下午茶置换</h3><p class="muted">完成时间：昨天 11:42</p></div><div><span class="tag teal">已完成</span><b class="teal">120</b><span class="outline-btn" style="height:28px">查看详情</span></div></div><div class="record-row"><div class="round-icon">▱</div><div><h3>亲子乐园置换</h3><p class="muted">失效时间：06-13 19:18</p></div><div><span class="tag">已失效</span><b class="teal">500</b><span class="red">超时退回</span></div></div></section></div><div class="homebar"></div></div></div>
+
+      <div id="lottery-records"><h2 class="wrap-title">11 抽奖记录</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">抽奖记录</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content"><section class="soft-card" style="height:98px;padding:20px"><div style="display:grid;grid-template-columns:repeat(3,1fr);text-align:center"><div><label>参与号码</label><b class="teal" style="font-size:26px">3806</b></div><div><label>中奖号码</label><b class="teal" style="font-size:26px">9288</b></div><div><label>中奖权益</label><b class="red" style="font-size:26px">￥30</b></div></div></section><section class="card" style="margin-top:22px;padding:18px 16px"><h3>历史记录</h3><div class="record-row"><div class="num-pill">3806</div><div><b>四位数抽奖</b><p class="muted">今晚 21:38</p></div><b class="teal">待开奖</b></div><div class="record-row"><div class="num-pill">1280</div><div><b>四位数抽奖</b><p class="muted">昨天 21:38</p></div><span class="muted">未中奖</span></div><div class="record-row"><div class="num-pill">6666</div><div><b>四位数抽奖</b><p class="muted">06-15 21:38</p></div><b class="red">已中奖 +￥30</b></div></section><a class="btn wide-btn" style="position:absolute;left:32px;right:32px;bottom:74px;width:auto" href="#lottery">继续参与抽奖</a></div><div class="homebar"></div></div></div>
+    </section>
+  </main>
+</body>
+</html>

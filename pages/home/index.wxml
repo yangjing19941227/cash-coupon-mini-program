@@ -1,0 +1,102 @@
+<view class="home-page">
+  <image class="hero-bridge" src="/assets/images/home-city-element.png" mode="aspectFit"></image>
+
+  <view class="topbar">
+    <view class="city" role="button">
+      <text>海口</text>
+      <text class="chevron">⌄</text>
+    </view>
+    <view class="search-box">
+      <text class="search-icon">⌕</text>
+      <text class="search-text">搜索商家优惠券</text>
+    </view>
+    <view class="capsule-space" aria-hidden="true"></view>
+  </view>
+
+  <view class="hero-copy">
+    <text class="hero-title">同城名惠</text>
+    <text class="hero-subtitle">精选本地生活服务</text>
+  </view>
+
+  <view class="asset-card">
+    <view class="asset-stats">
+      <view class="asset-stat">
+        <view class="stat-label">
+          <image class="stat-icon" src="/assets/icons/ticket-active.png" mode="aspectFit"></image>
+          <text>优惠券资产</text>
+        </view>
+        <view class="stat-number-row">
+          <text class="stat-number">{{couponCountText}}</text>
+          <text class="stat-unit">张</text>
+        </view>
+        <text class="stat-desc">总面值 ￥{{totalValueText}}</text>
+      </view>
+
+      <view class="asset-stat">
+        <view class="stat-label">
+          <image class="stat-icon" src="/assets/icons/exchange-active.png" mode="aspectFit"></image>
+          <text>置换额度</text>
+        </view>
+        <view class="stat-number-row">
+          <text class="stat-number">{{exchangeAmountText}}</text>
+        </view>
+        <text class="stat-desc">可用额度</text>
+      </view>
+
+      <view class="asset-stat">
+        <view class="stat-label">
+          <image class="stat-icon" src="/assets/icons/gift-active.png" mode="aspectFit"></image>
+          <text>今日抽奖</text>
+        </view>
+        <view class="stat-number-row">
+          <text class="stat-number">{{lotteryLeftText}}</text>
+          <text class="stat-unit">次</text>
+        </view>
+        <text class="stat-desc">每日21:38开奖</text>
+      </view>
+    </view>
+
+    <view class="quick-actions">
+      <view class="quick-action" role="button" bindtap="goCoupons">
+        <image class="quick-icon" src="/assets/icons/ticket-active.png" mode="aspectFit"></image>
+        <text>买优惠券</text>
+      </view>
+      <view class="quick-action" role="button" bindtap="goExchange">
+        <image class="quick-icon" src="/assets/icons/exchange-active.png" mode="aspectFit"></image>
+        <text>置换</text>
+      </view>
+      <view class="quick-action" role="button" bindtap="goLottery">
+        <image class="quick-icon" src="/assets/icons/gift-active.png" mode="aspectFit"></image>
+        <text>去抽奖</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="deal-feed">
+    <view class="deal-head">
+      <text class="card-title">本地惠选</text>
+      <view class="more-link" role="button" bindtap="goExchange">
+        <text>更多</text>
+        <text class="right-arrow">›</text>
+      </view>
+    </view>
+
+    <block wx:for="{{localDeals}}" wx:key="renderId">
+      <view class="deal-card">
+        <image class="deal-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="deal-info">
+          <text class="deal-title">{{item.title}}</text>
+          <view class="tag-row">
+            <text class="tag">{{item.area}}</text>
+            <text class="tag">{{item.category}}</text>
+          </view>
+          <text class="coupon-badge">{{item.badge}}</text>
+          <view class="price-row">
+            <text class="price">{{item.price}}</text>
+            <view class="view-button" role="button" bindtap="goLatestCoupon">购买</view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

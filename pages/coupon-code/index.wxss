@@ -1,0 +1,100 @@
+@import "../../styles/downstream.wxss";
+
+.coupon-brief {
+  height: 240rpx;
+  padding: 32rpx;
+  display: grid;
+  grid-template-columns: 192rpx 1fr;
+  gap: 28rpx;
+}
+
+.coupon-brief image {
+  width: 192rpx;
+  height: 176rpx;
+  border-radius: 16rpx;
+  background: #e8f4f3;
+}
+
+.coupon-brief view {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.brief-title {
+  color: #071426;
+  font-size: 34rpx;
+  line-height: 1.25;
+  font-weight: 900;
+}
+
+.tag-row {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.qr-panel {
+  margin-top: 36rpx;
+  padding: 48rpx 36rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.qr-title {
+  color: #071426;
+  font-size: 38rpx;
+  font-weight: 900;
+}
+
+.qr-code {
+  width: 410rpx;
+  height: 410rpx;
+  padding: 28rpx;
+  background: #fff;
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  grid-template-rows: repeat(13, 1fr);
+  gap: 4rpx;
+  box-shadow: 0 0 0 1rpx rgba(8, 23, 43, 0.06);
+}
+
+.qr-block {
+  background: #fff;
+}
+
+.qr-block.dark {
+  background: #000;
+}
+
+.code-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+}
+
+.code-num {
+  color: #071426;
+  font-size: 40rpx;
+  font-weight: 900;
+}
+
+.refresh-text {
+  color: #006b68;
+  font-size: 28rpx;
+}
+
+.info-table {
+  width: 100%;
+  padding: 0 32rpx;
+  margin-top: 20rpx;
+}
+
+.return-btn {
+  width: 100%;
+}

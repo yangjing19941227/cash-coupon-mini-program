@@ -1,0 +1,33 @@
+<view class="ds-page exchange-records-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">置换记录</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-soft-card record-stats">
+    <view><text>待确认</text><text class="record-num">1</text><text>单</text></view>
+    <view><text>已完成</text><text class="record-num">3</text><text>单</text></view>
+    <view><text>已退回</text><text class="record-num">0</text><text>单</text></view>
+  </view>
+
+  <view class="tabs4"><text class="active">全部</text><text>待确认</text><text>已完成</text><text>已失效</text></view>
+
+  <view class="ds-card record-card">
+    <view class="record-row">
+      <view class="ds-round-icon">▤</view>
+      <view class="record-main"><text class="record-title">海岛小院置换申请</text><text class="ds-muted">申请时间：今天 14:20</text></view>
+      <view class="record-side"><text class="ds-tag ds-tag-warn">待商家确认</text><text class="record-amount">300</text><view class="ds-outline-btn detail-btn">查看详情</view></view>
+    </view>
+    <view class="record-row">
+      <view class="ds-round-icon">☕</view>
+      <view class="record-main"><text class="record-title">海口湾下午茶置换</text><text class="ds-muted">完成时间：昨天 11:42</text></view>
+      <view class="record-side"><text class="ds-tag ds-teal">已完成</text><text class="record-amount">120</text><view class="ds-outline-btn detail-btn">查看详情</view></view>
+    </view>
+    <view class="record-row">
+      <view class="ds-round-icon">▱</view>
+      <view class="record-main"><text class="record-title">亲子乐园置换</text><text class="ds-muted">失效时间：06-13 19:18</text></view>
+      <view class="record-side"><text class="ds-tag">已失效</text><text class="record-amount">500</text><text class="ds-red">超时退回</text></view>
+    </view>
+  </view>
+</view>

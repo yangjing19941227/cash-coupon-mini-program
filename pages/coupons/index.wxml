@@ -1,0 +1,58 @@
+<view class="coupon-tab-page">
+  <view class="topbar">
+    <view class="city" role="button">
+      <text>海口</text>
+      <text class="chevron">⌄</text>
+    </view>
+    <view class="search-box">
+      <text class="search-icon">⌕</text>
+      <text class="search-text">搜索商家优惠券</text>
+    </view>
+    <view class="capsule-space" aria-hidden="true"></view>
+  </view>
+
+  <view class="category-grid">
+    <block wx:for="{{categories}}" wx:key="label">
+      <view class="category-item" data-label="{{item.label}}" bindtap="switchCategory">
+        <image class="category-icon" src="{{item.icon}}" mode="aspectFit"></image>
+        <text class="category-label {{item.activeClass}}">{{item.label}}</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="filter-row">
+    <block wx:for="{{filters}}" wx:key="label">
+      <view class="filter-chip {{item.activeClass}}" data-label="{{item.label}}" bindtap="switchFilter">
+        <text>{{item.label}}</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="deal-list">
+    <block wx:for="{{visibleDeals}}" wx:key="id">
+      <view class="deal-card" data-id="{{item.id}}">
+        <image class="deal-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="deal-info">
+          <text class="deal-title">{{item.title}}</text>
+          <view class="meta-row">
+            <text>{{item.sales}}</text>
+            <text>{{item.rank}}</text>
+          </view>
+          <view class="rating-row">
+            <text>{{item.rating}}</text>
+            <text>{{item.store}}</text>
+            <text class="distance">{{item.distance}}</text>
+          </view>
+          <view class="deal-bottom">
+            <view class="price-wrap">
+              <text class="price">{{item.price}}</text>
+              <text class="discount">{{item.discount}}</text>
+            </view>
+            <view class="buy-btn" data-id="{{item.id}}" catchtap="goOrderConfirm">立即抢购</view>
+          </view>
+          <text class="coupon-badge">{{item.badge}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
