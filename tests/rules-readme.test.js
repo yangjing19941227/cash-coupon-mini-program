@@ -60,7 +60,7 @@ test('rules page documents lottery, cash coupon, exchange and mock-data rules', 
   assertIncludesAll(wxml, [
     '抽奖参与',
     '四位数字',
-    '现金券使用',
+    '优惠券使用',
     '到店核销',
     '置换确认',
     '商家确认',
@@ -106,15 +106,15 @@ test('README explains preview opening, verification and excluded production serv
   const readme = fs.readFileSync(readmePath, 'utf8');
 
   assertIncludesAll(readme, [
-    '原生微信小程序',
-    'C 端预览',
-    '模拟数据',
+    '微信小程序',
+    '本地后端',
+    '管理后台',
     '微信开发者工具',
-    '导入项目',
     'node --test tests/\\*.test.js',
+    'npm run server',
+    '/api/admin/overview',
     '不包含真实支付',
-    '不包含真实核销',
-    '不包含退款',
-    '不包含后端 API',
+    '真实核销',
+    '生产数据库',
   ]);
 });

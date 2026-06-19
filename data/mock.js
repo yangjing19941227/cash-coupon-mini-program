@@ -114,7 +114,7 @@ const merchantBenefits = [
     district: '龙华区',
     exchangeAmount: 300,
     description: '双人套餐券 · 到店核销',
-    image: '/assets/images/merchant-island-yard.png',
+    image: '/assets/images/merchant-restaurant.png',
   },
   {
     id: 'merchant-bay-dessert',
@@ -134,7 +134,7 @@ const merchantBenefits = [
     district: '美兰区',
     exchangeAmount: 500,
     description: '门票券 · 指定门店可用',
-    image: '/assets/images/merchant-family-park.png',
+    image: '/assets/images/merchant-playground.png',
   },
 ];
 

@@ -1,17 +1,23 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 
+const seed = require('../data/mock');
 const service = require('../utils/mock-service');
 
 test('getCouponSummary counts available, used, expiring and total value', () => {
   service.resetMockState();
 
   const summary = service.getCouponSummary();
+  const availableCoupons = seed.coupons.filter((coupon) => coupon.status === 'unused');
+  const usedCoupons = seed.coupons.filter((coupon) => coupon.status === 'used');
 
-  assert.equal(summary.availableCount, 12);
-  assert.equal(summary.totalValue, 328);
-  assert.equal(summary.usedCount, 8);
-  assert.equal(summary.expiringCount, 2);
+  assert.equal(summary.availableCount, availableCoupons.length);
+  assert.equal(
+    summary.totalValue,
+    availableCoupons.reduce((total, coupon) => total + Number(coupon.amount || 0), 0),
+  );
+  assert.equal(summary.usedCount, usedCoupons.length);
+  assert.equal(summary.expiringCount, availableCoupons.filter((coupon) => coupon.isExpiring).length);
 });
 
 test('getCoupons filters by dining category and expiring bucket', () => {
@@ -61,7 +67,7 @@ test('createExchangeRecord appends a pending record', () => {
   const beforeRecords = service.getExchangeRecords();
   const beforeProfile = service.getUserProfile();
 
-  const result = service.createExchangeRecord('merchant-1');
+  const result = service.createExchangeRecord('merchant-island-yard');
   const afterRecords = service.getExchangeRecords();
   const afterProfile = service.getUserProfile();
 
@@ -80,7 +86,12 @@ test('createExchangeRecord rejects missing merchants and insufficient balance', 
     ok: false,
     message: '未找到可置换商家',
   });
-  assert.deepEqual(service.createExchangeRecord('merchant-too-expensive'), {
+  const expensiveMerchant = service.getMerchantBenefits().reduce((max, merchant) => (
+    merchant.exchangeAmount > max.exchangeAmount ? merchant : max
+  ));
+  service.createExchangeRecord(expensiveMerchant.id);
+  assert.equal(service.getUserProfile().exchangeAmount < expensiveMerchant.exchangeAmount, true);
+  assert.deepEqual(service.createExchangeRecord(expensiveMerchant.id), {
     ok: false,
     message: '可置换额度不足',
   });
@@ -89,12 +100,12 @@ test('createExchangeRecord rejects missing merchants and insufficient balance', 
 test('createExchangeRecord fails when repeated exchanges exceed remaining balance', () => {
   service.resetMockState();
 
-  assert.equal(service.createExchangeRecord('merchant-3').ok, true);
+  assert.equal(service.createExchangeRecord('merchant-family-park').ok, true);
   assert.equal(service.getUserProfile().exchangeAmount, 360);
-  assert.equal(service.createExchangeRecord('merchant-1').ok, true);
+  assert.equal(service.createExchangeRecord('merchant-island-yard').ok, true);
   assert.equal(service.getUserProfile().exchangeAmount, 60);
 
-  assert.deepEqual(service.createExchangeRecord('merchant-1'), {
+  assert.deepEqual(service.createExchangeRecord('merchant-island-yard'), {
     ok: false,
     message: '可置换额度不足',
   });

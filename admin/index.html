@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>同城名惠管理后台</title>
+  <link rel="stylesheet" href="/admin/styles.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">惠</span>
+        <div>
+          <h1>同城名惠管理后台</h1>
+          <p>优惠券、订单、置换与核销管理</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="overview" type="button">总览</button>
+        <button class="nav-item" data-view="coupons" type="button">优惠券</button>
+        <button class="nav-item" data-view="exchanges" type="button">置换审核</button>
+        <button class="nav-item" data-view="orders" type="button">订单</button>
+        <button class="nav-item" data-view="merchants" type="button">商家</button>
+        <button class="nav-item" data-view="ledger" type="button">余额流水</button>
+      </nav>
+    </aside>
+
+    <section class="workspace">
+      <header class="topbar">
+        <div>
+          <h2 id="view-title">总览</h2>
+          <p id="view-subtitle">查看项目运行指标与待处理事项</p>
+        </div>
+        <button class="ghost-btn" id="refresh-button" type="button">刷新</button>
+      </header>
+
+      <section class="view-panel active" id="view-overview">
+        <div class="metric-grid" id="metric-grid"></div>
+        <div class="split-grid">
+          <article class="panel">
+            <h3>待处理置换</h3>
+            <div id="overview-exchanges" class="stack"></div>
+          </article>
+          <article class="panel">
+            <h3>最近动态</h3>
+            <div id="overview-activity" class="stack"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view-panel" id="view-coupons">
+        <article class="panel">
+          <div class="panel-head">
+            <h3>优惠券列表</h3>
+            <button class="primary-btn" id="create-coupon-button" type="button">新增测试券</button>
+          </div>
+          <div id="coupon-list" class="table-list"></div>
+        </article>
+      </section>
+
+      <section class="view-panel" id="view-exchanges">
+        <article class="panel">
+          <h3>置换审核</h3>
+          <div id="exchange-list" class="table-list"></div>
+        </article>
+      </section>
+
+      <section class="view-panel" id="view-orders">
+        <article class="panel">
+          <div class="panel-head">
+            <h3>订单管理</h3>
+            <button class="primary-btn" id="create-order-button" type="button">创建测试订单</button>
+          </div>
+          <div id="order-list" class="table-list"></div>
+        </article>
+      </section>
+
+      <section class="view-panel" id="view-merchants">
+        <article class="panel">
+          <div class="panel-head">
+            <h3>商家管理</h3>
+            <button class="primary-btn" id="create-merchant-button" type="button">新增商家</button>
+          </div>
+          <div id="merchant-list" class="table-list"></div>
+        </article>
+      </section>
+
+      <section class="view-panel" id="view-ledger">
+        <article class="panel">
+          <div class="panel-head">
+            <h3>余额流水</h3>
+            <button class="primary-btn" id="recharge-button" type="button">模拟充值 300</button>
+          </div>
+          <div id="ledger-list" class="table-list"></div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script src="/admin/app.js"></script>
+</body>
+</html>

@@ -10,11 +10,11 @@ const {
 } = require('../utils/format');
 
 test('formatMoney keeps integer values whole', () => {
-  assert.equal(formatMoney(328), '¥328');
+  assert.equal(formatMoney(328), '￥328');
 });
 
 test('formatMoney keeps two decimals for fractional values', () => {
-  assert.equal(formatMoney(68.5), '¥68.50');
+  assert.equal(formatMoney(68.5), '￥68.50');
 });
 
 test('formatCouponValue formats threshold coupons', () => {

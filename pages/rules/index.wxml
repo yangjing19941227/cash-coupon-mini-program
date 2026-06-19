@@ -30,6 +30,6 @@
   <view class="rule-section disclaimer">
     <view class="section-title">开发预览说明</view>
     <view class="rule-item">当前版本使用模拟数据完成开发预览，所有金额、券码、抽奖结果、商家权益和用户信息仅用于界面验证。</view>
-    <view class="rule-item">本预览不包含真实支付、真实核销、退款处理或后端 API，请勿作为生产交易凭证使用。</view>
+    <view class="rule-item">本地后端和管理后台仅用于开发预览，不连接真实支付、真实核销、退款处理或生产数据库，请勿作为生产交易凭证使用。</view>
   </view>
 </view>
