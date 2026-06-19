@@ -1,85 +1,33 @@
-<view class="page exchange-records-page">
-  <view class="records-nav">
-    <view class="back-btn" role="button" bindtap="goBack">‹</view>
-    <view class="nav-title records-title">置换记录</view>
-    <view class="filter-btn" role="button" bindtap="showFilterTip">筛选</view>
+<view class="ds-page exchange-records-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">置换记录</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
   </view>
 
-  <view class="stats-card card">
-    <view class="stats-item">
-      <text class="stats-label">待确认</text>
-      <text class="stats-value">{{stats.pendingCount}}</text>
-    </view>
-    <view class="stats-item">
-      <text class="stats-label">已完成</text>
-      <text class="stats-value stats-success">{{stats.completedCount}}</text>
-    </view>
-    <view class="stats-item">
-      <text class="stats-label">已退回</text>
-      <text class="stats-value">{{stats.returnedCount}}</text>
-    </view>
-    <view class="stats-item">
-      <text class="stats-label">已失效</text>
-      <text class="stats-value stats-muted">{{stats.expiredCount}}</text>
-    </view>
+  <view class="ds-soft-card record-stats">
+    <view><text>待确认</text><text class="record-num">1</text><text>单</text></view>
+    <view><text>已完成</text><text class="record-num">3</text><text>单</text></view>
+    <view><text>已退回</text><text class="record-num">0</text><text>单</text></view>
   </view>
 
-  <view class="asset-flow-notice">
-    <text>退回额度会同步进入资产流水，商家确认后可继续查看处理进度</text>
-  </view>
+  <view class="tabs4"><text class="active">全部</text><text>待确认</text><text>已完成</text><text>已失效</text></view>
 
-  <view class="tabs" aria-label="全部 待确认 已完成 已退回 已失效">
-    <block wx:for="{{tabs}}" wx:key="label">
-      <view class="tab-item {{item.activeClass}}" data-tab="{{item.label}}" bindtap="switchTab">
-        <text>{{item.label}}</text>
-      </view>
-    </block>
-  </view>
-
-  <view class="record-list">
-    <block wx:if="{{records.length}}">
-      <block wx:for="{{records}}" wx:key="id">
-        <view class="record-card card">
-          <view class="record-head">
-            <view class="record-title-copy">
-              <text class="record-title">{{item.title}}</text>
-              <text class="record-store">{{item.merchantName}} · {{item.store}}</text>
-            </view>
-            <text class="status-pill {{item.statusClass}}">{{item.statusText}}</text>
-          </view>
-
-          <view class="record-meta-grid">
-            <view class="meta-row">
-              <text class="meta-label">申请时间</text>
-              <text class="meta-value">{{item.appliedText}}</text>
-            </view>
-            <view class="meta-row" wx:if="{{item.completedText}}">
-              <text class="meta-label">完成时间</text>
-              <text class="meta-value">{{item.completedText}}</text>
-            </view>
-            <view class="meta-row" wx:if="{{item.expiredText}}">
-              <text class="meta-label">失效时间</text>
-              <text class="meta-value">{{item.expiredText}}</text>
-            </view>
-          </view>
-
-          <view class="record-bottom">
-            <view class="record-amount">
-              <text class="amount-label">置换额度</text>
-              <view class="amount-row">
-                <text class="amount-prefix">¥</text>
-                <text class="amount-value">{{item.amountText}}</text>
-              </view>
-            </view>
-            <button class="detail-btn" data-id="{{item.id}}" bindtap="showRecordDetail">查看详情</button>
-          </view>
-
-          <view class="reason-row" wx:if="{{item.reason}}">
-            <text>{{item.reason}}</text>
-          </view>
-        </view>
-      </block>
-    </block>
-    <view wx:else class="empty">暂无置换记录</view>
+  <view class="ds-card record-card">
+    <view class="record-row">
+      <view class="ds-round-icon">▤</view>
+      <view class="record-main"><text class="record-title">海岛小院置换申请</text><text class="ds-muted">申请时间：今天 14:20</text></view>
+      <view class="record-side"><text class="ds-tag ds-tag-warn">待商家确认</text><text class="record-amount">300</text><view class="ds-outline-btn detail-btn">查看详情</view></view>
+    </view>
+    <view class="record-row">
+      <view class="ds-round-icon">☕</view>
+      <view class="record-main"><text class="record-title">海口湾下午茶置换</text><text class="ds-muted">完成时间：昨天 11:42</text></view>
+      <view class="record-side"><text class="ds-tag ds-teal">已完成</text><text class="record-amount">120</text><view class="ds-outline-btn detail-btn">查看详情</view></view>
+    </view>
+    <view class="record-row">
+      <view class="ds-round-icon">▱</view>
+      <view class="record-main"><text class="record-title">亲子乐园置换</text><text class="ds-muted">失效时间：06-13 19:18</text></view>
+      <view class="record-side"><text class="ds-tag">已失效</text><text class="record-amount">500</text><text class="ds-red">超时退回</text></view>
+    </view>
   </view>
 </view>

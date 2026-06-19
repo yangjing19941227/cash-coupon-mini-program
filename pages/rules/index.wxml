@@ -5,8 +5,8 @@
   </view>
 
   <view class="intro">
-    <view class="intro-title">现金券与抽奖规则</view>
-    <view class="intro-text">本页面用于 C 端开发预览，帮助体验抽奖、现金券、置换确认等主要流程。</view>
+    <view class="intro-title">优惠券与抽奖规则</view>
+    <view class="intro-text">本页面用于 C 端开发预览，帮助体验抽奖、优惠券、置换确认等主要流程。</view>
   </view>
 
   <view class="rule-section">
@@ -16,8 +16,8 @@
   </view>
 
   <view class="rule-section">
-    <view class="section-title">现金券使用</view>
-    <view class="rule-item">现金券用于展示同城消费券包、可用门店、有效期和券码等信息，实际使用以商家现场规则为准。</view>
+    <view class="section-title">优惠券使用</view>
+    <view class="rule-item">优惠券用于展示同城消费券包、可用门店、有效期和券码等信息，实际使用以商家现场规则为准。</view>
     <view class="rule-item">到店核销流程在预览中仅展示券码和状态，不连接真实核销系统，也不扣减真实账户余额。</view>
   </view>
 

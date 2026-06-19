@@ -1,91 +1,96 @@
-<view class="page lottery-page">
-  <view class="lottery-top-row">
-    <view class="location-row">
-      <text class="top-icon">位</text>
-      <text>{{cityText}}</text>
-    </view>
-    <view class="rules-link" role="button" bindtap="goRules">
-      <text class="top-icon">规</text>
-      <text>开奖规则</text>
-    </view>
+<view class="ds-page with-tab lottery-page">
+  <view class="ds-top ds-top-main">
+    <view></view>
+    <view></view>
+    <view class="ds-capsule"><text>•••</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
   </view>
 
-  <view class="lottery-heading">
-    <view class="label-line"></view>
-    <view class="label-dot"></view>
-    <text class="lottery-label">四位数抽奖</text>
-    <view class="label-dot"></view>
-    <view class="label-line"></view>
+  <view class="lottery-head">
+    <text class="lottery-kicker">一 · 四位数抽奖 · 一</text>
+    <text class="lottery-title">输入四位数参与</text>
+    <text class="ds-muted">中奖奖励自动发放优惠券</text>
   </view>
 
-  <view class="hero-copy">
-    <text class="hero-title">输入四位数参与</text>
-    <text class="hero-subtitle">中奖奖励自动发放现金券</text>
-  </view>
+  <view class="ds-soft-card lottery-box">
+    <text class="lottery-tip">输入4位数字，猜对即可获奖</text>
+    <text class="ds-muted">开奖时间为每晚21:38分</text>
 
-  <view class="number-card card">
-    <view class="input-label-row">
-      <text class="leaf-mark">⌁</text>
-      <text>输入你的四位数</text>
-      <text class="leaf-mark">⌁</text>
-    </view>
-
-    <view class="number-input-wrap">
-      <view class="number-grid">
-        <block wx:for="{{numberBoxes}}" wx:key="id">
-          <view class="number-box {{item.className}}">
-            <text>{{item.value}}</text>
-          </view>
-        </block>
-      </view>
-
+    <view class="digits">
       <input
-        class="manual-number-input"
+        class="digit-input {{isSubmitted ? 'digit-locked' : ''}}"
+        value="{{digits[0]}}"
+        data-index="0"
         type="number"
-        maxlength="4"
-        value="{{currentNumber}}"
-        bindinput="handleNumberInput"
-        placeholder="请输入四位数字"
+        maxlength="1"
+        disabled="{{isSubmitted}}"
+        bindinput="onDigitInput"
+      />
+      <input
+        class="digit-input {{isSubmitted ? 'digit-locked' : ''}}"
+        value="{{digits[1]}}"
+        data-index="1"
+        type="number"
+        maxlength="1"
+        disabled="{{isSubmitted}}"
+        bindinput="onDigitInput"
+      />
+      <input
+        class="digit-input {{isSubmitted ? 'digit-locked' : ''}}"
+        value="{{digits[2]}}"
+        data-index="2"
+        type="number"
+        maxlength="1"
+        disabled="{{isSubmitted}}"
+        bindinput="onDigitInput"
+      />
+      <input
+        class="digit-input {{isSubmitted ? 'digit-locked' : ''}}"
+        value="{{digits[3]}}"
+        data-index="3"
+        type="number"
+        maxlength="1"
+        disabled="{{isSubmitted}}"
+        bindinput="onDigitInput"
       />
     </view>
 
-    <view class="random-row" role="button" bindtap="generateNumber">
-      <text class="random-icon">↻</text>
-      <text class="random-title">随机生成一组数字</text>
-      <text class="random-tip">点击后自动填入</text>
-    </view>
+    <view class="random-text {{isSubmitted ? 'random-disabled' : ''}}" bindtap="generateRandomDigits">随机生成一组数字</view>
 
-    <button
-      class="submit-btn {{submitDisabledClass}}"
-      bindtap="submitNumber"
-    >
-      提交参与
+    <view wx:if="{{isSubmitted}}" class="wait-state">{{countdownText}}</view>
+
+    <button class="submit-button {{isSubmitted ? 'submit-disabled' : ''}}" disabled="{{isSubmitted}}" bindtap="submitNumber">
+      {{submitButtonText}}
     </button>
 
-    <view class="consent-row" role="button" bindtap="goRules">
-      <text class="consent-icon">盾</text>
-      <text>参与即同意《开奖规则》</text>
-    </view>
+    <text class="rule-text">ⓘ 开奖规则</text>
   </view>
 
-  <view class="info-grid">
-    <block wx:for="{{infoTiles}}" wx:key="id">
-      <view class="info-tile">
-        <text class="info-icon">{{item.icon}}</text>
-        <text class="info-label">{{item.label}}</text>
-        <text class="info-value {{item.className}}">{{item.value}}</text>
+  <view class="ds-soft-card note-card" bindtap="goLotteryRecords">
+    <view class="ds-round-icon">▣</view>
+    <view class="note-main">
+      <text class="note-title">参与记录 / 开奖记录 / 发券记录 可追溯</text>
+      <text class="ds-muted">所有记录均可在个人中心查看</text>
+    </view>
+    <view class="ds-outline-btn small-outline">查看抽奖记录 ›</view>
+  </view>
+
+  <view wx:if="{{showResultModal}}" class="result-mask">
+    <view class="result-dialog">
+      <text class="result-title">{{resultTitle}}</text>
+      <view class="result-number-row">
+        <text>开奖号码</text>
+        <text class="result-number">{{winningNumber}}</text>
       </view>
-    </block>
-  </view>
-
-  <view class="records-banner card">
-    <view class="records-icon">
-      <text>记</text>
+      <view class="result-number-row">
+        <text>参与号码</text>
+        <text class="result-number">{{userNumber}}</text>
+      </view>
+      <view wx:if="{{isWinner}}" class="reward-box">
+        <text class="reward-label">奖励内容</text>
+        <text class="reward-value">海岛小院优惠券 ¥30</text>
+      </view>
+      <text wx:else class="result-muted">本期未命中，明天21:38可继续参与</text>
+      <button class="result-button" bindtap="handleResultAction">{{resultButtonText}}</button>
     </view>
-    <view class="records-copy">
-      <text class="records-title">参与记录 / 开奖记录 / 发券记录 可追溯</text>
-      <text class="records-desc">所有记录均可在个人中心查看</text>
-    </view>
-    <button class="records-btn" bindtap="goRecords">查看抽奖记录</button>
   </view>
 </view>

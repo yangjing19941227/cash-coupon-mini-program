@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>待补上下游功能 UI 总览</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #071426;
+      --muted: #667185;
+      --teal: #006b68;
+      --red: #ef4b2e;
+      --line: rgba(8, 23, 43, .09);
+      --soft-line: rgba(0, 104, 103, .18);
+    }
+    body {
+      margin: 0;
+      background: #edf4f4;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .board {
+      width: 1680px;
+      margin: 0 auto;
+      padding: 34px 32px 44px;
+    }
+    .board-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 26px;
+    }
+    h1 { margin: 0; font-size: 34px; line-height: 1.15; }
+    .board-head p { margin: 9px 0 0; color: #526175; font-size: 16px; }
+    .badge {
+      height: 34px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(0, 107, 104, .16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .76);
+      color: var(--teal);
+      font-weight: 800;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 375px);
+      gap: 28px;
+      align-items: start;
+    }
+    .wrap-title {
+      margin: 0 0 10px;
+      color: #243349;
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .phone {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      overflow: hidden;
+      border: 1px solid rgba(7, 20, 38, .08);
+      border-radius: 4px;
+      background:
+        radial-gradient(190px 310px at 6% 0%, rgba(184, 236, 225, .62), rgba(255,255,255,0) 67%),
+        linear-gradient(180deg, #f8fdfc 0%, #f7fbfa 43%, #fff 100%);
+    }
+    .status {
+      position: absolute;
+      z-index: 5;
+      left: 30px;
+      right: 23px;
+      top: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #000;
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .sys { display: flex; gap: 6px; align-items: center; }
+    .bars { display: flex; gap: 2px; align-items: end; height: 12px; }
+    .bars i { display: block; width: 3px; border-radius: 2px; background: #000; }
+    .bars i:nth-child(1){height:5px}.bars i:nth-child(2){height:8px}.bars i:nth-child(3){height:11px}.bars i:nth-child(4){height:13px}
+    .wifi { width: 17px; height: 12px; border: 3px solid #000; border-left-color: transparent; border-right-color: transparent; border-bottom: 0; border-radius: 16px 16px 0 0; }
+    .battery { width: 23px; height: 12px; border: 1.5px solid #222; border-radius: 3px; padding: 2px; position: relative; }
+    .battery::before { content: ""; position: absolute; right: -4px; top: 3px; width: 2px; height: 5px; border-radius: 1px; background: #222; }
+    .battery::after { content: ""; display: block; width: 16px; height: 6px; border-radius: 1px; background: #111; }
+    .top {
+      position: absolute;
+      z-index: 4;
+      top: 55px;
+      left: 18px;
+      right: 18px;
+      height: 36px;
+      display: grid;
+      grid-template-columns: 70px 1fr 78px;
+      gap: 14px;
+      align-items: center;
+    }
+    .back { font-size: 31px; line-height: 1; font-weight: 400; }
+    .title-center { text-align: center; font-size: 19px; font-weight: 900; }
+    .capsule-space { width: 78px; height: 32px; }
+    .content { position: relative; z-index: 2; padding: 104px 16px 70px; }
+    .card, .soft-card {
+      border-radius: 14px;
+      background: rgba(255,255,255,.84);
+      overflow: hidden;
+    }
+    .card { border: 1px solid var(--line); }
+    .soft-card { border: 1px solid var(--soft-line); background: rgba(255,255,255,.66); }
+    a { text-decoration:none; color:inherit; }
+    .btn {
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #007a75, #005f5d);
+      color: #fff;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+    .btn.block { width: 100%; border-radius: 12px; }
+    .outline-btn {
+      height: 34px;
+      border: 1px solid #00706f;
+      border-radius: 18px;
+      color: var(--teal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 800;
+      background: rgba(255,255,255,.7);
+      white-space: nowrap;
+    }
+    .tag { display: inline-flex; padding: 4px 8px; border-radius: 5px; background: #f0f2f3; color: #596475; font-size: 12px; line-height: 1; }
+    .red { color: var(--red); }
+    .teal { color: var(--teal); }
+    .muted { color: var(--muted); }
+    h2, h3, p { margin: 0; }
+    h3 { font-size: 18px; line-height: 1.22; }
+    p { font-size: 13px; line-height: 1.45; }
+    .row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .row:last-child { border-bottom: 0; }
+    .round-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #e9f4f2;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex: none;
+    }
+    .info-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .info-line:last-child { border-bottom: 0; }
+    .tabs {
+      height: 38px;
+      margin: 18px 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      text-align: center;
+      border: 1px solid rgba(7,20,38,.08);
+      border-radius: 22px;
+      background: rgba(255,255,255,.74);
+      color: #263449;
+      font-size: 14px;
+    }
+    .tabs b { height: 38px; border-radius: 20px; background: #fff; color: var(--teal); display: flex; align-items: center; justify-content: center; position: relative; }
+    .tabs b::after { content: ""; position: absolute; bottom: 0; width: 34px; height: 3px; border-radius: 3px; background: var(--teal); }
+    .metric3 {
+      height: 92px;
+      padding: 18px 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      align-items: center;
+    }
+    .metric3 > div:not(:last-child) { border-right: 1px solid rgba(34,76,90,.16); }
+    .metric3 label { display: block; color: #526175; font-size: 13px; margin-bottom: 7px; }
+    .metric3 b { color: var(--teal); font-size: 28px; }
+    .bottom-note {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 28px;
+      height: 52px;
+      border-radius: 13px;
+      border: 1px solid var(--soft-line);
+      background: rgba(255,255,255,.72);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .receipt-card { padding: 18px 16px; }
+    .receipt-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+    .receipt-row:last-child { border-bottom: 0; }
+    .receipt-amount { text-align: right; font-size: 18px; font-weight: 900; }
+    .profile-card { padding: 18px 16px; }
+    .avatar-row { display: grid; grid-template-columns: 66px 1fr auto; align-items: center; gap: 14px; }
+    .avatar { width: 66px; height: 66px; border-radius: 50%; object-fit: cover; }
+    .form-card { margin-top: 18px; padding: 4px 16px; }
+    .switch { width: 44px; height: 26px; border-radius: 99px; background: #dbe5e6; padding: 3px; }
+    .switch::after { content: ""; display: block; width: 20px; height: 20px; border-radius: 50%; background: #fff; margin-left: 18px; }
+    .merchant-card { display: grid; grid-template-columns: 92px 1fr; gap: 13px; padding: 13px; margin-bottom: 12px; }
+    .merchant-card img { width: 92px; height: 92px; border-radius: 9px; object-fit: cover; }
+    .merchant-meta { display: flex; gap: 8px; margin: 10px 0 12px; }
+    .merchant-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .credit-hero { padding: 18px 18px 20px; }
+    .credit-amount { margin: 13px 0 8px; font-size: 42px; line-height: 1; font-weight: 900; color: var(--teal); }
+    .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+    .amount-item { height: 62px; border: 1px solid var(--soft-line); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,.72); color: var(--teal); font-weight: 900; }
+    .amount-item small { margin-top: 5px; color: #8a6a32; font-size: 11px; font-weight: 700; }
+    .success {
+      text-align: center;
+      padding: 42px 24px 28px;
+    }
+    .success-mark {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: #e5f4f2;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      font-weight: 900;
+    }
+    .digit-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 22px 0; }
+    .digit-summary div { height: 68px; border: 1px solid #b7d4d7; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--teal); font-size: 34px; font-weight: 900; background: rgba(255,255,255,.78); }
+    .timeline { margin-top: 18px; padding: 18px 16px; }
+    .step { display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding-bottom: 18px; position: relative; }
+    .step::before { content: ""; position: absolute; left: 11px; top: 24px; bottom: 0; width: 1px; background: #d6e4e5; }
+    .step:last-child::before { display: none; }
+    .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .order-cover { display: grid; grid-template-columns: 92px 1fr; gap: 13px; padding: 13px; }
+    .order-cover img { width: 92px; height: 92px; border-radius: 9px; object-fit: cover; }
+    .pay-row { margin-top: 18px; padding: 18px 16px; display: flex; align-items: center; justify-content: space-between; }
+    .pay-price { color: var(--red); font-size: 32px; font-weight: 900; }
+    .footer-actions { position: absolute; left: 16px; right: 16px; bottom: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  </style>
+</head>
+<body>
+  <main class="board" id="capture">
+    <header class="board-head">
+      <div>
+        <h1>待补上下游功能 UI 高清预览</h1>
+        <p>先给你看方向：明确“优惠券资产 → 去使用 → 出示券码”的正确链路，并补齐资产流水、个人资料、全部动态、充值额度、更多商家、订单确认、提交成功等上下游页面。</p>
+      </div>
+      <span class="badge">375×812px / 8 张候选页</span>
+    </header>
+
+    <section class="grid">
+      <div id="coupon-assets">
+        <h2 class="wrap-title">01 优惠券资产入口</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">优惠券资产</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="soft-card metric3"><div><label>可用优惠券</label><b>12</b></div><div><label>总面值</label><b>￥328</b></div><div><label>即将过期</label><b>2</b></div></section>
+            <div class="tabs"><b>全部</b><span>餐饮</span><span>娱乐</span><span>即将过期</span></div>
+            <section class="card receipt-card">
+              <div class="receipt-row"><div><h3>海岛小院双人海鲜套餐券</h3><p class="red">券后可省 ￥68</p><span class="tag">餐饮美食</span> <span class="tag">未使用</span><p class="muted" style="margin-top:8px">2026-06-30 23:59 到期</p></div><div class="receipt-amount red">￥68<p><a class="btn" style="height:32px;margin-top:10px" href="downstream-screens.html#coupon-code">去使用</a></p></div></div>
+              <div class="receipt-row"><div><h3>海口湾下午茶券</h3><p class="red">立减20</p><span class="tag">甜品饮品</span> <span class="tag">未使用</span><p class="muted" style="margin-top:8px">2026-06-25 23:59 到期</p></div><div class="receipt-amount red">￥20<p><a class="btn" style="height:32px;margin-top:10px" href="downstream-screens.html#coupon-code">去使用</a></p></div></div>
+              <div class="receipt-row"><div><h3>亲子乐园通用券</h3><p class="red">满200减60</p><span class="tag">亲子娱乐</span> <span class="tag">未使用</span><p class="muted" style="margin-top:8px">2026-07-05 23:59 到期</p></div><div class="receipt-amount red">￥60<p><a class="btn" style="height:32px;margin-top:10px" href="downstream-screens.html#coupon-code">去使用</a></p></div></div>
+            </section>
+            <a class="bottom-note" href="downstream-screens.html#coupon-code"><span>点击“去使用”进入出示券码</span><span>›</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div id="asset-flow">
+        <h2 class="wrap-title">02 资产流水</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">资产流水</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="soft-card credit-hero"><p class="muted">当前置换额度</p><div class="credit-amount">860</div><p>优惠券、抽奖、置换产生的资金与额度明细</p></section>
+            <div class="tabs"><b>全部</b><span>优惠券</span><span>置换</span><span>抽奖</span></div>
+            <section class="card receipt-card">
+              <div class="row"><div class="round-icon">＋</div><div><h3>抽奖获券入账</h3><p class="muted">海口湾下午茶券 · 今天 09:30</p></div><b class="red">+￥30</b></div>
+              <div class="row"><div class="round-icon">✓</div><div><h3>优惠券到店抵扣</h3><p class="muted">海岛小院 · 双人海鲜套餐券</p></div><b>-￥68</b></div>
+              <div class="row"><div class="round-icon">↻</div><div><h3>发起权益置换</h3><p class="muted">海岛小院置换申请</p></div><b class="teal">-300额度</b></div>
+              <div class="row"><div class="round-icon">↩</div><div><h3>超时额度退回</h3><p class="muted">亲子乐园置换失效</p></div><b class="teal">+500额度</b></div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="profile">
+        <h2 class="wrap-title">03 个人资料</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">个人资料</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="card profile-card">
+              <div class="avatar-row"><img class="avatar" src="assets/profile-avatar.png"><div><h3>海口生活用户</h3><p class="muted">海口 · 龙华区</p></div><span class="outline-btn">更换</span></div>
+            </section>
+            <section class="card form-card">
+              <div class="info-line"><span>昵称</span><b>海口生活用户</b></div>
+              <div class="info-line"><span>常用城市</span><b>海口</b></div>
+              <div class="info-line"><span>所在区域</span><b>龙华区</b></div>
+              <div class="info-line"><span>手机号</span><b>138****2168</b></div>
+            </section>
+            <section class="card form-card">
+              <div class="info-line"><span>到期提醒</span><div class="switch"></div></div>
+              <div class="info-line"><span>开奖提醒</span><div class="switch"></div></div>
+              <div class="info-line"><span>同城优惠推荐</span><div class="switch"></div></div>
+            </section>
+            <div class="footer-actions"><span class="outline-btn">取消</span><span class="btn">保存资料</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="activity">
+        <h2 class="wrap-title">04 全部动态</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">全部动态</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="soft-card metric3"><div><label>本周动态</label><b>12</b></div><div><label>已省</label><b>￥236</b></div><div><label>待处理</label><b>2</b></div></section>
+            <div class="tabs"><b>全部</b><span>优惠券</span><span>置换</span><span>抽奖</span></div>
+            <section class="card receipt-card">
+              <div class="row"><div class="round-icon">🎁</div><div><h3>抽奖获券</h3><p class="muted">获得 海口湾下午茶券</p></div><b class="red">+￥30</b></div>
+              <div class="row"><div class="round-icon">✓</div><div><h3>使用优惠券抵扣</h3><p class="muted">海岛小院 · 双人海鲜套餐券</p></div><b>-￥68</b></div>
+              <div class="row"><div class="round-icon">↔</div><div><h3>置换申请待确认</h3><p class="muted">向海岛小院申请置换 300 额度</p></div><b class="red">待确认</b></div>
+              <div class="row"><div class="round-icon">⏰</div><div><h3>优惠券即将过期</h3><p class="muted">万绿园咖啡券今晚 23:59 到期</p></div><span class="outline-btn">去使用</span></div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="recharge">
+        <h2 class="wrap-title">05 充值额度</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">充值额度</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="soft-card credit-hero"><p class="muted">当前可置换额度</p><div class="credit-amount">860</div><p>充值后可用于兑换同城商家权益</p></section>
+            <section class="card profile-card" style="margin-top:18px">
+              <h3>选择充值额度</h3>
+              <div class="amount-grid">
+                <div class="amount-item">100<small>约可兑茶饮券</small></div>
+                <div class="amount-item">300<small>热门</small></div>
+                <div class="amount-item">500<small>亲子娱乐</small></div>
+                <div class="amount-item">800<small>套餐权益</small></div>
+                <div class="amount-item">1000<small>多场景</small></div>
+                <div class="amount-item">自定义<small>输入金额</small></div>
+              </div>
+            </section>
+            <section class="card form-card">
+              <div class="info-line"><span>支付方式</span><b>微信支付 ›</b></div>
+              <div class="info-line"><span>预计到账</span><b>支付成功后即时到账</b></div>
+            </section>
+            <div class="bottom-note"><span>充值前请确认同城服务可用范围</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="merchants">
+        <h2 class="wrap-title">06 更多商家</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">更多商家</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="soft-card metric3"><div><label>可置换</label><b>18</b></div><div><label>附近</label><b>6</b></div><div><label>临期优先</label><b>2</b></div></section>
+            <div class="tabs"><b>推荐</b><span>餐饮</span><span>甜品</span><span>亲子</span></div>
+            <section>
+              <div class="card merchant-card"><img src="assets/merchant-restaurant.png"><div><h3>海岛小院</h3><div class="merchant-meta"><span class="tag">餐饮美食</span><span class="tag">龙华区</span></div><p class="muted">双人套餐券 · 到店核销</p><div class="merchant-foot"><b class="teal">300额度起</b><a class="btn" style="height:32px" href="downstream-screens.html#exchange-submit">置换</a></div></div></div>
+              <div class="card merchant-card"><img src="assets/merchant-dessert.png"><div><h3>海口湾甜品</h3><div class="merchant-meta"><span class="tag">甜品饮品</span><span class="tag">秀英区</span></div><p class="muted">下午茶券 · 门店通用</p><div class="merchant-foot"><b class="teal">120额度起</b><a class="btn" style="height:32px" href="downstream-screens.html#exchange-submit">置换</a></div></div></div>
+              <div class="card merchant-card"><img src="assets/merchant-playground.png"><div><h3>亲子乐园</h3><div class="merchant-meta"><span class="tag">亲子娱乐</span><span class="tag">美兰区</span></div><p class="muted">门票券 · 指定门店可用</p><div class="merchant-foot"><b class="teal">500额度起</b><a class="btn" style="height:32px" href="downstream-screens.html#exchange-submit">置换</a></div></div></div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="order">
+        <h2 class="wrap-title">07 订单确认</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">确认订单</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="card order-cover"><img src="assets/deal-seafood.png"><div><h3>海岛小院·双人海鲜套餐券</h3><div class="merchant-meta"><span class="tag">海口</span><span class="tag">餐饮美食</span></div><p class="red">券后可省 ￥68</p></div></section>
+            <section class="card form-card">
+              <div class="info-line"><span>适用门店</span><b>海岛小院龙华店 ›</b></div>
+              <div class="info-line"><span>有效期</span><b>2026-06-30 23:59</b></div>
+              <div class="info-line"><span>购买数量</span><b>1 张</b></div>
+              <div class="info-line"><span>优惠抵扣</span><b class="red">-￥68</b></div>
+            </section>
+            <section class="soft-card pay-row"><div><p class="muted">应付金额</p><div class="pay-price">￥128</div></div><span class="btn">立即支付</span></section>
+            <div class="bottom-note"><span>支付成功后自动加入优惠券资产</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="submit-success">
+        <h2 class="wrap-title">08 提交成功状态</h2>
+        <div class="phone">
+          <div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div>
+          <div class="top"><div class="back">‹</div><div class="title-center">提交成功</div><div class="capsule-space"></div></div>
+          <div class="content">
+            <section class="soft-card success">
+              <div class="success-mark">✓</div>
+              <h2>参与成功</h2>
+              <p class="muted" style="margin-top:10px">已为你提交本期四位数抽奖号码</p>
+              <div class="digit-summary"><div>3</div><div>8</div><div>0</div><div>6</div></div>
+              <p class="teal">今晚 21:38 开奖，中奖后自动发放优惠券</p>
+            </section>
+            <section class="card timeline">
+              <div class="step"><div class="dot">1</div><div><h3>号码已提交</h3><p class="muted">今天 14:20</p></div></div>
+              <div class="step"><div class="dot">2</div><div><h3>等待开奖</h3><p class="muted">开奖后可在抽奖记录查看</p></div></div>
+              <div class="step"><div class="dot">3</div><div><h3>自动发券</h3><p class="muted">中奖优惠券进入我的优惠券资产</p></div></div>
+            </section>
+            <div class="footer-actions"><a class="outline-btn" href="downstream-screens.html#lottery-records">查看记录</a><a class="btn" href="downstream-screens.html#lottery">继续参与</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

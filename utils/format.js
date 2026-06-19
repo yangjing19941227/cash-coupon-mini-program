@@ -1,11 +1,15 @@
-function formatMoney(value) {
-  const amount = Number(value);
+function formatNumber(value) {
+  const number = Number(value);
 
-  if (Number.isInteger(amount)) {
-    return `¥${amount}`;
+  if (Number.isInteger(number)) {
+    return String(number);
   }
 
-  return `¥${amount.toFixed(2)}`;
+  return number.toFixed(2);
+}
+
+function formatMoney(value) {
+  return `￥${formatNumber(value)}`;
 }
 
 function formatCouponValue(coupon) {
@@ -17,6 +21,21 @@ function formatCouponValue(coupon) {
   }
 
   return `立减${amount}`;
+}
+
+function padTwoDigits(value) {
+  return String(value).padStart(2, '0');
+}
+
+function formatShanghaiDateTime(date) {
+  const shanghaiDate = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+  const year = shanghaiDate.getUTCFullYear();
+  const month = padTwoDigits(shanghaiDate.getUTCMonth() + 1);
+  const day = padTwoDigits(shanghaiDate.getUTCDate());
+  const hour = padTwoDigits(shanghaiDate.getUTCHours());
+  const minute = padTwoDigits(shanghaiDate.getUTCMinutes());
+
+  return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
 function formatDateTime(value) {
@@ -67,31 +86,6 @@ function padFourDigits(value) {
   const lastFourDigits = integer % 10000;
 
   return String(lastFourDigits).padStart(4, '0');
-}
-
-function formatNumber(value) {
-  const number = Number(value);
-
-  if (Number.isInteger(number)) {
-    return String(number);
-  }
-
-  return number.toFixed(2);
-}
-
-function padTwoDigits(value) {
-  return String(value).padStart(2, '0');
-}
-
-function formatShanghaiDateTime(date) {
-  const shanghaiDate = new Date(date.getTime() + 8 * 60 * 60 * 1000);
-  const year = shanghaiDate.getUTCFullYear();
-  const month = padTwoDigits(shanghaiDate.getUTCMonth() + 1);
-  const day = padTwoDigits(shanghaiDate.getUTCDate());
-  const hour = padTwoDigits(shanghaiDate.getUTCHours());
-  const minute = padTwoDigits(shanghaiDate.getUTCMinutes());
-
-  return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
 module.exports = {

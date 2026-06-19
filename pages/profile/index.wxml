@@ -1,134 +1,58 @@
-<view class="page profile-page">
-  <view class="profile-topbar">
-    <view class="topbar-spacer"></view>
-    <view class="nav-title profile-title">我的</view>
-    <button class="settings-btn" bindtap="showSettings">设</button>
+<view class="ds-page with-tab profile-page">
+  <view class="ds-top">
+    <view></view>
+    <view class="ds-title">我的</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
   </view>
 
-  <view class="profile-header">
-    <image class="avatar" src="{{profile.avatar}}" mode="aspectFill"></image>
-    <view class="profile-copy">
-      <text class="nickname">{{profile.nickname}}</text>
-      <text class="location">◎ {{locationText}}</text>
+  <view class="profile-top">
+    <image class="avatar" src="/assets/images/profile-avatar.png" mode="aspectFill"></image>
+    <view class="profile-main">
+      <text class="profile-name">海口生活用户</text>
+      <text class="ds-muted">⌖ 海口 · 龙华区</text>
     </view>
-    <button class="profile-data-btn" bindtap="showProfileData">个人资料 ›</button>
+    <view class="ds-outline-btn profile-btn">个人资料 ›</view>
   </view>
 
-  <view class="profile-asset-card card">
-    <view class="profile-visual-row">
-      <view class="saved-copy">
-        <view class="saved-label-row">
-          <text class="saved-label">累计节省</text>
-          <text class="saved-info">i</text>
-        </view>
-        <view class="saved-amount-row">
-          <text class="saved-currency">¥</text>
-          <text class="saved-amount">{{savedAmountText}}</text>
-        </view>
-        <text class="saved-helper">精打细算 · 生活更值得</text>
-      </view>
-      <image class="profile-visual" src="{{profile.profileIllustration}}" mode="aspectFit"></image>
-    </view>
-
-    <view class="stat-card">
-      <view class="stat-item">
-        <text class="stat-icon">券</text>
-        <text class="stat-label">现金券</text>
-        <view class="stat-value-row">
-          <text class="stat-value">{{couponCountText}}</text>
-          <text class="stat-unit">张</text>
-        </view>
-      </view>
-      <view class="stat-item">
-        <text class="stat-icon">礼</text>
-        <text class="stat-label">抽奖次数</text>
-        <view class="stat-value-row">
-          <text class="stat-value">{{lotteryLeftText}}</text>
-          <text class="stat-unit">次</text>
-        </view>
-      </view>
-      <view class="stat-item">
-        <text class="stat-icon">时</text>
-        <text class="stat-label">即将过期</text>
-        <view class="stat-value-row">
-          <text class="stat-value stat-value-warm">{{expiringCountText}}</text>
-          <text class="stat-unit">张</text>
-        </view>
-      </view>
-      <view class="stat-item">
-        <text class="stat-icon">额</text>
-        <text class="stat-label">置换额度</text>
-        <view class="stat-value-row">
-          <text class="stat-value">{{exchangeAmountText}}</text>
-        </view>
-      </view>
+  <view class="ds-soft-card save-card">
+    <image class="save-ill" src="/assets/images/profile-illustration.png" mode="aspectFit"></image>
+    <text class="ds-muted">累计已省 ⓘ</text>
+    <text class="save-money">￥236</text>
+    <text class="ds-muted">精打细算 · 生活更值得</text>
+    <view class="profile-stats">
+      <view><text>优惠券</text><text class="stat-value">12</text></view>
+      <view><text>抽奖次数</text><text class="stat-value">1</text></view>
+      <view><text>即将过期</text><text class="stat-value">2</text></view>
+      <view><text>置换额度</text><text class="stat-value">860</text></view>
     </view>
   </view>
 
-  <view class="section-row">
-    <text class="section-title">近期动态</text>
-    <text class="section-more">最近 3 条</text>
+  <view class="ds-card activity-card">
+    <view class="ds-section-head">
+      <text class="ds-section-title">最近权益动态</text>
+      <text class="ds-muted">全部动态 ›</text>
+    </view>
+    <view class="activity-row">
+      <view class="ds-round-icon">🎁</view>
+      <view><text class="row-title">抽奖获券</text><text class="ds-muted">获得 海口湾下午茶券</text></view>
+      <text class="ds-red row-amount">+ ￥30</text>
+    </view>
+    <view class="activity-row">
+      <view class="ds-round-icon">✓</view>
+      <view><text class="row-title">使用优惠券抵扣</text><text class="ds-muted">海岛小院 · 双人海鲜套餐券</text></view>
+      <text class="row-amount">- ￥68</text>
+    </view>
+    <view class="activity-row">
+      <view class="ds-round-icon">↔</view>
+      <view><text class="row-title">置换申请待确认</text><text class="ds-muted">申请置换 300 额度</text></view>
+      <text class="ds-red row-amount">待确认</text>
+    </view>
   </view>
 
-  <view class="activity-list">
-    <block wx:if="{{activityItems.length}}">
-      <block wx:for="{{activityItems}}" wx:key="id">
-        <view class="activity-card card">
-          <view class="activity-main">
-            <text class="activity-title">{{item.title}}</text>
-            <text class="activity-subtitle">{{item.subtitle}}</text>
-            <text class="activity-time">{{item.time}}</text>
-          </view>
-          <view class="activity-side">
-            <text class="activity-value {{item.valueClass}}">{{item.value}}</text>
-            <text class="activity-status">{{item.statusText}}</text>
-          </view>
-        </view>
-      </block>
-    </block>
-    <view wx:else class="empty">暂无资产动态</view>
-  </view>
-
-  <view class="menu-card card">
-    <view class="menu-row" role="button" bindtap="goCoupons">
-      <view class="menu-icon menu-icon-coupon">券</view>
-      <view class="menu-copy">
-        <text class="menu-text">我的现金券</text>
-        <text class="menu-desc">{{couponCountText}}张可用</text>
-      </view>
-      <text class="menu-arrow">›</text>
-    </view>
-    <view class="menu-row" role="button" bindtap="goLotteryRecords">
-      <view class="menu-icon menu-icon-lottery">奖</view>
-      <view class="menu-copy">
-        <text class="menu-text">抽奖记录</text>
-        <text class="menu-desc">查看我的中奖记录</text>
-      </view>
-      <text class="menu-arrow">›</text>
-    </view>
-    <view class="menu-row" role="button" bindtap="goExchangeRecords">
-      <view class="menu-icon menu-icon-exchange">换</view>
-      <view class="menu-copy">
-        <text class="menu-text">置换记录</text>
-        <text class="menu-desc">查看置换进度与记录</text>
-      </view>
-      <text class="menu-arrow">›</text>
-    </view>
-    <view class="menu-row" role="button" bindtap="showVerifyRecords">
-      <view class="menu-icon menu-icon-verify">核</view>
-      <view class="menu-copy">
-        <text class="menu-text">核销记录</text>
-        <text class="menu-desc">查看使用与核销明细</text>
-      </view>
-      <text class="menu-arrow">›</text>
-    </view>
-    <view class="menu-row menu-row-last" role="button" bindtap="showAssetFlow">
-      <view class="menu-icon menu-icon-flow">流</view>
-      <view class="menu-copy">
-        <text class="menu-text">资产流水</text>
-        <text class="menu-desc">查看资金与额度明细</text>
-      </view>
-      <text class="menu-arrow">›</text>
-    </view>
+  <view class="ds-card menu-card">
+    <view class="menu-line" bindtap="goCouponAssets"><text class="menu-icon">▱</text><text>我的优惠券</text><text class="ds-muted">12张可用</text><text>›</text></view>
+    <view class="menu-line" bindtap="goLotteryRecords"><text class="menu-icon">▣</text><text>抽奖记录</text><text class="ds-muted">查看我的中奖记录</text><text>›</text></view>
+    <view class="menu-line" bindtap="goExchangeRecords"><text class="menu-icon">↔</text><text>置换记录</text><text class="ds-muted">查看置换进度与记录</text><text>›</text></view>
+    <view class="menu-line"><text class="menu-icon">▤</text><text>核销记录</text><text class="ds-muted">查看使用与核销明细</text><text>›</text></view>
   </view>
 </view>

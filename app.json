@@ -5,9 +5,18 @@
     "pages/exchange/index",
     "pages/lottery/index",
     "pages/profile/index",
-    "pages/exchange-records/index",
+    "pages/coupon-assets/index",
     "pages/coupon-code/index",
+    "pages/coupon-detail/index",
+    "pages/exchange-submit/index",
+    "pages/exchange-records/index",
     "pages/lottery-records/index",
+    "pages/recharge/index",
+    "pages/balance-records/index",
+    "pages/order-confirm/index",
+    "pages/payment-select/index",
+    "pages/payment-success/index",
+    "pages/orders/index",
     "pages/rules/index"
   ],
   "window": {
@@ -24,31 +33,31 @@
     "list": [
       {
         "pagePath": "pages/home/index",
-        "text": "首页",
+        "text": "\u9996\u9875",
         "iconPath": "assets/icons/home.png",
         "selectedIconPath": "assets/icons/home-active.png"
       },
       {
         "pagePath": "pages/coupons/index",
-        "text": "现金券",
+        "text": "\u4f18\u60e0\u5238",
         "iconPath": "assets/icons/ticket.png",
         "selectedIconPath": "assets/icons/ticket-active.png"
       },
       {
         "pagePath": "pages/exchange/index",
-        "text": "置换",
+        "text": "\u7f6e\u6362",
         "iconPath": "assets/icons/exchange.png",
         "selectedIconPath": "assets/icons/exchange-active.png"
       },
       {
         "pagePath": "pages/lottery/index",
-        "text": "抽奖",
+        "text": "\u62bd\u5956",
         "iconPath": "assets/icons/gift.png",
         "selectedIconPath": "assets/icons/gift-active.png"
       },
       {
         "pagePath": "pages/profile/index",
-        "text": "我的",
+        "text": "\u6211\u7684",
         "iconPath": "assets/icons/user.png",
         "selectedIconPath": "assets/icons/user-active.png"
       }

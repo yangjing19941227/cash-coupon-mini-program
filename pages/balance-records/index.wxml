@@ -1,0 +1,22 @@
+<view class="ds-page payment-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">余额明细</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-soft-card pay-hero">
+    <text class="ds-muted">账户余额</text>
+    <text class="pay-amount">￥860</text>
+    <text>含赠送余额 ￥45 · 可提现 ￥300</text>
+  </view>
+
+  <view class="filter-tabs"><text class="active">全部</text><text>充值</text><text>提现</text></view>
+
+  <view class="ds-card record-card">
+    <view class="record-row"><view class="pay-round">＋</view><view><text class="record-title">充值到账</text><text class="ds-muted">微信支付 · 今天 14:20</text></view><text class="record-plus">+￥345</text></view>
+    <view class="record-row"><view class="pay-round">↩</view><view><text class="record-title">提现申请</text><text class="ds-muted">原路退回 · 昨天 09:15</text></view><text>-￥100</text></view>
+    <view class="record-row"><view class="pay-round">券</view><view><text class="record-title">购买优惠券</text><text class="ds-muted">海岛小院套餐券</text></view><text>-￥128</text></view>
+    <view class="record-row"><view class="pay-round">送</view><view><text class="record-title">储值赠送</text><text class="ds-muted">充300送45活动</text></view><text class="record-plus">+￥45</text></view>
+  </view>
+</view>

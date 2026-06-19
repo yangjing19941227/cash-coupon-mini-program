@@ -1,0 +1,30 @@
+<view class="ds-page exchange-submit-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">发起置换</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-soft-card credit-card">
+    <text class="ds-muted">置换额度</text>
+    <view class="credit-row">
+      <text class="credit-num">860</text>
+      <text class="ds-muted">可用额度</text>
+      <view class="ds-btn credit-btn" bindtap="goRecharge">充值额度</view>
+    </view>
+  </view>
+
+  <view class="ds-card submit-card">
+    <text class="merchant-title">海岛小院置换</text>
+    <view class="tag-row"><text class="ds-tag">餐饮美食</text><text class="ds-tag">龙华区</text></view>
+    <text class="ds-muted">输入置换额度</text>
+    <view class="input-like"><text>300</text><text class="input-unit">额度</text></view>
+    <text class="ds-muted">最低 300 额度起，可兑换双人套餐券</text>
+    <view class="ds-btn ds-btn-block">提交置换申请</view>
+  </view>
+
+  <view class="ds-card wait-card">
+    <text class="wait-title">申请后等待商家确认</text>
+    <text class="ds-muted">进度可在置换记录中查看</text>
+  </view>
+</view>

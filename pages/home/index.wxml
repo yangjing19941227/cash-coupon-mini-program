@@ -1,113 +1,102 @@
-<view class="page home-page">
-  <view class="home-top-row">
-    <view class="location-pill">
-      <text class="location-mark">城</text>
-      <text class="location-text">{{locationText}}</text>
+<view class="home-page">
+  <image class="hero-bridge" src="/assets/images/home-city-element.png" mode="aspectFit"></image>
+
+  <view class="topbar">
+    <view class="city" role="button">
+      <text>海口</text>
+      <text class="chevron">⌄</text>
     </view>
+    <view class="search-box">
+      <text class="search-icon">⌕</text>
+      <text class="search-text">搜索商家优惠券</text>
+    </view>
+    <view class="capsule-space" aria-hidden="true"></view>
   </view>
 
-  <view class="nav-title home-title">首页</view>
+  <view class="hero-copy">
+    <text class="hero-title">同城名惠</text>
+    <text class="hero-subtitle">精选本地生活服务</text>
+  </view>
 
-  <view class="asset-card card">
-    <view class="asset-main-row">
-      <view class="asset-main">
-        <text class="asset-label">累计节省</text>
-        <view class="asset-amount-row">
-          <text class="asset-currency">¥</text>
-          <text class="asset-amount">{{savedAmountText}}</text>
+  <view class="asset-card">
+    <view class="asset-stats">
+      <view class="asset-stat">
+        <view class="stat-label">
+          <image class="stat-icon" src="/assets/icons/ticket-active.png" mode="aspectFit"></image>
+          <text>优惠券资产</text>
         </view>
+        <view class="stat-number-row">
+          <text class="stat-number">{{couponCountText}}</text>
+          <text class="stat-unit">张</text>
+        </view>
+        <text class="stat-desc">总面值 ￥{{totalValueText}}</text>
       </view>
-      <view class="asset-side">
-        <text class="asset-side-label">现金券余额</text>
-        <text class="asset-side-value">¥{{totalValueText}}</text>
+
+      <view class="asset-stat">
+        <view class="stat-label">
+          <image class="stat-icon" src="/assets/icons/exchange-active.png" mode="aspectFit"></image>
+          <text>置换额度</text>
+        </view>
+        <view class="stat-number-row">
+          <text class="stat-number">{{exchangeAmountText}}</text>
+        </view>
+        <text class="stat-desc">可用额度</text>
+      </view>
+
+      <view class="asset-stat">
+        <view class="stat-label">
+          <image class="stat-icon" src="/assets/icons/gift-active.png" mode="aspectFit"></image>
+          <text>今日抽奖</text>
+        </view>
+        <view class="stat-number-row">
+          <text class="stat-number">{{lotteryLeftText}}</text>
+          <text class="stat-unit">次</text>
+        </view>
+        <text class="stat-desc">每日21:38开奖</text>
       </view>
     </view>
 
-    <view class="asset-sub-grid">
-      <view class="asset-sub-item">
-        <text class="asset-sub-value">{{couponCountText}}</text>
-        <text class="asset-sub-label">现金券</text>
+    <view class="quick-actions">
+      <view class="quick-action" role="button" bindtap="goCoupons">
+        <image class="quick-icon" src="/assets/icons/ticket-active.png" mode="aspectFit"></image>
+        <text>买优惠券</text>
       </view>
-      <view class="asset-sub-item">
-        <text class="asset-sub-value">{{exchangeAmountText}}</text>
-        <text class="asset-sub-label">置换额度</text>
+      <view class="quick-action" role="button" bindtap="goExchange">
+        <image class="quick-icon" src="/assets/icons/exchange-active.png" mode="aspectFit"></image>
+        <text>置换</text>
       </view>
-      <view class="asset-sub-item">
-        <text class="asset-sub-value">{{lotteryLeftText}}</text>
-        <text class="asset-sub-label">抽奖次数</text>
-      </view>
-      <view class="asset-sub-item">
-        <text class="asset-sub-value asset-sub-warm">{{expiringCountText}}</text>
-        <text class="asset-sub-label">即将过期</text>
+      <view class="quick-action" role="button" bindtap="goLottery">
+        <image class="quick-icon" src="/assets/icons/gift-active.png" mode="aspectFit"></image>
+        <text>去抽奖</text>
       </view>
     </view>
   </view>
 
-  <view class="section-row">
-    <text class="section-title">快捷入口</text>
-  </view>
+  <view class="deal-feed">
+    <view class="deal-head">
+      <text class="card-title">本地惠选</text>
+      <view class="more-link" role="button" bindtap="goExchange">
+        <text>更多</text>
+        <text class="right-arrow">›</text>
+      </view>
+    </view>
 
-  <view class="quick-grid">
-    <view class="quick-action" role="button" bindtap="goCoupons">
-      <view class="quick-icon quick-icon-coupon">券</view>
-      <text class="quick-label">现金券</text>
-    </view>
-    <view class="quick-action" role="button" bindtap="goExchange">
-      <view class="quick-icon quick-icon-exchange">换</view>
-      <text class="quick-label">置换</text>
-    </view>
-    <view class="quick-action" role="button" bindtap="goLottery">
-      <view class="quick-icon quick-icon-lottery">奖</view>
-      <text class="quick-label">抽奖</text>
-    </view>
-    <view class="quick-action" role="button" bindtap="goProfile">
-      <view class="quick-icon quick-icon-profile">我</view>
-      <text class="quick-label">我的</text>
-    </view>
-  </view>
-
-  <view class="section-row section-row-spaced">
-    <text class="section-title">附近权益</text>
-    <text class="section-more" role="button" bindtap="goExchange">去置换</text>
-  </view>
-
-  <view class="benefit-list">
-    <block wx:if="{{benefits.length}}">
-      <block wx:for="{{benefits}}" wx:key="id">
-        <view class="benefit-card card" role="button" bindtap="goExchange">
-          <image class="benefit-image" src="{{item.image}}" mode="aspectFill"></image>
-          <view class="benefit-copy">
-            <view class="benefit-title-row">
-              <text class="benefit-name">{{item.name}}</text>
-              <text class="benefit-amount">¥{{item.exchangeAmountText}}</text>
-            </view>
-            <text class="benefit-store">{{item.store}}</text>
-            <view class="tag-row">
-              <block wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
-                <text class="tag">{{tag}}</text>
-              </block>
-            </view>
+    <block wx:for="{{localDeals}}" wx:key="renderId">
+      <view class="deal-card">
+        <image class="deal-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="deal-info">
+          <text class="deal-title">{{item.title}}</text>
+          <view class="tag-row">
+            <text class="tag">{{item.area}}</text>
+            <text class="tag">{{item.category}}</text>
+          </view>
+          <text class="coupon-badge">{{item.badge}}</text>
+          <view class="price-row">
+            <text class="price">{{item.price}}</text>
+            <view class="view-button" role="button" bindtap="goLatestCoupon">购买</view>
           </view>
         </view>
-      </block>
+      </view>
     </block>
-    <view wx:else class="empty">附近权益持续接入中</view>
-  </view>
-
-  <view class="section-row section-row-spaced">
-    <text class="section-title">最新现金券</text>
-    <text class="section-more" role="button" bindtap="goCoupons">全部</text>
-  </view>
-
-  <view wx:if="{{latestCoupon}}" class="coupon-preview card" role="button" bindtap="goLatestCoupon">
-    <view class="coupon-preview-main">
-      <text class="coupon-preview-title">{{latestCoupon.title}}</text>
-      <text class="coupon-preview-store">{{latestCoupon.store}}</text>
-      <text class="coupon-preview-expiry">{{latestCoupon.expiresText}} 到期</text>
-    </view>
-    <view class="coupon-preview-side">
-      <text class="coupon-preview-amount">¥{{latestCoupon.amountText}}</text>
-      <text class="coupon-preview-threshold">{{latestCoupon.thresholdText}}</text>
-    </view>
   </view>
 </view>

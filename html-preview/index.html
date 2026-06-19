@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>同城名惠小程序 UI 总览</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #071426;
+      --muted: #667185;
+      --line: rgba(7, 20, 38, .1);
+      --teal: #006b68;
+      --soft: #eef7f6;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(520px 360px at 10% 0%, rgba(190, 239, 229, .68), transparent 72%),
+        linear-gradient(180deg, #f7fcfb 0%, #eff5f5 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 44px 28px 64px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 36px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      margin: 12px 0 0;
+      color: #3f4d61;
+      font-size: 16px;
+    }
+    .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .pill {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 14px;
+      border: 1px solid rgba(0, 107, 104, .16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .72);
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .code-entry {
+      margin-top: 16px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid rgba(0, 107, 104, .16);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .76);
+    }
+    .code-entry strong {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+    .code-entry span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .code-entry a {
+      flex: none;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #007a75, #005f5d);
+    }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      margin: 0 -28px 30px;
+      padding: 12px 28px;
+      backdrop-filter: blur(18px);
+      background: rgba(247, 252, 251, .78);
+      border-bottom: 1px solid rgba(7, 20, 38, .06);
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+    }
+    .nav a {
+      flex: none;
+      text-decoration: none;
+      color: #334153;
+      padding: 9px 13px;
+      border: 1px solid rgba(7, 20, 38, .08);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .74);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .nav a:first-child {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #007a75, #005f5d);
+    }
+    .section {
+      margin-top: 34px;
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+    .section-desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+    .screen-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .76);
+    }
+    .screen-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .screen-title span:last-child {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .shot {
+      display: block;
+      width: 100%;
+      max-width: 375px;
+      margin: 0 auto;
+      border-radius: 10px;
+      border: 1px solid rgba(7, 20, 38, .08);
+      background: #f8fbfb;
+    }
+    .overview {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(7, 20, 38, .08);
+      background: rgba(255, 255, 255, .74);
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .flow-card {
+      border: 1px solid rgba(0, 107, 104, .16);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .68);
+      padding: 16px;
+    }
+    .flow-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--teal);
+      font-size: 15px;
+    }
+    .flow-card p {
+      margin: 0;
+      color: #536174;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    @media (max-width: 720px) {
+      .page { padding: 28px 14px 44px; }
+      .hero { grid-template-columns: 1fr; }
+      .meta { justify-content: flex-start; }
+      .code-entry { align-items: flex-start; flex-direction: column; }
+      .nav { margin-left: -14px; margin-right: -14px; padding-left: 14px; padding-right: 14px; }
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <h1>同城名惠小程序 UI 总览</h1>
+        <p class="subtitle">覆盖首页、优惠券、置换、抽奖、我的，以及优惠券核销、置换提交、记录类二级页面。</p>
+      </div>
+      <div class="meta">
+        <span class="pill">375 × 812px</span>
+        <span class="pill">微信小程序</span>
+        <span class="pill">浅青渐变风格</span>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <a href="#overview">总览图</a>
+      <a href="downstream-screens.html">上下游 HTML</a>
+      <a href="#tabs">底部 Tab</a>
+      <a href="#coupon-flow">优惠券上下游</a>
+      <a href="#exchange-flow">置换上下游</a>
+      <a href="#lottery-flow">抽奖上下游</a>
+      <a href="#flow-map">链路说明</a>
+    </nav>
+
+    <section class="section" id="new-html-flows">
+      <div class="section-head">
+        <h2>新增 HTML 预览</h2>
+        <p class="section-desc">充值支付订单链路与待补上下游功能，已放入仓库 html-preview 目录。</p>
+      </div>
+      <div class="code-entry">
+        <div>
+          <strong>充值支付订单上下游 HTML</strong>
+          <span>覆盖充值额度、余额明细、确认订单、选择支付、支付成功、我的订单 6 张 375×812px 预览页。</span>
+        </div>
+        <a href="payment-flow-ui.html">查看充值支付订单</a>
+      </div>
+      <div class="code-entry">
+        <div>
+          <strong>待补上下游功能 HTML</strong>
+          <span>覆盖优惠券资产入口、资产流水、个人资料、全部动态、充值额度、更多商家、订单确认、提交成功等候选页。</span>
+        </div>
+        <a href="missing-flow-ui.html">查看待补功能</a>
+      </div>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="section-head">
+        <h2>高清总览图</h2>
+        <p class="section-desc">完整页面矩阵，适合 PRD 或设计评审快速查看。</p>
+      </div>
+      <img class="overview" src="assets/wechat-miniapp-ui-overview.png" alt="同城名惠小程序高清总览图">
+      <div class="code-entry">
+        <div>
+          <strong>上下游页面 HTML 代码还原</strong>
+          <span>首页和优惠券页沿用已有 HTML；这里只补置换、抽奖、我的和二级页面。</span>
+        </div>
+        <a href="downstream-screens.html">查看 HTML 页面</a>
+      </div>
+    </section>
+
+    <section class="section" id="tabs">
+      <div class="section-head">
+        <h2>底部 Tab 主页面</h2>
+        <p class="section-desc">五个一级栏目：首页、优惠券、置换、抽奖、我的。</p>
+      </div>
+      <div class="grid">
+        <article class="screen-card"><div class="screen-title"><span>首页</span><span>Tab 1</span></div><img class="shot" src="assets/01-home.png" alt="首页"></article>
+        <article class="screen-card"><div class="screen-title"><span>优惠券</span><span>Tab 2</span></div><img class="shot" src="assets/02-cash.png" alt="优惠券"></article>
+        <article class="screen-card"><div class="screen-title"><span>置换</span><span>Tab 3</span></div><img class="shot" src="assets/03-exchange.png" alt="置换"></article>
+        <article class="screen-card"><div class="screen-title"><span>抽奖</span><span>Tab 4</span></div><img class="shot" src="assets/04-lottery.png" alt="抽奖"></article>
+        <article class="screen-card"><div class="screen-title"><span>我的</span><span>Tab 5</span></div><img class="shot" src="assets/05-mine.png" alt="我的"></article>
+      </div>
+    </section>
+
+    <section class="section" id="coupon-flow">
+      <div class="section-head">
+        <h2>优惠券上下游</h2>
+        <p class="section-desc">从优惠券列表进入资产、详情、出示券码与核销。</p>
+      </div>
+      <div class="grid">
+        <article class="screen-card"><div class="screen-title"><span>优惠券列表</span><span>入口</span></div><img class="shot" src="assets/02-cash.png" alt="优惠券列表"></article>
+        <article class="screen-card"><div class="screen-title"><span>优惠券资产</span><span>我的二级页</span></div><img class="shot" src="assets/06-cash-assets.png" alt="优惠券资产"></article>
+        <article class="screen-card"><div class="screen-title"><span>出示券码</span><span>核销</span></div><img class="shot" src="assets/07-coupon-code.png" alt="出示券码"></article>
+        <article class="screen-card"><div class="screen-title"><span>优惠券详情</span><span>购买/说明</span></div><img class="shot" src="assets/08-coupon-detail.png" alt="优惠券详情"></article>
+      </div>
+    </section>
+
+    <section class="section" id="exchange-flow">
+      <div class="section-head">
+        <h2>置换上下游</h2>
+        <p class="section-desc">从置换首页发起置换，进入记录页追踪状态。</p>
+      </div>
+      <div class="grid">
+        <article class="screen-card"><div class="screen-title"><span>权益置换</span><span>入口</span></div><img class="shot" src="assets/03-exchange.png" alt="权益置换"></article>
+        <article class="screen-card"><div class="screen-title"><span>发起置换</span><span>提交</span></div><img class="shot" src="assets/09-exchange-submit.png" alt="发起置换"></article>
+        <article class="screen-card"><div class="screen-title"><span>置换记录</span><span>进度</span></div><img class="shot" src="assets/10-exchange-records.png" alt="置换记录"></article>
+      </div>
+    </section>
+
+    <section class="section" id="lottery-flow">
+      <div class="section-head">
+        <h2>抽奖上下游</h2>
+        <p class="section-desc">四位数参与抽奖，记录页追踪中奖和发券结果。</p>
+      </div>
+      <div class="grid">
+        <article class="screen-card"><div class="screen-title"><span>四位数抽奖</span><span>入口</span></div><img class="shot" src="assets/04-lottery.png" alt="四位数抽奖"></article>
+        <article class="screen-card"><div class="screen-title"><span>抽奖记录</span><span>历史</span></div><img class="shot" src="assets/11-lottery-records.png" alt="抽奖记录"></article>
+      </div>
+    </section>
+
+    <section class="section" id="flow-map">
+      <div class="section-head">
+        <h2>上下游链路说明</h2>
+        <p class="section-desc">给开发和评审看的页面关系。</p>
+      </div>
+      <div class="flow">
+        <div class="flow-card"><strong>首页 → 优惠券</strong><p>首页“买优惠券”和底部第二个 Tab 进入优惠券列表，列表承接团购券浏览、筛选与抢购。</p></div>
+        <div class="flow-card"><strong>优惠券 → 出示券码</strong><p>用户购买或在“我的优惠券资产”中选择券后进入券码页，用于线下到店核销。</p></div>
+        <div class="flow-card"><strong>置换 → 发起置换 → 记录</strong><p>置换页展示可兑换商家，提交置换申请后在记录页查看待确认、已完成、已失效状态。</p></div>
+        <div class="flow-card"><strong>抽奖 → 抽奖记录</strong><p>抽奖页输入四位数参与，记录页展示参与号码、中奖号码和中奖权益。</p></div>
+        <div class="flow-card"><strong>我的 → 资产与记录</strong><p>个人中心聚合优惠券资产、抽奖记录、置换记录、核销记录和资产流水入口。</p></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

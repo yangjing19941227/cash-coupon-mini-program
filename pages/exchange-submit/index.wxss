@@ -1,0 +1,73 @@
+@import "../../styles/downstream.wxss";
+
+.credit-card {
+  height: 208rpx;
+  padding: 44rpx;
+}
+
+.credit-row {
+  margin-top: 18rpx;
+  display: grid;
+  grid-template-columns: auto 1fr 192rpx;
+  gap: 22rpx;
+  align-items: center;
+}
+
+.credit-num {
+  color: #006b68;
+  font-size: 64rpx;
+  font-weight: 900;
+}
+
+.credit-btn {
+  min-height: 64rpx;
+  padding: 0 24rpx;
+  border-radius: 34rpx;
+}
+
+.submit-card {
+  margin-top: 40rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.merchant-title,
+.wait-title {
+  color: #071426;
+  font-size: 36rpx;
+  font-weight: 900;
+}
+
+.tag-row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.input-like {
+  height: 116rpx;
+  border: 1rpx solid #d6e8e8;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  color: #006b68;
+  font-size: 52rpx;
+  font-weight: 900;
+}
+
+.input-unit {
+  margin-left: 14rpx;
+  color: #071426;
+  font-size: 28rpx;
+  font-weight: 400;
+}
+
+.wait-card {
+  margin-top: 40rpx;
+  padding: 36rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}

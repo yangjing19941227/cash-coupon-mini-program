@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>充值支付订单上下游 UI 预览</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root { --ink:#071426; --muted:#667185; --teal:#006b68; --red:#ef4b2e; --line:rgba(8,23,43,.09); --soft:rgba(0,104,103,.18); }
+    body { margin:0; background:#edf4f4; color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; }
+    .board { width:1264px; margin:0 auto; padding:34px 32px 44px; }
+    .board-head { display:flex; align-items:end; justify-content:space-between; margin-bottom:26px; }
+    h1 { margin:0; font-size:34px; line-height:1.15; }
+    .board-head p { margin:9px 0 0; color:#526175; font-size:16px; }
+    .badge { height:34px; padding:0 14px; display:inline-flex; align-items:center; border:1px solid rgba(0,107,104,.16); border-radius:999px; background:rgba(255,255,255,.76); color:var(--teal); font-weight:800; font-size:13px; }
+    .grid { display:grid; grid-template-columns:repeat(3,375px); gap:28px; align-items:start; }
+    .wrap-title { margin:0 0 10px; color:#243349; font-size:15px; font-weight:800; }
+    .phone { position:relative; width:375px; height:812px; overflow:hidden; border:1px solid rgba(7,20,38,.08); border-radius:4px; background:radial-gradient(190px 310px at 6% 0%,rgba(184,236,225,.62),rgba(255,255,255,0) 67%),linear-gradient(180deg,#f8fdfc 0%,#f7fbfa 43%,#fff 100%); }
+    .status { position:absolute; z-index:5; left:30px; right:23px; top:18px; height:18px; display:flex; justify-content:space-between; align-items:center; color:#000; font-size:15px; font-weight:800; }
+    .sys { display:flex; gap:6px; align-items:center; }
+    .bars { display:flex; gap:2px; align-items:end; height:12px; }
+    .bars i { display:block; width:3px; border-radius:2px; background:#000; }
+    .bars i:nth-child(1){height:5px}.bars i:nth-child(2){height:8px}.bars i:nth-child(3){height:11px}.bars i:nth-child(4){height:13px}
+    .wifi { width:17px; height:12px; border:3px solid #000; border-left-color:transparent; border-right-color:transparent; border-bottom:0; border-radius:16px 16px 0 0; }
+    .battery { width:23px; height:12px; border:1.5px solid #222; border-radius:3px; padding:2px; position:relative; }
+    .battery::before { content:""; position:absolute; right:-4px; top:3px; width:2px; height:5px; border-radius:1px; background:#222; }
+    .battery::after { content:""; display:block; width:16px; height:6px; border-radius:1px; background:#111; }
+    .top { position:absolute; z-index:4; top:55px; left:18px; right:18px; height:36px; display:grid; grid-template-columns:70px 1fr 78px; gap:14px; align-items:center; }
+    .back { font-size:31px; line-height:1; font-weight:400; }
+    .title-center { text-align:center; font-size:19px; font-weight:900; }
+    .capsule-space { width:78px; height:32px; }
+    .content { position:relative; z-index:2; padding:104px 16px 78px; }
+    .card,.soft-card { border-radius:14px; background:rgba(255,255,255,.84); overflow:hidden; }
+    .card { border:1px solid var(--line); }
+    .soft-card { border:1px solid var(--soft); background:rgba(255,255,255,.66); }
+    a { text-decoration:none; color:inherit; }
+    .btn { height:42px; padding:0 18px; border-radius:22px; background:linear-gradient(135deg,#007a75,#005f5d); color:#fff; display:inline-flex; justify-content:center; align-items:center; font-weight:900; font-size:15px; white-space:nowrap; }
+    .btn.block { width:100%; border-radius:12px; }
+    .outline-btn { height:34px; border:1px solid #00706f; border-radius:18px; color:var(--teal); display:inline-flex; align-items:center; justify-content:center; padding:0 14px; font-size:13px; font-weight:800; background:rgba(255,255,255,.7); white-space:nowrap; }
+    .tag { display:inline-flex; padding:4px 8px; border-radius:5px; background:#f0f2f3; color:#596475; font-size:12px; line-height:1; }
+    .red{color:var(--red)} .teal{color:var(--teal)} .muted{color:var(--muted)}
+    h2,h3,p{margin:0} h3{font-size:18px; line-height:1.22} p{font-size:13px; line-height:1.45}
+    .hero { padding:18px 18px 20px; }
+    .hero .amount { margin:13px 0 8px; font-size:42px; line-height:1; font-weight:900; color:var(--teal); }
+    .amount-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px; }
+    .amount-item { height:64px; border:1px solid var(--soft); border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,255,255,.72); color:var(--teal); font-weight:900; }
+    .amount-item small { margin-top:5px; color:#9a6b22; font-size:11px; font-weight:700; }
+    .section { margin-top:18px; padding:18px 16px; }
+    .info-line { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0; border-bottom:1px solid var(--line); font-size:14px; }
+    .info-line:last-child{border-bottom:0}
+    .tabs { height:38px; margin:18px 0 18px; display:grid; grid-template-columns:repeat(3,1fr); align-items:center; text-align:center; border:1px solid rgba(7,20,38,.08); border-radius:22px; background:rgba(255,255,255,.74); color:#263449; font-size:14px; }
+    .tabs b { height:38px; border-radius:20px; background:#fff; color:var(--teal); display:flex; align-items:center; justify-content:center; position:relative; }
+    .tabs b::after { content:""; position:absolute; bottom:0; width:34px; height:3px; border-radius:3px; background:var(--teal); }
+    .record { display:grid; grid-template-columns:44px 1fr auto; gap:12px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line); }
+    .record:last-child{border-bottom:0}
+    .round-icon { width:44px; height:44px; border-radius:50%; background:#e9f4f2; color:var(--teal); display:flex; align-items:center; justify-content:center; font-size:22px; }
+    .cover { display:grid; grid-template-columns:92px 1fr; gap:13px; padding:13px; }
+    .cover img { width:92px; height:92px; border-radius:9px; object-fit:cover; }
+    .meta { display:flex; gap:8px; margin:10px 0 12px; }
+    .pay-row { margin-top:18px; padding:18px 16px; display:flex; align-items:center; justify-content:space-between; }
+    .pay-price { color:var(--red); font-size:32px; font-weight:900; }
+    .method { display:grid; grid-template-columns:44px 1fr 22px; gap:12px; align-items:center; padding:15px 0; border-bottom:1px solid var(--line); }
+    .method:last-child{border-bottom:0}
+    .radio { width:20px; height:20px; border-radius:50%; border:2px solid #b7c7ca; }
+    .radio.on { border:6px solid var(--teal); }
+    .success { text-align:center; padding:42px 24px 28px; }
+    .success-mark { width:76px; height:76px; margin:0 auto 20px; border-radius:50%; background:#e5f4f2; color:var(--teal); display:flex; align-items:center; justify-content:center; font-size:42px; font-weight:900; }
+    .points { margin-top:20px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .point { height:62px; border:1px solid var(--soft); border-radius:12px; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(255,255,255,.74); }
+    .point b { color:var(--teal); font-size:22px; }
+    .order-card { padding:14px; margin-bottom:12px; }
+    .order-head { display:flex; justify-content:space-between; gap:10px; margin-bottom:12px; }
+    .order-body { display:grid; grid-template-columns:76px 1fr; gap:12px; }
+    .order-body img { width:76px; height:76px; border-radius:8px; object-fit:cover; }
+    .order-foot { margin-top:12px; display:flex; justify-content:space-between; align-items:center; }
+    .footer-actions { position:absolute; left:16px; right:16px; bottom:28px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .bottom-note { position:absolute; left:16px; right:16px; bottom:28px; height:52px; border-radius:13px; border:1px solid var(--soft); background:rgba(255,255,255,.72); display:flex; align-items:center; justify-content:space-between; padding:0 16px; color:var(--teal); font-size:14px; font-weight:800; }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header class="board-head">
+      <div>
+        <h1>充值支付订单上下游 UI 高清预览</h1>
+        <p>覆盖上游充值储值与余额管理，中游下单支付，下游订单履约与售后。</p>
+      </div>
+      <span class="badge">375×812px / 6 张候选页</span>
+    </header>
+    <section class="grid">
+      <div id="recharge"><h2 class="wrap-title">01 充值额度</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">充值额度</div><div class="capsule-space"></div></div><div class="content"><section class="soft-card hero"><p class="muted">当前可用余额</p><div class="amount">￥860</div><p>充值可用于购买优惠券、置换商家权益</p></section><section class="card section"><h3>选择储值档位</h3><div class="amount-grid"><div class="amount-item">￥100<small>送10元</small></div><div class="amount-item">￥300<small>送45元</small></div><div class="amount-item">￥500<small>送90元</small></div><div class="amount-item">￥800<small>送160元</small></div><div class="amount-item">￥1000<small>送220元</small></div><div class="amount-item">自定义<small>最低50元</small></div></div></section><section class="card section"><div class="info-line"><span>支付渠道</span><b>微信支付 ›</b></div><div class="info-line"><span>到账方式</span><b>支付成功即时到账</b></div><div class="info-line"><span>可提现余额</span><b>支持原路提现</b></div></section><a class="bottom-note" href="#balance"><span>充值前请确认储值规则</span><span>›</span></a></div></div></div>
+      <div id="balance"><h2 class="wrap-title">02 余额与记录</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">余额明细</div><div class="capsule-space"></div></div><div class="content"><section class="soft-card hero"><p class="muted">账户余额</p><div class="amount">￥860</div><p>含赠送余额 ￥45 · 可提现 ￥300</p></section><div class="tabs"><b>全部</b><span>充值</span><span>提现</span></div><section class="card section"><div class="record"><div class="round-icon">＋</div><div><h3>充值到账</h3><p class="muted">微信支付 · 今天 14:20</p></div><b class="red">+￥345</b></div><div class="record"><div class="round-icon">↩</div><div><h3>提现申请</h3><p class="muted">原路退回 · 昨天 09:15</p></div><b>-￥100</b></div><div class="record"><div class="round-icon">券</div><div><h3>购买优惠券</h3><p class="muted">海岛小院套餐券</p></div><b>-￥128</b></div><div class="record"><div class="round-icon">送</div><div><h3>储值赠送</h3><p class="muted">充300送45活动</p></div><b class="red">+￥45</b></div></section></div></div></div>
+      <div id="order"><h2 class="wrap-title">03 确认订单</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">确认订单</div><div class="capsule-space"></div></div><div class="content"><section class="card cover"><img src="assets/deal-seafood.png"><div><h3>海岛小院·双人海鲜套餐券</h3><div class="meta"><span class="tag">海口</span><span class="tag">餐饮美食</span></div><p class="red">券后可省 ￥68</p></div></section><section class="card section"><div class="info-line"><span>商品金额</span><b>￥196</b></div><div class="info-line"><span>优惠券抵扣</span><b class="red">-￥68</b></div><div class="info-line"><span>购买数量</span><b>1 张</b></div><div class="info-line"><span>预计积分</span><b class="teal">+128</b></div></section><section class="soft-card pay-row"><div><p class="muted">应付金额</p><div class="pay-price">￥128</div></div><a class="btn" href="#pay">提交订单</a></section><a class="bottom-note" href="#pay"><span>提交后进入支付确认</span><span>›</span></a></div></div></div>
+      <div id="pay"><h2 class="wrap-title">04 选择支付</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">选择支付</div><div class="capsule-space"></div></div><div class="content"><section class="soft-card hero"><p class="muted">订单金额</p><div class="amount">￥128</div><p>订单号 2026061909412806</p></section><section class="card section"><h3>支付方式</h3><div class="method"><div class="round-icon">微</div><div><h3>微信支付</h3><p class="muted">推荐使用，支付后即时到账</p></div><div class="radio on"></div></div><div class="method"><div class="round-icon">支</div><div><h3>支付宝</h3><p class="muted">支持余额、银行卡支付</p></div><div class="radio"></div></div><div class="method"><div class="round-icon">银</div><div><h3>网银支付</h3><p class="muted">适合大额储值或企业付款</p></div><div class="radio"></div></div></section><div class="footer-actions"><a class="outline-btn" href="#order">取消支付</a><a class="btn" href="#success">确认支付</a></div></div></div></div>
+      <div id="success"><h2 class="wrap-title">05 支付成功</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">支付成功</div><div class="capsule-space"></div></div><div class="content"><section class="soft-card success"><div class="success-mark">✓</div><h2>支付成功</h2><p class="muted" style="margin-top:10px">订单已生成，优惠券已加入资产</p><div class="points"><div class="point"><b>￥128</b><span class="muted">实付</span></div><div class="point"><b>+128</b><span class="muted">积分</span></div><div class="point"><b>1张</b><span class="muted">到账</span></div></div></section><section class="card section"><div class="info-line"><span>订单编号</span><b>2026061909412806</b></div><div class="info-line"><span>支付方式</span><b>微信支付</b></div><div class="info-line"><span>到账资产</span><b class="teal">海岛小院套餐券</b></div></section><div class="footer-actions"><a class="outline-btn" href="#orders">查看订单</a><a class="btn" href="downstream-screens.html#coupon-code">去使用</a></div></div></div></div>
+      <div id="orders"><h2 class="wrap-title">06 我的订单</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top"><div class="back">‹</div><div class="title-center">我的订单</div><div class="capsule-space"></div></div><div class="content"><div class="tabs"><b>全部</b><span>待使用</span><span>售后</span></div><section><div class="card order-card"><div class="order-head"><b>海岛小院龙华店</b><span class="teal">待使用</span></div><div class="order-body"><img src="assets/deal-seafood.png"><div><h3>双人海鲜套餐券</h3><p class="muted">下单时间 今天 09:41</p><p class="red">￥128</p></div></div><div class="order-foot"><span class="muted">积分 +128</span><a class="btn" style="height:32px" href="downstream-screens.html#coupon-code">出示券码</a></div></div><div class="card order-card"><div class="order-head"><b>海口湾甜品</b><span class="muted">已完成</span></div><div class="order-body"><img src="assets/merchant-dessert.png"><div><h3>下午茶双人券</h3><p class="muted">昨天 15:20 已核销</p><p class="red">￥68</p></div></div><div class="order-foot"><span class="muted">售后截止 06-25</span><a class="outline-btn" href="#orders">申请售后</a></div></div><div class="card order-card"><div class="order-head"><b>亲子乐园</b><span class="red">退款中</span></div><div class="order-body"><img src="assets/merchant-playground.png"><div><h3>周末亲子门票券</h3><p class="muted">退款原路返回中</p><p class="red">￥96</p></div></div><div class="order-foot"><span class="muted">预计1-3天到账</span><a class="outline-btn" href="#orders">查看进度</a></div></div></section></div></div></div>
+    </section>
+  </main>
+</body>
+</html>

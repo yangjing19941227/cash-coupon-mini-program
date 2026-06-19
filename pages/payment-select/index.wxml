@@ -1,0 +1,25 @@
+<view class="ds-page payment-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">选择支付</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-soft-card pay-hero">
+    <text class="ds-muted">订单金额</text>
+    <text class="pay-amount">{{amount}}</text>
+    <text>订单号 2026061909412806</text>
+  </view>
+
+  <view class="ds-card pay-section">
+    <text class="ds-section-title">支付方式</text>
+    <view class="pay-method"><view class="pay-round">微</view><view><text class="record-title">微信支付</text><text class="ds-muted">推荐使用，支付后即时到账</text></view><view class="radio on"></view></view>
+    <view class="pay-method"><view class="pay-round">支</view><view><text class="record-title">支付宝</text><text class="ds-muted">支持余额、银行卡支付</text></view><view class="radio"></view></view>
+    <view class="pay-method"><view class="pay-round">银</view><view><text class="record-title">网银支付</text><text class="ds-muted">适合大额储值或企业付款</text></view><view class="radio"></view></view>
+  </view>
+
+  <view class="footer-actions">
+    <view class="ds-outline-btn" bindtap="goBack">取消支付</view>
+    <view class="ds-btn" bindtap="goPaymentSuccess">确认支付</view>
+  </view>
+</view>

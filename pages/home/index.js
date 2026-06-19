@@ -20,6 +20,41 @@ const EMPTY_SUMMARY = {
   expiringCount: 0,
 };
 
+const LOCAL_DEAL_SEEDS = [
+  {
+    title: '海岛小院 · 双人海鲜套餐券',
+    area: '海口 · 龙华区',
+    category: '餐饮美食',
+    badge: '优惠券可抵 ￥68',
+    price: '￥128',
+    image: '/assets/images/deal-seafood.png',
+  },
+  {
+    title: '海口湾下午茶双人券',
+    area: '海口 · 秀英区',
+    category: '甜品饮品',
+    badge: '优惠券可抵 ￥20',
+    price: '￥49',
+    image: '/assets/images/deal-tea.png',
+  },
+  {
+    title: '亲子乐园周末通用券',
+    area: '海口 · 美兰区',
+    category: '亲子娱乐',
+    badge: '优惠券可抵 ￥60',
+    price: '￥99',
+    image: '/assets/images/deal-family-park.png',
+  },
+  {
+    title: '骑楼老街美食套餐券',
+    area: '海口 · 龙华区',
+    category: '本地小吃',
+    badge: '优惠券可抵 ￥30',
+    price: '￥58',
+    image: '/assets/images/deal-qilou-food.png',
+  },
+];
+
 function hasWxApi(apiName) {
   return typeof wx !== 'undefined' && typeof wx[apiName] === 'function';
 }
@@ -66,7 +101,7 @@ function createHomeViewModel(profile, summary, benefits, coupons) {
 
   return {
     profile,
-    locationText: `${profile.city || '同城'} · ${profile.district || '附近'}`,
+    locationText: `${profile.city || '海口'} · ${profile.district || '龙华区'}`,
     savedAmountText: formatAmount(profile.savedAmount),
     totalValueText: formatAmount(summary.totalValue),
     exchangeAmountText: formatAmount(profile.exchangeAmount),
@@ -76,6 +111,18 @@ function createHomeViewModel(profile, summary, benefits, coupons) {
     benefits: benefits.slice(0, 2).map(createBenefitViewModel),
     latestCoupon: createCouponViewModel(latestCoupon),
   };
+}
+
+function createLocalDeals(startIndex, count) {
+  return Array.from({ length: count }, (_, offset) => {
+    const absoluteIndex = startIndex + offset;
+    const seed = LOCAL_DEAL_SEEDS[absoluteIndex % LOCAL_DEAL_SEEDS.length];
+
+    return {
+      ...seed,
+      renderId: `${seed.title}-${absoluteIndex}`,
+    };
+  });
 }
 
 function switchTo(payload) {
@@ -99,6 +146,7 @@ Page({
 
   data: {
     ...createHomeViewModel(EMPTY_PROFILE, EMPTY_SUMMARY, [], []),
+    localDeals: createLocalDeals(0, 8),
   },
 
   onLoad() {
@@ -119,7 +167,7 @@ Page({
     const profile = getUserProfile();
     const summary = getCouponSummary();
     const benefits = getMerchantBenefits();
-    const coupons = getCoupons('全部');
+    const coupons = getCoupons();
 
     this.setData(createHomeViewModel(profile, summary, benefits, coupons));
   },
@@ -156,7 +204,7 @@ Page({
     }
 
     navigateTo({
-      url: `/pages/coupon-code/index?id=${coupon.id}`,
+      url: `/pages/order-confirm/index?id=${coupon.id}`,
     });
   },
 });

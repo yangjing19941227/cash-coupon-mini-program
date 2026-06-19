@@ -1,0 +1,35 @@
+<view class="ds-page payment-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">充值额度</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-soft-card pay-hero">
+    <text class="ds-muted">当前可用余额</text>
+    <text class="pay-amount">￥860</text>
+    <text>充值可用于购买优惠券、置换商家权益</text>
+  </view>
+
+  <view class="ds-card pay-section">
+    <text class="ds-section-title">选择储值档位</text>
+    <view class="amount-grid">
+      <view class="amount-item" bindtap="goPaymentSelect"><text>￥100</text><text>送10元</text></view>
+      <view class="amount-item selected" bindtap="goPaymentSelect"><text>￥300</text><text>送45元</text></view>
+      <view class="amount-item" bindtap="goPaymentSelect"><text>￥500</text><text>送90元</text></view>
+      <view class="amount-item" bindtap="goPaymentSelect"><text>￥800</text><text>送160元</text></view>
+      <view class="amount-item" bindtap="goPaymentSelect"><text>￥1000</text><text>送220元</text></view>
+      <view class="amount-item" bindtap="goPaymentSelect"><text>自定义</text><text>最低50元</text></view>
+    </view>
+  </view>
+
+  <view class="ds-card pay-section">
+    <view class="ds-info-line"><text>支付渠道</text><text>微信支付 ›</text></view>
+    <view class="ds-info-line"><text>到账方式</text><text>支付成功即时到账</text></view>
+    <view class="ds-info-line"><text>可提现余额</text><text>支持原路提现</text></view>
+  </view>
+
+  <view class="ds-soft-card bottom-link" bindtap="goBalanceRecords">
+    <text>查看余额与充值记录</text><text>›</text>
+  </view>
+</view>

@@ -1,0 +1,2 @@
+@import "../../styles/downstream.wxss";
+@import "../../styles/payment-flow.wxss";

@@ -1,0 +1,51 @@
+<view class="ds-page coupon-assets-page">
+  <view class="ds-top">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">优惠券资产</view>
+    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+  </view>
+
+  <view class="ds-soft-card assets-top">
+    <view class="asset-stat"><text>可用优惠券</text><view><text class="asset-num">12</text><text> 张</text></view></view>
+    <view class="asset-stat"><text>总面值</text><view><text class="asset-num ds-teal">￥328</text></view></view>
+    <view class="asset-stat"><text>已核销</text><view><text class="asset-num">8</text><text> 张</text></view></view>
+    <view class="asset-stat"><text>即将过期</text><view><text class="asset-num ds-red">2</text><text> 张</text></view></view>
+  </view>
+
+  <view class="tabs4">
+    <text class="active">全部</text><text>餐饮</text><text>娱乐</text><text>即将过期</text>
+  </view>
+
+  <view class="ds-card coupon-list">
+    <view class="coupon-row" bindtap="goCouponDetail">
+      <view class="ds-round-icon">🍴</view>
+      <view class="coupon-main">
+        <text class="coupon-title">骑楼老街美食券</text>
+        <text class="coupon-cut">满100减30</text>
+        <view class="tag-row"><text class="ds-tag">餐饮美食</text><text class="ds-tag">通用券</text></view>
+        <text class="ds-muted">◷ 2026-06-30 23:59 到期</text>
+      </view>
+      <view class="coupon-side"><text class="ds-tag ds-teal">未使用</text><text class="coupon-price">￥30</text><view class="ds-btn use-btn" catchtap="goCouponCode">去使用</view></view>
+    </view>
+    <view class="coupon-row" bindtap="goCouponDetail">
+      <view class="ds-round-icon">☕</view>
+      <view class="coupon-main">
+        <text class="coupon-title">海口湾下午茶券</text>
+        <text class="coupon-cut">立减20</text>
+        <view class="tag-row"><text class="ds-tag">休闲饮品</text><text class="ds-tag">仅限饮品类</text></view>
+        <text class="ds-muted">◷ 2026-06-25 23:59 到期</text>
+      </view>
+      <view class="coupon-side"><text class="ds-tag ds-teal">未使用</text><text class="coupon-price">￥20</text><view class="ds-btn use-btn" catchtap="goCouponCode">去使用</view></view>
+    </view>
+    <view class="coupon-row" bindtap="goCouponDetail">
+      <view class="ds-round-icon">▱</view>
+      <view class="coupon-main">
+        <text class="coupon-title">亲子乐园通用券</text>
+        <text class="coupon-cut">满200减60</text>
+        <view class="tag-row"><text class="ds-tag">亲子乐园</text><text class="ds-tag">周末节假日可用</text></view>
+        <text class="ds-muted">◷ 2026-07-05 23:59 到期</text>
+      </view>
+      <view class="coupon-side"><text class="ds-tag ds-teal">未使用</text><text class="coupon-price">￥60</text><view class="ds-btn use-btn" catchtap="goCouponCode">去使用</view></view>
+    </view>
+  </view>
+</view>

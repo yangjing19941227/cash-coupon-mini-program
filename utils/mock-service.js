@@ -102,6 +102,7 @@ function submitLottery(number) {
     prize: state.lotteryState.prize,
     amount: 30,
     createdAt: new Date().toISOString(),
+    status: 'pending',
   };
 
   state.lotteryRecords.unshift(record);

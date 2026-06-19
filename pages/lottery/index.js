@@ -1,177 +1,182 @@
-const {
-  getLotteryState,
-  generateLotteryNumber,
-  submitLottery,
-} = require('../../utils/mock-service');
+const DRAW_HOUR = 21;
+const DRAW_MINUTE = 38;
 
-const EMPTY_STATE = {
-  city: '',
-  todayLeft: 0,
-  prize: '',
-  drawTime: '',
-  range: '',
-  currentNumber: '',
-};
-
-function hasWxApi(apiName) {
-  return typeof wx !== 'undefined' && typeof wx[apiName] === 'function';
+function createEmptyDigits() {
+  return ['', '', '', ''];
 }
 
-function splitNumber(number) {
-  const digits = String(number || '').slice(0, 4).split('');
-
-  return [0, 1, 2, 3].map((index) => {
-    const value = digits[index] || '';
-
-    return {
-      id: `digit-${index}`,
-      value,
-      className: value ? 'number-box-filled' : 'number-box-empty',
-    };
-  });
+function pad(value) {
+  return String(value).padStart(2, '0');
 }
 
-function sanitizeNumberInput(value) {
-  return String(value || '').replace(/\D/g, '').slice(0, 4);
-}
+function getNextDrawTime(now = new Date()) {
+  const drawTime = new Date(now);
+  drawTime.setHours(DRAW_HOUR, DRAW_MINUTE, 0, 0);
 
-function isCompleteNumber(number) {
-  return /^\d{4}$/.test(String(number || ''));
-}
-
-function createInfoTiles(state) {
-  return [
-    {
-      id: 'left',
-      icon: '时',
-      label: '今日剩余',
-      value: `${state.todayLeft}次`,
-      className: 'info-value-strong',
-    },
-    {
-      id: 'prize',
-      icon: '礼',
-      label: '奖品',
-      value: state.prize,
-      className: '',
-    },
-    {
-      id: 'draw',
-      icon: '钟',
-      label: '本期开奖',
-      value: state.drawTime,
-      className: 'info-value-strong',
-    },
-    {
-      id: 'range',
-      icon: '券',
-      label: '号码区间',
-      value: state.range,
-      className: '',
-    },
-  ];
-}
-
-function createLotteryViewModel(state) {
-  const currentNumber = String(state.currentNumber || '');
-  const submitDisabled = !isCompleteNumber(currentNumber) || Number(state.todayLeft || 0) <= 0;
-
-  return {
-    lotteryState: state,
-    cityText: `${state.city || '同城'} · 本期权益开奖`,
-    currentNumber,
-    numberBoxes: splitNumber(currentNumber),
-    todayLeft: state.todayLeft,
-    prize: state.prize,
-    drawTime: state.drawTime,
-    range: state.range,
-    infoTiles: createInfoTiles(state),
-    submitDisabled,
-    submitDisabledClass: submitDisabled ? 'submit-btn-disabled' : '',
-  };
-}
-
-function showToast(title) {
-  if (!hasWxApi('showToast')) {
-    return;
+  if (drawTime <= now) {
+    drawTime.setDate(drawTime.getDate() + 1);
   }
 
-  wx.showToast({
-    title,
-    icon: 'none',
-  });
+  return drawTime;
+}
+
+function formatCountdown(targetTime) {
+  const diff = Math.max(0, targetTime.getTime() - Date.now());
+  const totalSeconds = Math.ceil(diff / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `距离开奖还有 ${hours} 小时 ${pad(minutes)} 分钟`;
+  }
+
+  return `距离开奖还有 ${pad(minutes)}:${pad(seconds)}`;
+}
+
+function generateNumber() {
+  return Array.from({ length: 4 }, () => String(Math.floor(Math.random() * 10)));
 }
 
 Page({
-  data: createLotteryViewModel(EMPTY_STATE),
+  _drawTimer: null,
+  _drawTime: null,
 
-  onLoad() {
-    this.loadLotteryState();
+  data: {
+    digits: ['3', '8', '0', '6'],
+    isSubmitted: false,
+    submitButtonText: '提交号码',
+    countdownText: '',
+    showResultModal: false,
+    resultTitle: '',
+    resultButtonText: '',
+    winningNumber: '',
+    userNumber: '',
+    isWinner: false,
   },
 
-  onShow() {
-    this.loadLotteryState();
+  onUnload() {
+    this.clearDrawTimer();
   },
 
-  loadLotteryState() {
-    const state = getLotteryState();
+  onDigitInput(event) {
+    if (this.data.isSubmitted) {
+      return;
+    }
 
-    this.setData(createLotteryViewModel(state));
+    const index = Number(event.currentTarget.dataset.index);
+    const value = String(event.detail.value || '').replace(/\D/g, '').slice(-1);
+    const digits = [...this.data.digits];
+    digits[index] = value;
+
+    this.setData({ digits });
   },
 
-  generateNumber() {
-    generateLotteryNumber();
-    this.loadLotteryState();
-  },
-
-  handleNumberInput(event) {
-    const currentNumber = sanitizeNumberInput(event && event.detail ? event.detail.value : '');
-    const submitDisabled = !isCompleteNumber(currentNumber) || Number(this.data.todayLeft || 0) <= 0;
+  generateRandomDigits() {
+    if (this.data.isSubmitted) {
+      return;
+    }
 
     this.setData({
-      currentNumber,
-      numberBoxes: splitNumber(currentNumber),
-      submitDisabled,
-      submitDisabledClass: submitDisabled ? 'submit-btn-disabled' : '',
+      digits: generateNumber(),
     });
   },
 
   submitNumber() {
-    const { currentNumber, todayLeft } = this.data;
+    const digits = this.data.digits;
 
-    if (!isCompleteNumber(currentNumber)) {
-      showToast('请输入完整四位数');
+    if (digits.some((digit) => digit === '')) {
+      if (typeof wx !== 'undefined' && wx.showToast) {
+        wx.showToast({
+          title: '请输入完整4位数字',
+          icon: 'none',
+        });
+      }
       return;
     }
 
-    if (Number(todayLeft || 0) <= 0) {
-      showToast('今日次数已用完');
-      return;
-    }
+    this._drawTime = getNextDrawTime();
 
-    const result = submitLottery(currentNumber);
+    this.setData({
+      isSubmitted: true,
+      submitButtonText: '已提交，等待开奖',
+      userNumber: digits.join(''),
+      countdownText: formatCountdown(this._drawTime),
+    });
 
-    showToast(result.message);
-    this.loadLotteryState();
+    this.startDrawTimer();
   },
 
-  goRecords() {
-    if (!hasWxApi('navigateTo')) {
-      return;
-    }
+  startDrawTimer() {
+    this.clearDrawTimer();
 
-    wx.navigateTo({
-      url: '/pages/lottery-records/index',
+    this._drawTimer = setInterval(() => {
+      if (!this._drawTime) {
+        return;
+      }
+
+      if (Date.now() >= this._drawTime.getTime()) {
+        this.clearDrawTimer();
+        this.openResultModal();
+        return;
+      }
+
+      this.setData({
+        countdownText: formatCountdown(this._drawTime),
+      });
+    }, 1000);
+  },
+
+  clearDrawTimer() {
+    if (this._drawTimer) {
+      clearInterval(this._drawTimer);
+      this._drawTimer = null;
+    }
+  },
+
+  openResultModal() {
+    const winningDigits = generateNumber();
+    const winningNumber = winningDigits.join('');
+    const userNumber = this.data.userNumber;
+    const isWinner = winningNumber === userNumber;
+
+    this.setData({
+      showResultModal: true,
+      resultTitle: isWinner ? '🎉 恭喜中奖' : '很遗憾，未中奖',
+      resultButtonText: isWinner ? '查看我的奖励' : '继续参与',
+      winningNumber,
+      isWinner,
     });
   },
 
-  goRules() {
-    if (!hasWxApi('navigateTo')) {
+  handleResultAction() {
+    if (this.data.isWinner) {
+      wx.navigateTo({
+        url: '/pages/coupon-assets/index',
+      });
       return;
     }
 
+    this.clearDrawTimer();
+    this._drawTime = null;
+
+    this.setData({
+      digits: createEmptyDigits(),
+      isSubmitted: false,
+      submitButtonText: '提交号码',
+      countdownText: '',
+      showResultModal: false,
+      resultTitle: '',
+      resultButtonText: '',
+      winningNumber: '',
+      userNumber: '',
+      isWinner: false,
+    });
+  },
+
+  goLotteryRecords() {
     wx.navigateTo({
-      url: '/pages/rules/index',
+      url: '/pages/lottery-records/index',
     });
   },
 });

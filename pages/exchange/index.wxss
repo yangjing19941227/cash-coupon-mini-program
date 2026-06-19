@@ -1,299 +1,122 @@
-.exchange-page {
-  padding-bottom: 64rpx;
-  background: #f7fbfb;
+@import "../../styles/downstream.wxss";
+
+.exchange-summary {
+  height: 208rpx;
+  padding: 48rpx 36rpx;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 192rpx;
+  align-items: center;
 }
 
-.exchange-top-row {
-  min-height: 80rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24rpx;
-}
-
-.location-pill,
-.records-link {
-  display: flex;
-  align-items: center;
+.summary-item {
   min-width: 0;
-}
-
-.location-pill {
-  flex: 1;
-  gap: 12rpx;
-  color: #071827;
-  font-size: 28rpx;
-  font-weight: 700;
-}
-
-.location-mark {
-  width: 42rpx;
-  height: 42rpx;
-  border-radius: 12rpx;
-  background: #e7f4f3;
-  color: #006b68;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20rpx;
-  font-weight: 800;
-}
-
-.location-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.records-link {
-  flex-shrink: 0;
-  color: #006b68;
+  border-right: 1rpx solid rgba(34, 76, 90, 0.18);
+  color: #071426;
   font-size: 26rpx;
-  font-weight: 800;
 }
 
-.exchange-heading {
-  margin: 30rpx 0 32rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
+.summary-item:nth-child(3) {
+  border-right: 0;
 }
 
-.exchange-kicker {
-  color: #e85235;
-  font-size: 24rpx;
-  font-weight: 800;
-}
-
-.exchange-title {
-  color: #071827;
-  font-size: 54rpx;
+.summary-num {
+  display: inline-block;
+  margin-top: 22rpx;
+  color: #006b68;
+  font-size: 58rpx;
+  line-height: 1;
   font-weight: 900;
-  line-height: 1.1;
 }
 
-.exchange-helper {
-  color: #657282;
+.summary-unit {
+  margin-left: 6rpx;
+  color: #071426;
+  font-size: 24rpx;
+}
+
+.recharge-btn {
+  height: 64rpx;
+  min-height: 64rpx;
+  padding: 0 20rpx;
+  border-radius: 34rpx;
   font-size: 28rpx;
-  line-height: 1.35;
 }
 
-.exchange-stat-card {
-  padding: 36rpx 32rpx 30rpx;
+.exchange-hint {
+  margin: 40rpx 0;
+  color: #5c6878;
+  font-size: 28rpx;
+  text-align: center;
 }
 
-.stat-main-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24rpx;
+.merchant-panel {
+  padding: 40rpx 30rpx;
 }
 
-.stat-main-copy {
+.merchant-row {
+  min-height: 232rpx;
+  padding: 34rpx 0;
+  border-bottom: 1rpx solid rgba(8, 23, 43, 0.08);
+  display: grid;
+  grid-template-columns: 196rpx 1fr 172rpx;
+  gap: 28rpx;
+  box-sizing: border-box;
+}
+
+.merchant-row:last-child {
+  border-bottom: 0;
+}
+
+.merchant-img {
+  width: 196rpx;
+  height: 196rpx;
+  border-radius: 16rpx;
+  background: #e8f4f3;
+}
+
+.merchant-main {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 14rpx;
-}
-
-.stat-label,
-.stat-sub-label {
-  color: #657282;
-  font-size: 24rpx;
-  line-height: 1.2;
-}
-
-.stat-amount-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8rpx;
-  color: #006b68;
-}
-
-.stat-currency {
-  font-size: 30rpx;
-  font-weight: 800;
-}
-
-.stat-amount {
-  font-size: 64rpx;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.recharge-btn {
-  width: 176rpx;
-  height: 68rpx;
-  padding: 0;
-  border-radius: 18rpx;
-  background: #071827;
-  color: #fff;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 25rpx;
-  font-weight: 800;
-  line-height: 1;
 }
 
-.recharge-btn::after,
-.exchange-action-btn::after {
-  border: 0;
-}
-
-.stat-divider {
-  height: 1rpx;
-  margin: 28rpx 0;
-  background: #e4eeee;
-}
-
-.stat-sub-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24rpx;
-}
-
-.stat-sub-item {
-  min-height: 92rpx;
-  padding: 20rpx;
-  border-radius: 16rpx;
-  background: #f6faf9;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-}
-
-.stat-sub-value {
-  color: #071827;
-  font-size: 32rpx;
+.merchant-title {
+  color: #071426;
+  font-size: 36rpx;
   font-weight: 900;
-  line-height: 1.1;
-}
-
-.stat-sub-warm {
-  color: #e85235;
-}
-
-.helper-row {
-  margin: 24rpx 0 34rpx;
-  padding: 22rpx 24rpx;
-  border-left: 6rpx solid #f0b84f;
-  border-radius: 16rpx;
-  background: #fff8e8;
-  color: #6e541b;
-  font-size: 25rpx;
-  line-height: 1.35;
-}
-
-.section-row {
-  margin-bottom: 20rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24rpx;
-}
-
-.section-title {
-  color: #071827;
-  font-size: 32rpx;
-  font-weight: 900;
-}
-
-.section-more {
-  flex-shrink: 0;
-  color: #006b68;
-  font-size: 25rpx;
-  font-weight: 800;
-}
-
-.merchant-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.merchant-card {
-  overflow: hidden;
-}
-
-.merchant-image {
-  width: 100%;
-  height: 260rpx;
-  display: block;
-  background: #e7f4f3;
-}
-
-.merchant-body {
-  padding: 28rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.merchant-title-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 20rpx;
-}
-
-.merchant-title-copy {
-  min-width: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10rpx;
-}
-
-.merchant-name {
-  color: #071827;
-  font-size: 32rpx;
-  font-weight: 900;
-  line-height: 1.25;
-}
-
-.merchant-store,
-.merchant-desc {
-  color: #657282;
-  font-size: 25rpx;
-  line-height: 1.35;
-}
-
-.merchant-amount {
-  flex-shrink: 0;
-  display: flex;
-  align-items: baseline;
-  color: #e85235;
-}
-
-.amount-prefix {
-  font-size: 24rpx;
-  font-weight: 800;
-}
-
-.amount-value {
-  font-size: 38rpx;
-  font-weight: 900;
-  line-height: 1;
 }
 
 .tag-row {
   display: flex;
-  flex-wrap: wrap;
   gap: 12rpx;
 }
 
-.exchange-action-btn {
-  width: 100%;
-  height: 84rpx;
-  padding: 0;
-  border-radius: 18rpx;
-  background: #006b68;
-  color: #fff;
+.amount {
+  color: #006b68;
+  font-size: 40rpx;
+  font-weight: 900;
+}
+
+.swap-cell {
+  border-left: 1rpx dashed #d7e1e4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #006b68;
+  font-size: 28rpx;
+  gap: 18rpx;
+}
+
+.swap-icon {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  background: #e9f4f2;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30rpx;
-  font-weight: 900;
-  line-height: 1;
+  font-size: 52rpx;
 }
