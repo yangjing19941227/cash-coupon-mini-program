@@ -32,7 +32,7 @@ function sendJson(response, statusCode, payload) {
     'content-type': 'application/json; charset=utf-8',
     'cache-control': 'no-store',
     'access-control-allow-origin': '*',
-    'access-control-allow-methods': 'GET,POST,PATCH,PUT,OPTIONS',
+    'access-control-allow-methods': 'GET,POST,PATCH,PUT,DELETE,OPTIONS',
     'access-control-allow-headers': 'content-type,x-admin-token',
   });
   response.end(JSON.stringify(payload));
@@ -53,7 +53,7 @@ function readBody(request) {
     request.on('data', (chunk) => {
       raw += chunk;
 
-      if (raw.length > 1024 * 1024) {
+      if (raw.length > 8 * 1024 * 1024) {
         reject(new Error('REQUEST_BODY_TOO_LARGE'));
         request.destroy();
       }
@@ -74,6 +74,55 @@ function readBody(request) {
 
     request.on('error', reject);
   });
+}
+
+function getUploadRoot() {
+  return path.resolve(process.cwd(), '.data', 'uploads');
+}
+
+function getImageContentType(extname) {
+  const types = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.webp': 'image/webp',
+    '.gif': 'image/gif',
+  };
+
+  return types[extname.toLowerCase()] || '';
+}
+
+function sanitizeUploadName(filename) {
+  const parsed = path.parse(String(filename || 'coupon-image'));
+  const base = parsed.name
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48);
+
+  return base || 'coupon-image';
+}
+
+function parseImageDataUrl(dataUrl) {
+  const match = String(dataUrl || '').match(/^data:(image\/(?:png|jpe?g|webp|gif));base64,([a-z0-9+/=\r\n]+)$/i);
+
+  if (!match) {
+    return null;
+  }
+
+  const mimeType = match[1].toLowerCase().replace('image/jpg', 'image/jpeg');
+  const extByMime = {
+    'image/png': '.png',
+    'image/jpeg': '.jpg',
+    'image/webp': '.webp',
+    'image/gif': '.gif',
+  };
+
+  return {
+    mimeType,
+    extname: extByMime[mimeType],
+    buffer: Buffer.from(match[2].replace(/\s/g, ''), 'base64'),
+  };
 }
 
 function toNumber(value) {
@@ -102,6 +151,10 @@ function makeUniqueId(state, collectionName, prefix, idFactory) {
   }
 
   return id;
+}
+
+function makeCouponCode() {
+  return String(Math.floor(100000000000 + Math.random() * 899999999999));
 }
 
 function getMetrics(state) {
@@ -157,9 +210,91 @@ function addActivity(state, item) {
   state.activityItems = state.activityItems.slice(0, 30);
 }
 
-function buildCouponFromOrder(order, state, now, idFactory) {
+function buildMockOpenId(code) {
+  const hex = Array.from(String(code))
+    .map((character) => character.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join('');
+
+  return `mock-openid-${hex.slice(0, 12)}`;
+}
+
+function normalizeProfilePatch(body) {
+  const patch = {};
+
+  if (typeof body.nickname === 'string') {
+    const nickname = body.nickname.trim().slice(0, 24);
+
+    if (nickname) {
+      patch.nickname = nickname;
+    }
+  }
+
+  if (typeof body.avatarUrl === 'string' || typeof body.avatar === 'string') {
+    const avatar = String(body.avatarUrl || body.avatar).trim();
+
+    if (avatar) {
+      patch.avatar = avatar;
+    }
+  }
+
+  return patch;
+}
+
+function normalizeScope(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item || '').trim()).filter(Boolean);
+  }
+
+  if (typeof value === 'string') {
+    return value.split(/[\s,，、]+/).map((item) => item.trim()).filter(Boolean);
+  }
+
+  return [];
+}
+
+function findCouponTemplate(state, templateId) {
+  return (state.couponTemplates || []).find((template) => template.id === templateId);
+}
+
+function buildCouponFromTemplate(template, state, now, idFactory, options = {}) {
   return {
     id: makeUniqueId(state, 'coupons', 'coupon', idFactory),
+    templateId: template.id,
+    userId: options.userId || state.userProfile.id,
+    title: template.title,
+    category: template.category || '餐饮',
+    amount: toNumber(template.amount),
+    threshold: toNumber(template.threshold),
+    tags: Array.isArray(template.tags) ? template.tags : ['后台配置'],
+    expiresAt: options.expiresAt || addDays(now(), toNumber(template.expiresInDays) || 30),
+    status: 'unused',
+    source: options.source || 'admin_assign',
+    store: template.store || template.merchantName,
+    merchantId: template.merchantId,
+    merchantName: template.merchantName || template.store,
+    verifierScope: normalizeScope(template.verifierScope),
+    code: options.code || makeCouponCode(),
+    isExpiring: false,
+    orderId: options.orderId,
+    assignedAt: now(),
+  };
+}
+
+function buildCouponFromOrder(order, state, now, idFactory) {
+  const template = findCouponTemplate(state, order.templateId);
+
+  if (template) {
+    return buildCouponFromTemplate(template, state, now, idFactory, {
+      source: 'purchase',
+      orderId: order.id,
+      userId: order.userId || state.userProfile.id,
+    });
+  }
+
+  return {
+    id: makeUniqueId(state, 'coupons', 'coupon', idFactory),
+    templateId: order.templateId,
+    userId: order.userId || state.userProfile.id,
     title: order.title,
     category: order.category || '餐饮',
     amount: toNumber(order.amount),
@@ -170,10 +305,68 @@ function buildCouponFromOrder(order, state, now, idFactory) {
     source: 'self',
     store: order.store || order.merchantName,
     merchantName: order.merchantName,
-    code: String(Math.floor(100000000000 + Math.random() * 899999999999)),
+    code: makeCouponCode(),
     isExpiring: false,
     orderId: order.id,
+    assignedAt: now(),
   };
+}
+
+function verifyCouponAsset(state, coupon, body, now, idFactory) {
+  if (!coupon) {
+    return { type: 'not-found' };
+  }
+
+  if (coupon.status !== 'unused') {
+    return { type: 'conflict' };
+  }
+
+  const requestedMerchant = String(body.merchantName || body.merchantId || '').trim();
+  const allowedMerchants = [
+    coupon.merchantId,
+    coupon.merchantName,
+    coupon.store,
+  ].filter(Boolean).map(String);
+
+  if (requestedMerchant && !allowedMerchants.includes(requestedMerchant)) {
+    return { type: 'forbidden' };
+  }
+
+  const template = coupon.templateId ? findCouponTemplate(state, coupon.templateId) : null;
+  const verifierScope = normalizeScope(coupon.verifierScope).length
+    ? normalizeScope(coupon.verifierScope)
+    : normalizeScope(template?.verifierScope);
+  const operator = String(body.operator || body.operatorId || body.userId || '').trim();
+
+  if (verifierScope.length && !verifierScope.includes(operator)) {
+    return { type: 'forbidden' };
+  }
+
+  coupon.status = 'used';
+  coupon.verifiedAt = now();
+
+  const record = {
+    id: makeUniqueId(state, 'verificationRecords', 'verify', idFactory),
+    couponId: coupon.id,
+    couponCode: coupon.code,
+    couponTitle: coupon.title,
+    merchantName: body.merchantName || coupon.merchantName || coupon.store,
+    operator: operator || 'admin',
+    verifiedAt: coupon.verifiedAt,
+  };
+
+  state.verificationRecords.unshift(record);
+  addActivity(state, {
+    id: makeUniqueId(state, 'activityItems', 'activity', idFactory),
+    icon: 'check',
+    title: '优惠券核销',
+    subtitle: coupon.title,
+    amount: `-￥${coupon.amount}`,
+    time: coupon.verifiedAt,
+    tone: 'outcome',
+  });
+
+  return { type: 'ok', coupon, record };
 }
 
 function serveStatic(requestUrl, response) {
@@ -208,6 +401,38 @@ function serveStatic(requestUrl, response) {
     'content-type': contentTypes[ext] || 'application/octet-stream',
   });
   response.end(fs.readFileSync(filePath));
+  return true;
+}
+
+function serveUpload(requestUrl, response) {
+  const uploadRoot = getUploadRoot();
+  const pathname = decodeURIComponent(requestUrl.pathname);
+  const relative = pathname.replace(/^\/uploads\/?/, '');
+  const filePath = path.resolve(uploadRoot, relative);
+  const pathFromRoot = path.relative(uploadRoot, filePath);
+
+  if (!relative || pathFromRoot.startsWith('..') || path.isAbsolute(pathFromRoot)) {
+    sendError(response, 403, '拒绝访问');
+    return true;
+  }
+
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    return false;
+  }
+
+  const contentType = getImageContentType(path.extname(filePath));
+
+  if (!contentType) {
+    sendError(response, 415, '不支持的图片格式');
+    return true;
+  }
+
+  response.writeHead(200, {
+    'content-type': contentType,
+    'cache-control': 'public, max-age=31536000',
+    'access-control-allow-origin': '*',
+  });
+  fs.createReadStream(filePath).pipe(response);
   return true;
 }
 
@@ -252,6 +477,298 @@ async function handleApi(request, response, context) {
       pendingExchanges: state.exchangeRecords.filter((record) => record.status === 'pending').slice(0, 5),
       recentOrders: state.orders.slice(0, 5),
     });
+    return;
+  }
+
+  if (method === 'POST' && pathname === '/api/auth/wechat-login') {
+    const code = String(body.code || '').trim();
+
+    if (!code) {
+      sendError(response, 400, '微信登录凭证不能为空');
+      return;
+    }
+
+    const result = store.update((state) => {
+      const session = {
+        id: makeUniqueId(state, 'sessions', 'session', idFactory),
+        openId: buildMockOpenId(code),
+        loginCode: code,
+        createdAt: now(),
+      };
+
+      state.sessions.unshift(session);
+      state.sessions = state.sessions.slice(0, 20);
+      state.userProfile.wechatOpenId = session.openId;
+      state.userProfile.lastLoginAt = session.createdAt;
+
+      return {
+        sessionToken: session.id,
+        profile: state.userProfile,
+      };
+    });
+
+    sendJson(response, 200, {
+      ok: true,
+      sessionToken: result.sessionToken,
+      profile: result.profile,
+    });
+    return;
+  }
+
+  if (method === 'GET' && pathname === '/api/user/profile') {
+    sendJson(response, 200, { ok: true, profile: store.read().userProfile });
+    return;
+  }
+
+  if (method === 'PATCH' && pathname === '/api/user/profile') {
+    const patch = normalizeProfilePatch(body);
+
+    if (!Object.keys(patch).length) {
+      sendError(response, 400, '请提供头像或昵称');
+      return;
+    }
+
+    const profile = store.update((state) => {
+      Object.assign(state.userProfile, patch, {
+        updatedAt: now(),
+      });
+
+      addActivity(state, {
+        id: makeUniqueId(state, 'activityItems', 'activity', idFactory),
+        icon: 'user',
+        title: '同步微信资料',
+        subtitle: state.userProfile.nickname,
+        amount: '已更新',
+        time: now(),
+        tone: 'income',
+      });
+
+      return state.userProfile;
+    });
+
+    sendJson(response, 200, { ok: true, profile });
+    return;
+  }
+
+  if (method === 'POST' && pathname === '/api/uploads') {
+    const image = parseImageDataUrl(body.dataUrl);
+
+    if (!image || !image.buffer.length) {
+      sendError(response, 400, '请上传 png、jpg、webp 或 gif 图片');
+      return;
+    }
+
+    if (image.buffer.length > 5 * 1024 * 1024) {
+      sendError(response, 413, '图片不能超过 5MB');
+      return;
+    }
+
+    const uploadRoot = getUploadRoot();
+    const basename = sanitizeUploadName(body.filename);
+    const suffix = Math.random().toString(36).slice(2, 8);
+    const filename = `${basename}-${suffix}${image.extname}`;
+    const filePath = path.join(uploadRoot, filename);
+
+    fs.mkdirSync(uploadRoot, { recursive: true });
+    fs.writeFileSync(filePath, image.buffer);
+
+    sendJson(response, 201, {
+      ok: true,
+      url: `/uploads/${filename}`,
+      mimeType: image.mimeType,
+      size: image.buffer.length,
+    });
+    return;
+  }
+
+  if (method === 'GET' && pathname === '/api/coupon-templates') {
+    const state = store.read();
+    const templates = filterBySearchParams(
+      state.couponTemplates || [],
+      searchParams,
+      ['status', 'category', 'merchantId'],
+    );
+    sendJson(response, 200, { ok: true, templates });
+    return;
+  }
+
+  if (method === 'POST' && pathname === '/api/coupon-templates') {
+    if (!body.title || !body.merchantName || !toNumber(body.amount)) {
+      sendError(response, 400, '商户、优惠券标题和面值不能为空');
+      return;
+    }
+
+    const template = store.update((state) => {
+      const item = {
+        id: makeUniqueId(state, 'couponTemplates', 'template', idFactory),
+        title: body.title,
+        merchantId: body.merchantId || '',
+        merchantName: body.merchantName,
+        store: body.store || body.merchantName,
+        category: body.category || '餐饮',
+        amount: toNumber(body.amount),
+        threshold: toNumber(body.threshold),
+        salePrice: toNumber(body.salePrice) || toNumber(body.amount),
+        price: body.price || `￥${toNumber(body.amount)}`,
+        discount: body.discount || (toNumber(body.threshold) ? `满${toNumber(body.threshold)}可用` : '无门槛'),
+        badge: body.badge || '后台配置',
+        sales: body.sales || '后台配置券',
+        rank: body.rank || '商户权益',
+        rating: body.rating || '4.8分',
+        distance: body.distance || '同城可用',
+        stock: Math.max(0, toNumber(body.stock) || 0),
+        totalStock: Math.max(0, toNumber(body.totalStock) || toNumber(body.stock) || 0),
+        status: body.status || 'online',
+        userScope: normalizeScope(body.userScope),
+        verifierScope: normalizeScope(body.verifierScope),
+        image: body.image || '/assets/images/coupon-deal-tea-clean.png',
+        expiresInDays: toNumber(body.expiresInDays) || 30,
+        tags: Array.isArray(body.tags) ? body.tags : ['后台配置'],
+        createdAt: now(),
+      };
+
+      state.couponTemplates.unshift(item);
+      addActivity(state, {
+        id: makeUniqueId(state, 'activityItems', 'activity', idFactory),
+        icon: 'ticket',
+        title: '后台配置商户券',
+        subtitle: item.title,
+        amount: `+￥${item.amount}`,
+        time: now(),
+        tone: 'income',
+      });
+
+      return item;
+    });
+
+    sendJson(response, 201, { ok: true, template });
+    return;
+  }
+
+  if (method === 'DELETE' && pathParts[1] === 'coupon-templates' && pathParts[2]) {
+    const templateId = pathParts[2];
+    const result = store.update((state) => {
+      const templateIndex = state.couponTemplates.findIndex((item) => item.id === templateId);
+
+      if (templateIndex === -1) {
+        return null;
+      }
+
+      const [template] = state.couponTemplates.splice(templateIndex, 1);
+      addActivity(state, {
+        id: makeUniqueId(state, 'activityItems', 'activity', idFactory),
+        icon: 'ticket',
+        title: '后台删除商户券配置',
+        subtitle: template.title,
+        amount: `-￥${template.amount}`,
+        time: now(),
+        tone: 'warning',
+      });
+
+      return template;
+    });
+
+    if (!result) {
+      sendError(response, 404, '未找到优惠券配置');
+      return;
+    }
+
+    sendJson(response, 200, { ok: true, template: result });
+    return;
+  }
+
+  if (method === 'PATCH' && pathParts[1] === 'coupon-templates' && pathParts[2]) {
+    const templateId = pathParts[2];
+    const result = store.update((state) => {
+      const template = state.couponTemplates.find((item) => item.id === templateId);
+
+      if (!template) {
+        return null;
+      }
+
+      Object.assign(template, body, {
+        amount: body.amount === undefined ? template.amount : toNumber(body.amount),
+        threshold: body.threshold === undefined ? template.threshold : toNumber(body.threshold),
+        stock: body.stock === undefined ? template.stock : Math.max(0, toNumber(body.stock)),
+        totalStock: body.totalStock === undefined ? template.totalStock : Math.max(0, toNumber(body.totalStock)),
+        userScope: body.userScope === undefined ? template.userScope : normalizeScope(body.userScope),
+        verifierScope: body.verifierScope === undefined ? template.verifierScope : normalizeScope(body.verifierScope),
+      });
+      return template;
+    });
+
+    if (!result) {
+      sendError(response, 404, '未找到优惠券配置');
+      return;
+    }
+
+    sendJson(response, 200, { ok: true, template: result });
+    return;
+  }
+
+  if (method === 'POST' && pathParts[1] === 'coupon-templates' && pathParts[3] === 'assign') {
+    const templateId = pathParts[2];
+    const result = store.update((state) => {
+      const template = findCouponTemplate(state, templateId);
+      const userId = body.userId || state.userProfile.id;
+
+      if (!template) {
+        return { type: 'not-found' };
+      }
+
+      if (template.status !== 'online') {
+        return { type: 'offline' };
+      }
+
+      if (Array.isArray(template.userScope) && template.userScope.length && !template.userScope.includes(userId)) {
+        return { type: 'forbidden' };
+      }
+
+      if (toNumber(template.stock) <= 0) {
+        return { type: 'empty' };
+      }
+
+      template.stock = toNumber(template.stock) - 1;
+      const coupon = buildCouponFromTemplate(template, state, now, idFactory, {
+        userId,
+        source: 'admin_assign',
+      });
+
+      state.coupons.unshift(coupon);
+      addActivity(state, {
+        id: makeUniqueId(state, 'activityItems', 'activity', idFactory),
+        icon: 'ticket',
+        title: '后台发放优惠券',
+        subtitle: `${template.merchantName} · ${template.title}`,
+        amount: `+￥${template.amount}`,
+        time: now(),
+        tone: 'income',
+      });
+
+      return { type: 'ok', template, coupon };
+    });
+
+    if (result.type === 'not-found') {
+      sendError(response, 404, '未找到优惠券配置');
+      return;
+    }
+
+    if (result.type === 'offline') {
+      sendError(response, 409, '优惠券配置未上架');
+      return;
+    }
+
+    if (result.type === 'forbidden') {
+      sendError(response, 403, '该用户不在发放范围内');
+      return;
+    }
+
+    if (result.type === 'empty') {
+      sendError(response, 409, '优惠券库存不足');
+      return;
+    }
+
+    sendJson(response, 201, { ok: true, template: result.template, coupon: result.coupon });
     return;
   }
 
@@ -303,6 +820,38 @@ async function handleApi(request, response, context) {
     return;
   }
 
+  if (method === 'DELETE' && pathParts[1] === 'coupons' && pathParts[2]) {
+    const couponId = pathParts[2];
+    const result = store.update((state) => {
+      const couponIndex = state.coupons.findIndex((item) => item.id === couponId);
+
+      if (couponIndex === -1) {
+        return null;
+      }
+
+      const [coupon] = state.coupons.splice(couponIndex, 1);
+      addActivity(state, {
+        id: makeUniqueId(state, 'activityItems', 'activity', idFactory),
+        icon: 'ticket',
+        title: '后台删除优惠券',
+        subtitle: coupon.title,
+        amount: `-￥${coupon.amount}`,
+        time: now(),
+        tone: 'warning',
+      });
+
+      return coupon;
+    });
+
+    if (!result) {
+      sendError(response, 404, '未找到优惠券');
+      return;
+    }
+
+    sendJson(response, 200, { ok: true, coupon: result });
+    return;
+  }
+
   if (method === 'PATCH' && pathParts[1] === 'coupons' && pathParts[2]) {
     const couponId = pathParts[2];
     const result = store.update((state) => {
@@ -329,39 +878,7 @@ async function handleApi(request, response, context) {
     const couponId = pathParts[2];
     const result = store.update((state) => {
       const coupon = state.coupons.find((item) => item.id === couponId);
-
-      if (!coupon) {
-        return { type: 'not-found' };
-      }
-
-      if (coupon.status !== 'unused') {
-        return { type: 'conflict' };
-      }
-
-      coupon.status = 'used';
-      coupon.verifiedAt = now();
-
-      const record = {
-        id: makeUniqueId(state, 'verificationRecords', 'verify', idFactory),
-        couponId: coupon.id,
-        couponTitle: coupon.title,
-        merchantName: body.merchantName || coupon.merchantName || coupon.store,
-        operator: body.operator || 'admin',
-        verifiedAt: coupon.verifiedAt,
-      };
-
-      state.verificationRecords.unshift(record);
-      addActivity(state, {
-        id: makeUniqueId(state, 'activityItems', 'activity', idFactory),
-        icon: 'check',
-        title: '优惠券核销',
-        subtitle: coupon.title,
-        amount: `-￥${coupon.amount}`,
-        time: coupon.verifiedAt,
-        tone: 'outcome',
-      });
-
-      return { type: 'ok', coupon, record };
+      return verifyCouponAsset(state, coupon, body, now, idFactory);
     });
 
     if (result.type === 'not-found') {
@@ -371,6 +888,46 @@ async function handleApi(request, response, context) {
 
     if (result.type === 'conflict') {
       sendError(response, 409, '优惠券不可重复核销');
+      return;
+    }
+
+    if (result.type === 'forbidden') {
+      sendError(response, 403, '该商户无权核销此优惠券');
+      return;
+    }
+
+    sendJson(response, 200, { ok: true, coupon: result.coupon, verification: result.record });
+    return;
+  }
+
+  if (method === 'POST' && pathname === '/api/merchant/coupons/verify') {
+    const code = String(body.code || '').trim();
+    const couponId = String(body.couponId || '').trim();
+
+    if (!code && !couponId) {
+      sendError(response, 400, '请提供优惠券码');
+      return;
+    }
+
+    const result = store.update((state) => {
+      const coupon = state.coupons.find((item) => (
+        (code && item.code === code) || (couponId && item.id === couponId)
+      ));
+      return verifyCouponAsset(state, coupon, body, now, idFactory);
+    });
+
+    if (result.type === 'not-found') {
+      sendError(response, 404, '未找到优惠券');
+      return;
+    }
+
+    if (result.type === 'conflict') {
+      sendError(response, 409, '优惠券不可重复核销');
+      return;
+    }
+
+    if (result.type === 'forbidden') {
+      sendError(response, 403, '该商户无权核销此优惠券');
       return;
     }
 
@@ -590,6 +1147,8 @@ async function handleApi(request, response, context) {
     const order = store.update((state) => {
       const item = {
         id: makeUniqueId(state, 'orders', 'order', idFactory),
+        templateId: body.templateId || body.couponTemplateId || '',
+        userId: body.userId || state.userProfile.id,
         title: body.title,
         merchantName: body.merchantName || '同城商户',
         store: body.store || body.merchantName || '同城商户',
@@ -623,6 +1182,12 @@ async function handleApi(request, response, context) {
       order.status = 'paid';
       order.paymentMethod = body.method || 'wechat';
       order.paidAt = now();
+
+      const template = findCouponTemplate(state, order.templateId);
+
+      if (template && toNumber(template.stock) > 0) {
+        template.stock = toNumber(template.stock) - 1;
+      }
 
       const coupon = buildCouponFromOrder(order, state, now, idFactory);
       order.couponId = coupon.id;
@@ -725,6 +1290,15 @@ function createApp(options = {}) {
     try {
       if (requestUrl.pathname.startsWith('/api/')) {
         await handleApi(request, response, { store, now, idFactory });
+        return;
+      }
+
+      if (requestUrl.pathname.startsWith('/uploads/')) {
+        if (serveUpload(requestUrl, response)) {
+          return;
+        }
+
+        sendError(response, 404, '图片不存在');
         return;
       }
 

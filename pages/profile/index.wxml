@@ -6,24 +6,29 @@
   </view>
 
   <view class="profile-top">
-    <image class="avatar" src="/assets/images/profile-avatar.png" mode="aspectFill"></image>
-    <view class="profile-main">
-      <text class="profile-name">海口生活用户</text>
-      <text class="ds-muted">⌖ 海口 · 龙华区</text>
+    <view class="avatar-frame">
+      <image class="avatar" src="{{profile.avatar}}" mode="aspectFill"></image>
+      <button class="avatar-button" plain="true" hover-class="none" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar"></button>
     </view>
-    <view class="ds-outline-btn profile-btn">个人资料 ›</view>
+    <view class="profile-main">
+      <input class="profile-name-input" name="nickname" type="nickname" value="{{profile.nickname}}" bindinput="onNicknameInput" placeholder="同步微信昵称" />
+      <text class="ds-muted profile-location">⌖ {{profile.city}} · {{profile.district}}</text>
+    </view>
+    <form class="profile-form" bindsubmit="saveWechatProfile">
+      <button class="ds-outline-btn profile-btn" form-type="submit" hover-class="none">{{syncing ? '同步中...' : '同步资料'}}</button>
+    </form>
   </view>
 
   <view class="ds-soft-card save-card">
     <image class="save-ill" src="/assets/images/profile-illustration.png" mode="aspectFit"></image>
     <text class="ds-muted">累计已省 ⓘ</text>
-    <text class="save-money">￥236</text>
+    <text class="save-money">￥{{profile.savedAmount}}</text>
     <text class="ds-muted">精打细算 · 生活更值得</text>
     <view class="profile-stats">
-      <view><text>优惠券</text><text class="stat-value">12</text></view>
-      <view><text>抽奖次数</text><text class="stat-value">1</text></view>
-      <view><text>即将过期</text><text class="stat-value">2</text></view>
-      <view><text>置换额度</text><text class="stat-value">860</text></view>
+      <view><text>优惠券</text><text class="stat-value">{{profile.couponCount}}</text></view>
+      <view><text>抽奖次数</text><text class="stat-value">{{profile.lotteryLeft}}</text></view>
+      <view><text>即将过期</text><text class="stat-value">{{profile.expiringCount}}</text></view>
+      <view><text>置换额度</text><text class="stat-value">{{profile.exchangeAmount}}</text></view>
     </view>
   </view>
 

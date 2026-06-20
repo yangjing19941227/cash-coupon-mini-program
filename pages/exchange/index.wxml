@@ -29,7 +29,7 @@
       <text class="ds-muted">更多商家 ›</text>
     </view>
 
-    <view class="merchant-row" bindtap="goExchangeSubmit">
+    <view class="merchant-row" data-id="merchant-island-yard" bindtap="goExchangeSubmit">
       <image class="merchant-img" src="/assets/images/merchant-restaurant.png" mode="aspectFill"></image>
       <view class="merchant-main">
         <text class="merchant-title">海岛小院</text>
@@ -40,7 +40,7 @@
       <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
     </view>
 
-    <view class="merchant-row" bindtap="goExchangeSubmit">
+    <view class="merchant-row" data-id="merchant-bay-dessert" bindtap="goExchangeSubmit">
       <image class="merchant-img" src="/assets/images/merchant-dessert.png" mode="aspectFill"></image>
       <view class="merchant-main">
         <text class="merchant-title">海口湾甜品</text>
@@ -51,7 +51,7 @@
       <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
     </view>
 
-    <view class="merchant-row" bindtap="goExchangeSubmit">
+    <view class="merchant-row" data-id="merchant-family-park" bindtap="goExchangeSubmit">
       <image class="merchant-img" src="/assets/images/merchant-playground.png" mode="aspectFill"></image>
       <view class="merchant-main">
         <text class="merchant-title">亲子乐园</text>

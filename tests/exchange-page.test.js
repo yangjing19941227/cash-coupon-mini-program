@@ -41,8 +41,12 @@ test('exchange submit and records pages cover downstream review flow', () => {
   const recordsWxml = readProjectFile('pages/exchange-records/index.wxml');
 
   assert.match(submitJs, /goRecharge/);
+  assert.match(submitJs, /createExchangeRecord/);
+  assert.match(submitJs, /submitExchange/);
+  assert.match(submitJs, /\/pages\/exchange-records\/index/);
   assert.match(submitJs, /\/pages\/recharge\/index/);
   assert.match(submitWxml, /提交置换申请/);
+  assert.match(submitWxml, /bindtap="submitExchange"/);
   assert.match(submitWxml, /申请后等待商家确认/);
 
   assert.match(recordsJs, /goBack/);

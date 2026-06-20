@@ -52,9 +52,66 @@
       <section class="view-panel" id="view-coupons">
         <article class="panel">
           <div class="panel-head">
-            <h3>优惠券列表</h3>
-            <button class="primary-btn" id="create-coupon-button" type="button">新增测试券</button>
+            <h3>商户优惠券配置</h3>
+            <span class="panel-note">配置前端可购买券、发放对象和商户核销员</span>
           </div>
+          <form class="coupon-config-form" id="coupon-config-form">
+            <label class="field" for="coupon-merchant-input">
+              <span>商户名称</span>
+              <input id="coupon-merchant-input" name="merchantName" required value="海岛小院">
+            </label>
+            <label class="field" for="coupon-store-input">
+              <span>门店名称</span>
+              <input id="coupon-store-input" name="store" value="海岛小院龙华店">
+            </label>
+            <label class="field" for="coupon-title-input">
+              <span>优惠券名称</span>
+              <input id="coupon-title-input" name="title" required value="海岛小院到店抵扣券">
+            </label>
+            <label class="field" for="coupon-category-input">
+              <span>分类</span>
+              <select id="coupon-category-input" name="category">
+                <option value="餐饮">餐饮</option>
+                <option value="饮品">饮品</option>
+                <option value="娱乐">娱乐</option>
+                <option value="生活服务">生活服务</option>
+              </select>
+            </label>
+            <label class="field" for="coupon-sale-price-input">
+              <span>售价</span>
+              <input id="coupon-sale-price-input" name="salePrice" type="number" min="0" step="0.01" value="128">
+            </label>
+            <label class="field" for="coupon-amount-input">
+              <span>面值</span>
+              <input id="coupon-amount-input" name="amount" type="number" min="1" step="0.01" required value="68">
+            </label>
+            <label class="field" for="coupon-threshold-input">
+              <span>使用门槛</span>
+              <input id="coupon-threshold-input" name="threshold" type="number" min="0" step="0.01" value="128">
+            </label>
+            <label class="field" for="coupon-stock-input">
+              <span>库存</span>
+              <input id="coupon-stock-input" name="stock" type="number" min="1" step="1" required value="30">
+            </label>
+            <label class="field" for="coupon-user-input">
+              <span>指定领券用户ID</span>
+              <input id="coupon-user-input" name="userScope" value="user-haikou-life">
+            </label>
+            <label class="field" for="coupon-verifier-input">
+              <span>核销用户ID</span>
+              <input id="coupon-verifier-input" name="verifierScope" value="merchant-operator">
+            </label>
+            <label class="field" for="coupon-image-input">
+              <span>优惠券图片</span>
+              <input id="coupon-image-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+            </label>
+            <input id="coupon-image-url-input" name="image" type="hidden" value="">
+            <div class="image-upload-preview">
+              <img id="coupon-image-preview" alt="优惠券图片预览" src="/assets/images/coupon-deal-tea-clean.png">
+              <span id="coupon-image-status">未上传则使用默认图</span>
+            </div>
+            <button class="primary-btn coupon-submit" type="submit">保存商户券配置</button>
+          </form>
           <div id="coupon-list" class="table-list"></div>
         </article>
       </section>

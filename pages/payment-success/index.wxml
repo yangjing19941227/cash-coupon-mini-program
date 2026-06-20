@@ -8,14 +8,14 @@
   <view class="ds-soft-card success-card">
     <view class="success-mark">✓</view>
     <text class="success-title">支付成功</text>
-    <text class="ds-muted">订单已生成，优惠券已加入资产</text>
-    <view class="success-grid"><view><text>￥128</text><text>实付</text></view><view><text>+128</text><text>积分</text></view><view><text>1张</text><text>到账</text></view></view>
+    <text class="ds-muted">{{assetText}}</text>
+    <view class="success-grid"><view><text>{{amount}}</text><text>实付</text></view><view><text>+{{amount}}</text><text>积分</text></view><view><text>1张</text><text>到账</text></view></view>
   </view>
 
   <view class="ds-card pay-section">
-    <view class="ds-info-line"><text>订单编号</text><text>2026061909412806</text></view>
+    <view class="ds-info-line"><text>订单编号</text><text>{{orderId}}</text></view>
     <view class="ds-info-line"><text>支付方式</text><text>微信支付</text></view>
-    <view class="ds-info-line"><text>到账资产</text><text class="ds-teal">海岛小院套餐券</text></view>
+    <view class="ds-info-line"><text>到账资产</text><text class="ds-teal">{{title}}</text></view>
   </view>
 
   <view class="footer-actions">

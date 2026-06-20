@@ -170,6 +170,18 @@ page {
   -webkit-box-orient: vertical;
 }
 
+.merchant-name {
+  margin-top: 6rpx;
+  color: #006b68;
+  font-size: 23rpx;
+  line-height: 1.2;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
 .meta-row,
 .rating-row {
   margin-top: 8rpx;

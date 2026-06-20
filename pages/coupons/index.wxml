@@ -34,6 +34,7 @@
         <image class="deal-image" src="{{item.image}}" mode="aspectFill"></image>
         <view class="deal-info">
           <text class="deal-title">{{item.title}}</text>
+          <text class="merchant-name">{{item.merchantName}}</text>
           <view class="meta-row">
             <text>{{item.sales}}</text>
             <text>{{item.rank}}</text>

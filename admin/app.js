@@ -1,8 +1,9 @@
 const state = {
   activeView: 'overview',
+  couponTemplates: [],
   titles: {
     overview: ['总览', '查看项目运行指标与待处理事项'],
-    coupons: ['优惠券', '创建、核销与查看用户优惠券资产'],
+    coupons: ['优惠券', '配置商户可上架、可发放和可购买的优惠券'],
     exchanges: ['置换审核', '处理用户发起的商家权益置换申请'],
     orders: ['订单', '查看订单并模拟支付履约流程'],
     merchants: ['商家', '维护可置换和可购买的本地商家权益'],
@@ -54,6 +55,73 @@ function row({ title, meta, badge, actions = '' }) {
 
 function empty(text) {
   return `<div class="empty">${escapeHtml(text)}</div>`;
+}
+
+function splitScope(value) {
+  return String(value || '')
+    .split(/[\s,，、]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function getFormNumber(formData, name, fallback = 0) {
+  const value = Number(formData.get(name));
+  return Number.isFinite(value) ? value : fallback;
+}
+
+function formatScope(scope, fallback = '不限制') {
+  const items = Array.isArray(scope) ? scope.filter(Boolean) : [];
+  return items.length ? items.join('、') : fallback;
+}
+
+function getTemplateUser(template) {
+  const users = Array.isArray(template?.userScope) ? template.userScope.filter(Boolean) : [];
+  return users[0] || 'user-haikou-life';
+}
+
+function getDisplayImageUrl(image) {
+  const value = String(image || '').trim();
+
+  if (!value) {
+    return '/assets/images/coupon-deal-tea-clean.png';
+  }
+
+  if (value.startsWith('/uploads/')) {
+    return value;
+  }
+
+  return value;
+}
+
+function readCouponForm(event) {
+  const form = event?.currentTarget || document.querySelector('#coupon-config-form');
+  const formData = new FormData(form);
+  const stock = getFormNumber(formData, 'stock');
+  const amount = getFormNumber(formData, 'amount');
+  const threshold = getFormNumber(formData, 'threshold');
+  const salePrice = getFormNumber(formData, 'salePrice', amount);
+  const image = String(formData.get('image') || '').trim();
+
+  const payload = {
+    merchantName: String(formData.get('merchantName') || '').trim(),
+    store: String(formData.get('store') || '').trim(),
+    title: String(formData.get('title') || '').trim(),
+    category: String(formData.get('category') || '餐饮').trim(),
+    salePrice,
+    amount,
+    threshold,
+    stock,
+    totalStock: stock,
+    status: 'online',
+    userScope: splitScope(formData.get('userScope')),
+    verifierScope: splitScope(formData.get('verifierScope')),
+  };
+
+  if (image) {
+    payload.image = image;
+  }
+
+  return payload;
 }
 
 function setActiveView(view) {
@@ -113,17 +181,21 @@ async function renderOverview() {
 }
 
 async function renderCoupons() {
-  const payload = await api('/api/coupons');
-  document.querySelector('#coupon-list').innerHTML = payload.coupons.length
-    ? payload.coupons.map((item) => row({
+  const payload = await api('/api/coupon-templates');
+  state.couponTemplates = payload.templates || [];
+  document.querySelector('#coupon-list').innerHTML = state.couponTemplates.length
+    ? state.couponTemplates.map((item) => row({
       title: item.title,
-      meta: `${item.merchantName || item.store} · ${item.category} · ￥${item.amount}`,
+      meta: `${item.merchantName || item.store} · ${item.category} · 售价￥${item.salePrice || item.amount} · 面值￥${item.amount} · 门槛￥${item.threshold || 0} · 库存 ${item.stock} · 领券用户 ${formatScope(item.userScope)} · 核销用户 ${formatScope(item.verifierScope)}`,
       badge: item.status,
-      actions: item.status === 'unused'
-        ? `<button class="small-btn" data-action="verify-coupon" data-id="${item.id}" type="button">核销</button>`
-        : '',
+      actions: [
+        item.status === 'online'
+          ? `<button class="small-btn" data-action="assign-coupon-template" data-id="${item.id}" type="button">发给 ${escapeHtml(getTemplateUser(item))}</button>`
+          : '',
+        `<button class="danger-btn" data-action="delete-coupon-template" data-id="${item.id}" type="button">删除</button>`,
+      ].filter(Boolean).join(''),
     })).join('')
-    : empty('暂无优惠券');
+    : empty('暂无商户优惠券配置');
 }
 
 async function renderExchanges() {
@@ -185,6 +257,26 @@ async function verifyCoupon(id) {
   await refresh();
 }
 
+async function assignCouponTemplate(id) {
+  const template = state.couponTemplates.find((item) => item.id === id);
+  await api(`/api/coupon-templates/${id}/assign`, {
+    method: 'POST',
+    body: { userId: getTemplateUser(template) },
+  });
+  await refresh();
+}
+
+async function deleteCouponTemplate(id) {
+  if (typeof window !== 'undefined' && !window.confirm('确定删除这条商户优惠券配置吗？')) {
+    return;
+  }
+
+  await api(`/api/coupon-templates/${id}`, {
+    method: 'DELETE',
+  });
+  await refresh();
+}
+
 async function reviewExchange(id, status) {
   await api(`/api/exchanges/${id}/status`, {
     method: 'PATCH',
@@ -207,16 +299,13 @@ async function createMerchant() {
   await refresh();
 }
 
-async function createCoupon() {
-  await api('/api/coupons', {
+async function createCoupon(event) {
+  event?.preventDefault();
+  const payload = readCouponForm(event);
+
+  await api('/api/coupon-templates', {
     method: 'POST',
-    body: {
-      title: '后台测试优惠券',
-      merchantName: '后台新增商家',
-      category: '餐饮',
-      amount: 25,
-      threshold: 88,
-    },
+    body: payload,
   });
   await refresh();
 }
@@ -248,6 +337,47 @@ async function recharge() {
     body: { amount: 300, channel: 'wechat' },
   });
   await refresh();
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('图片读取失败'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadCouponImage(event) {
+  const file = event.target.files?.[0];
+
+  if (!file) {
+    return;
+  }
+
+  const status = document.querySelector('#coupon-image-status');
+  const preview = document.querySelector('#coupon-image-preview');
+  const imageInput = document.querySelector('#coupon-image-url-input');
+
+  try {
+    status.textContent = '图片上传中...';
+    const dataUrl = await readFileAsDataUrl(file);
+    const payload = await api('/api/uploads', {
+      method: 'POST',
+      body: {
+        filename: file.name,
+        dataUrl,
+      },
+    });
+
+    imageInput.value = payload.url;
+    preview.src = getDisplayImageUrl(payload.url);
+    status.textContent = '图片已上传';
+  } catch (error) {
+    imageInput.value = '';
+    status.textContent = error.message;
+    alert(error.message);
+  }
 }
 
 async function refresh() {
@@ -284,6 +414,10 @@ document.addEventListener('click', async (event) => {
 
   if (action === 'verify-coupon') {
     await verifyCoupon(id);
+  } else if (action === 'assign-coupon-template') {
+    await assignCouponTemplate(id);
+  } else if (action === 'delete-coupon-template') {
+    await deleteCouponTemplate(id);
   } else if (action === 'approve-exchange') {
     await reviewExchange(id, 'completed');
   } else if (action === 'return-exchange') {
@@ -295,7 +429,8 @@ document.addEventListener('click', async (event) => {
 
 document.querySelector('#refresh-button').addEventListener('click', refresh);
 document.querySelector('#create-merchant-button').addEventListener('click', createMerchant);
-document.querySelector('#create-coupon-button').addEventListener('click', createCoupon);
+document.querySelector('#coupon-config-form').addEventListener('submit', createCoupon);
+document.querySelector('#coupon-image-input').addEventListener('change', uploadCouponImage);
 document.querySelector('#create-order-button').addEventListener('click', createOrder);
 document.querySelector('#recharge-button').addEventListener('click', recharge);
 

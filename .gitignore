@@ -2,5 +2,6 @@ project.private.config.json
 node_modules/
 miniprogram_npm/
 .data/
+_reference/
 .DS_Store
 Thumbs.db

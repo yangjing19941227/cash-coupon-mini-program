@@ -20,7 +20,7 @@
     <text class="ds-muted">输入置换额度</text>
     <view class="input-like"><text>300</text><text class="input-unit">额度</text></view>
     <text class="ds-muted">最低 300 额度起，可兑换双人套餐券</text>
-    <view class="ds-btn ds-btn-block">提交置换申请</view>
+    <view class="ds-btn ds-btn-block" bindtap="submitExchange">提交置换申请</view>
   </view>
 
   <view class="ds-card wait-card">

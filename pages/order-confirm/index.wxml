@@ -8,21 +8,21 @@
   <view class="ds-card order-cover">
     <image src="/assets/images/deal-seafood.png" mode="aspectFill"></image>
     <view>
-      <text class="order-title">海岛小院·双人海鲜套餐券</text>
-      <view class="tag-row"><text class="ds-tag">海口</text><text class="ds-tag">餐饮美食</text></view>
+      <text class="order-title">{{orderDraft.title}}</text>
+      <view class="tag-row"><text class="ds-tag">海口</text><text class="ds-tag">{{orderDraft.category}}</text></view>
       <text class="ds-red">券后可省 ￥68</text>
     </view>
   </view>
 
   <view class="ds-card pay-section">
-    <view class="ds-info-line"><text>商品金额</text><text>￥196</text></view>
+    <view class="ds-info-line"><text>商品金额</text><text>{{payableAmount}}</text></view>
     <view class="ds-info-line"><text>优惠券抵扣</text><text class="ds-red">-￥68</text></view>
     <view class="ds-info-line"><text>购买数量</text><text>1 张</text></view>
-    <view class="ds-info-line"><text>预计积分</text><text class="ds-teal">+128</text></view>
+    <view class="ds-info-line"><text>预计积分</text><text class="ds-teal">+{{orderDraft.amount}}</text></view>
   </view>
 
   <view class="ds-soft-card pay-submit">
-    <view><text class="ds-muted">应付金额</text><text class="submit-price">￥128</text></view>
-    <view class="ds-btn pay-submit-btn" bindtap="goPaymentSelect">提交订单</view>
+    <view><text class="ds-muted">应付金额</text><text class="submit-price">{{payableAmount}}</text></view>
+    <view class="ds-btn pay-submit-btn" bindtap="submitOrder">{{submitting ? '提交中...' : '提交订单'}}</view>
   </view>
 </view>

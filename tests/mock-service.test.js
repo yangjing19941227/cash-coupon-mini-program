@@ -32,6 +32,19 @@ test('getCoupons filters by dining category and expiring bucket', () => {
   assert.ok(expiringCoupons.every((coupon) => coupon.isExpiring));
 });
 
+test('getCouponTemplates returns merchant coupon configuration for discovery page', () => {
+  service.resetMockState();
+
+  const templates = service.getCouponTemplates();
+  const diningTemplates = service.getCouponTemplates('餐饮');
+
+  assert.ok(templates.length > 0);
+  assert.ok(templates.every((template) => template.status === 'online'));
+  assert.ok(diningTemplates.length > 0);
+  assert.ok(diningTemplates.every((template) => template.category === '餐饮'));
+  assert.equal(templates[0].userId, undefined);
+});
+
 test('submitLottery consumes one chance and prepends a record', () => {
   service.resetMockState();
   const beforeState = service.getLotteryState();

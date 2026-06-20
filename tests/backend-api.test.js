@@ -135,6 +135,141 @@ test('backend handles recharge, order payment and coupon verification', async ()
     });
     assert.equal(duplicate.response.status, 409);
     assert.match(duplicate.payload.message, /不可重复核销/);
+
+    const createdCoupon = await requestJson(server.baseUrl, '/api/coupons', {
+      method: 'POST',
+      body: {
+        title: 'Admin deletion test coupon',
+        merchantName: 'Admin merchant',
+        category: 'Food',
+        amount: 25,
+        threshold: 80,
+      },
+    });
+    assert.equal(createdCoupon.response.status, 201);
+
+    const deletedCoupon = await requestJson(server.baseUrl, `/api/coupons/${createdCoupon.payload.coupon.id}`, {
+      method: 'DELETE',
+    });
+    assert.equal(deletedCoupon.response.status, 200);
+    assert.equal(deletedCoupon.payload.coupon.id, createdCoupon.payload.coupon.id);
+
+    const couponsAfterDelete = await requestJson(server.baseUrl, '/api/coupons');
+    assert.equal(
+      couponsAfterDelete.payload.coupons.some((item) => item.id === createdCoupon.payload.coupon.id),
+      false,
+    );
+  } finally {
+    await server.close();
+  }
+});
+
+test('backend separates merchant coupon templates from user coupon assets', async () => {
+  const server = await createTestServer();
+
+  try {
+    const templates = await requestJson(server.baseUrl, '/api/coupon-templates');
+    assert.equal(templates.response.status, 200);
+    assert.ok(templates.payload.templates.length >= 1);
+    assert.equal(templates.payload.templates[0].status, 'online');
+    assert.equal(templates.payload.templates[0].merchantName, '海岛小院');
+
+    const createdTemplate = await requestJson(server.baseUrl, '/api/coupon-templates', {
+      method: 'POST',
+      body: {
+        title: '测试商户满减券',
+        merchantName: '测试商户',
+        store: '测试门店',
+        category: '餐饮',
+        amount: 35,
+        threshold: 120,
+        stock: 5,
+        userScope: ['user-haikou-life'],
+        verifierScope: ['merchant-operator'],
+      },
+    });
+    assert.equal(createdTemplate.response.status, 201);
+    assert.equal(createdTemplate.payload.template.stock, 5);
+    assert.deepEqual(createdTemplate.payload.template.userScope, ['user-haikou-life']);
+    assert.deepEqual(createdTemplate.payload.template.verifierScope, ['merchant-operator']);
+
+    const wrongUser = await requestJson(
+      server.baseUrl,
+      `/api/coupon-templates/${createdTemplate.payload.template.id}/assign`,
+      {
+        method: 'POST',
+        body: { userId: 'other-user' },
+      },
+    );
+    assert.equal(wrongUser.response.status, 403);
+
+    const assigned = await requestJson(
+      server.baseUrl,
+      `/api/coupon-templates/${createdTemplate.payload.template.id}/assign`,
+      {
+        method: 'POST',
+        body: { userId: 'user-haikou-life' },
+      },
+    );
+    assert.equal(assigned.response.status, 201);
+    assert.equal(assigned.payload.coupon.templateId, createdTemplate.payload.template.id);
+    assert.equal(assigned.payload.coupon.userId, 'user-haikou-life');
+    assert.equal(assigned.payload.coupon.status, 'unused');
+    assert.equal(assigned.payload.template.stock, 4);
+
+    const wrongMerchant = await requestJson(server.baseUrl, '/api/merchant/coupons/verify', {
+      method: 'POST',
+      body: {
+        code: assigned.payload.coupon.code,
+        merchantName: '其他商户',
+        operator: 'merchant-user',
+      },
+    });
+    assert.equal(wrongMerchant.response.status, 403);
+
+    const wrongOperator = await requestJson(server.baseUrl, '/api/merchant/coupons/verify', {
+      method: 'POST',
+      body: {
+        code: assigned.payload.coupon.code,
+        merchantName: '测试商户',
+        operator: 'merchant-user',
+      },
+    });
+    assert.equal(wrongOperator.response.status, 403);
+
+    const verified = await requestJson(server.baseUrl, '/api/merchant/coupons/verify', {
+      method: 'POST',
+      body: {
+        code: assigned.payload.coupon.code,
+        merchantName: '测试商户',
+        operator: 'merchant-operator',
+      },
+    });
+    assert.equal(verified.response.status, 200);
+    assert.equal(verified.payload.coupon.status, 'used');
+    assert.equal(verified.payload.verification.operator, 'merchant-operator');
+  } finally {
+    await server.close();
+  }
+});
+
+test('backend accepts admin image uploads for coupon templates', async () => {
+  const server = await createTestServer();
+
+  try {
+    const uploaded = await requestJson(server.baseUrl, '/api/uploads', {
+      method: 'POST',
+      body: {
+        filename: 'coupon-test.png',
+        dataUrl: 'data:image/png;base64,aGVsbG8=',
+      },
+    });
+    assert.equal(uploaded.response.status, 201);
+    assert.match(uploaded.payload.url, /^\/uploads\/coupon-test-[a-z0-9]+\.png$/);
+
+    const imageResponse = await fetch(`${server.baseUrl}${uploaded.payload.url}`);
+    assert.equal(imageResponse.status, 200);
+    assert.equal(imageResponse.headers.get('content-type'), 'image/png');
   } finally {
     await server.close();
   }

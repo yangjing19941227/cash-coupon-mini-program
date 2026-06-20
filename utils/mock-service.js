@@ -15,6 +15,63 @@ function getUserProfile() {
   return clone(state.userProfile);
 }
 
+function buildMockOpenId(code) {
+  const hex = Array.from(String(code))
+    .map((character) => character.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join('');
+
+  return `mock-openid-${hex.slice(0, 12)}`;
+}
+
+function createWechatSession(code, now = new Date().toISOString()) {
+  const loginCode = String(code || `local-${Date.now()}`);
+  state.userProfile.wechatOpenId = buildMockOpenId(loginCode);
+  state.userProfile.lastLoginAt = now;
+
+  return {
+    ok: true,
+    sessionToken: `local-session-${loginCode.replace(/[^\w-]/g, '').slice(0, 24)}`,
+    profile: getUserProfile(),
+  };
+}
+
+function updateUserProfile(patch = {}) {
+  const next = {};
+
+  if (typeof patch.nickname === 'string') {
+    const nickname = patch.nickname.trim().slice(0, 24);
+
+    if (nickname) {
+      next.nickname = nickname;
+    }
+  }
+
+  if (typeof patch.avatarUrl === 'string' || typeof patch.avatar === 'string') {
+    const avatar = String(patch.avatarUrl || patch.avatar).trim();
+
+    if (avatar) {
+      next.avatar = avatar;
+    }
+  }
+
+  if (!Object.keys(next).length) {
+    return {
+      ok: false,
+      message: '请提供头像或昵称',
+      profile: getUserProfile(),
+    };
+  }
+
+  Object.assign(state.userProfile, next, {
+    updatedAt: new Date().toISOString(),
+  });
+
+  return {
+    ok: true,
+    profile: getUserProfile(),
+  };
+}
+
 function getCouponSummary() {
   const availableCoupons = state.coupons.filter((coupon) => coupon.status === 'unused');
   const usedCoupons = state.coupons.filter((coupon) => coupon.status === 'used');
@@ -42,6 +99,16 @@ function getCoupons(filter = '全部') {
   }
 
   return clone(state.coupons.filter((coupon) => coupon.category === filter));
+}
+
+function getCouponTemplates(filter = '全部') {
+  const onlineTemplates = state.couponTemplates.filter((template) => template.status === 'online');
+
+  if (filter === '全部' || filter === '附近美食') {
+    return clone(onlineTemplates);
+  }
+
+  return clone(onlineTemplates.filter((template) => template.category === filter));
 }
 
 function findCouponById(id) {
@@ -186,8 +253,11 @@ resetMockState();
 module.exports = {
   resetMockState,
   getUserProfile,
+  createWechatSession,
+  updateUserProfile,
   getCouponSummary,
   getCoupons,
+  getCouponTemplates,
   getCouponById,
   getCouponLookup,
   getMerchantBenefits,

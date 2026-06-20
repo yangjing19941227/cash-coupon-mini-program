@@ -10,7 +10,9 @@ function clone(value) {
 function createInitialState() {
   return {
     userProfile: clone(seed.userProfile),
+    sessions: [],
     coupons: clone(seed.coupons),
+    couponTemplates: clone(seed.couponTemplates),
     merchants: clone(seed.merchantBenefits),
     lotteryState: clone(seed.lotteryState),
     lotteryRecords: clone(seed.lotteryRecords),

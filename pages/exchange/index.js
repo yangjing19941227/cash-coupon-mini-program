@@ -1,7 +1,9 @@
 Page({
-  goExchangeSubmit() {
+  goExchangeSubmit(event) {
+    const { id } = event.currentTarget.dataset;
+
     wx.navigateTo({
-      url: '/pages/exchange-submit/index',
+      url: id ? `/pages/exchange-submit/index?id=${id}` : '/pages/exchange-submit/index',
     });
   },
 

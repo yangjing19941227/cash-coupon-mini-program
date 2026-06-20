@@ -20,7 +20,7 @@ test('admin dashboard is a real management surface backed by API calls', () => {
 
   for (const endpoint of [
     '/api/admin/overview',
-    '/api/coupons',
+    '/api/coupon-templates',
     '/api/exchanges',
     '/api/orders',
     '/api/merchants',
@@ -31,7 +31,33 @@ test('admin dashboard is a real management surface backed by API calls', () => {
   }
 
   assert.match(js, /verifyCoupon/);
+  assert.match(js, /assignCouponTemplate/);
+  assert.match(js, /deleteCouponTemplate/);
+  assert.match(js, /delete-coupon-template/);
+  assert.match(js, /method:\s*'DELETE'/);
+  assert.match(html, /商户优惠券配置/);
+  assert.match(html, /id="coupon-config-form"/);
+  assert.match(html, /id="coupon-merchant-input"/);
+  assert.match(html, /id="coupon-title-input"/);
+  assert.match(html, /id="coupon-sale-price-input"/);
+  assert.match(html, /id="coupon-amount-input"/);
+  assert.match(html, /id="coupon-stock-input"/);
+  assert.match(html, /id="coupon-user-input"/);
+  assert.match(html, /id="coupon-verifier-input"/);
+  assert.match(html, /id="coupon-image-input"/);
+  assert.match(html, /id="coupon-image-url-input"/);
+  assert.match(html, /id="coupon-image-preview"/);
+  assert.match(html, /保存商户券配置/);
+  assert.match(js, /readCouponForm/);
+  assert.match(js, /new FormData/);
+  assert.match(js, /uploadCouponImage/);
+  assert.match(js, /FileReader/);
+  assert.match(js, /\/api\/uploads/);
+  assert.match(js, /getTemplateUser/);
+  assert.match(js, /verifierScope/);
+  assert.match(js, /state\.couponTemplates/);
   assert.match(js, /reviewExchange/);
   assert.match(js, /createMerchant/);
+  assert.match(css, /\.coupon-config-form/);
   assert.match(css, /\.admin-shell/);
 });
