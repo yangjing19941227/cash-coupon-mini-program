@@ -239,6 +239,10 @@ page {
   font-weight: 900;
 }
 
+.quick-action-active {
+  opacity: 0.66;
+}
+
 .quick-action:not(:last-child) {
   border-right: 2rpx solid rgba(34, 76, 90, 0.17);
 }

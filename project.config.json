@@ -13,6 +13,70 @@
       {
         "value": "_reference",
         "type": "folder"
+      },
+      {
+        "value": "html-preview",
+        "type": "folder"
+      },
+      {
+        "value": "html-pages",
+        "type": "folder"
+      },
+      {
+        "value": "admin",
+        "type": "folder"
+      },
+      {
+        "value": "server",
+        "type": "folder"
+      },
+      {
+        "value": ".data",
+        "type": "folder"
+      },
+      {
+        "value": ".git",
+        "type": "folder"
+      },
+      {
+        "value": "assets/images/home-city-element-assets",
+        "type": "folder"
+      },
+      {
+        "value": "index.html",
+        "type": "file"
+      },
+      {
+        "value": "package.json",
+        "type": "file"
+      },
+      {
+        "value": "README.md",
+        "type": "file"
+      },
+      {
+        "value": "assets/images/home-hero-bridge.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/images/home-restaurant-card.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/images/coupon-deal-fish.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/images/coupon-deal-meal.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/images/coupon-deal-hair.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/images/coupon-deal-tea.png",
+        "type": "file"
       }
     ],
     "include": []
@@ -24,7 +88,7 @@
     "minified": true,
     "compileWorklet": false,
     "uglifyFileName": false,
-    "uploadWithSourceMap": true,
+    "uploadWithSourceMap": false,
     "enhance": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
@@ -43,8 +107,8 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.8.8",
-  "appid": "wx2ced30dfdd42fdc6",
+  "libVersion": "3.16.1",
+  "appid": "wx3914116578e563af",
   "projectname": "cash-coupon-mini-program",
   "simulatorPluginLibVersion": {},
   "editorSetting": {}

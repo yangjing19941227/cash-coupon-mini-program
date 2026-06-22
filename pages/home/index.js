@@ -199,8 +199,8 @@ Page({
   },
 
   goExchange() {
-    switchTo({
-      url: '/pages/exchange/index',
+    navigateTo({
+      url: '/pages/exchange-submit/index?id=merchant-island-yard',
     });
   },
 

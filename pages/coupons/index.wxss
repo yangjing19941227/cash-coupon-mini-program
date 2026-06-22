@@ -67,7 +67,8 @@ page {
   margin-top: 42rpx;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0;
+  row-gap: 22rpx;
+  column-gap: 0;
 }
 
 .category-item {

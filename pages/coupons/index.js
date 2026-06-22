@@ -5,15 +5,26 @@ const {
 
 const CATEGORY_DEFS = [
   { label: '附近美食', icon: '/assets/images/coupon-cat-recommend.png' },
-  { label: '快餐', icon: '/assets/images/coupon-cat-food.png' },
-  { label: '饮品', icon: '/assets/images/coupon-cat-coffee.png' },
+  { label: '小吃快餐', icon: '/assets/images/coupon-cat-food.png' },
+  { label: '饮品甜点', icon: '/assets/images/coupon-cat-coffee.png' },
   { label: '上榜好店', icon: '/assets/images/coupon-cat-play.png' },
   { label: '订座', icon: '/assets/images/coupon-cat-beauty.png' },
+  { label: '午餐', icon: '/assets/images/coupon-cat-food.png' },
+  { label: '火锅', icon: '/assets/images/coupon-cat-recommend.png' },
+  { label: '自助餐', icon: '/assets/images/coupon-cat-play.png' },
+  { label: '烧烤烤肉', icon: '/assets/images/coupon-cat-food.png' },
+  { label: '清淡口味', icon: '/assets/images/coupon-cat-coffee.png' },
 ];
 
 const FILTER_DEFS = ['附近', '排序', '1km内', '神券膨胀'];
 const CATEGORY_FILTER_MAP = {
-  快餐: '餐饮',
+  小吃快餐: '餐饮',
+  午餐: '餐饮',
+  火锅: '餐饮',
+  自助餐: '餐饮',
+  烧烤烤肉: '餐饮',
+  清淡口味: '餐饮',
+  饮品甜点: '饮品',
   上榜好店: '餐饮',
   订座: '生活服务',
 };
