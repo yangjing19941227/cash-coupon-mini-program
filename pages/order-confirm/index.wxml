@@ -2,21 +2,21 @@
   <view class="ds-top">
     <view class="ds-back" bindtap="goBack">‹</view>
     <view class="ds-title">确认订单</view>
-    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view class="ds-capsule"><text>•••</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
   </view>
 
   <view class="ds-card order-cover">
-    <image src="/assets/images/deal-seafood.png" mode="aspectFill"></image>
+    <image src="{{orderDraft.image}}" mode="aspectFill"></image>
     <view>
       <text class="order-title">{{orderDraft.title}}</text>
       <view class="tag-row"><text class="ds-tag">海口</text><text class="ds-tag">{{orderDraft.category}}</text></view>
-      <text class="ds-red">券后可省 ￥68</text>
+      <text class="ds-red">券后可省 {{discountText}}</text>
     </view>
   </view>
 
   <view class="ds-card pay-section">
     <view class="ds-info-line"><text>商品金额</text><text>{{payableAmount}}</text></view>
-    <view class="ds-info-line"><text>优惠券抵扣</text><text class="ds-red">-￥68</text></view>
+    <view class="ds-info-line"><text>优惠券抵扣</text><text class="ds-red">{{discountText}}</text></view>
     <view class="ds-info-line"><text>购买数量</text><text>1 张</text></view>
     <view class="ds-info-line"><text>预计积分</text><text class="ds-teal">+{{orderDraft.amount}}</text></view>
   </view>

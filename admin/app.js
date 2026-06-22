@@ -5,6 +5,7 @@ const state = {
     overview: ['总览', '查看项目运行指标与待处理事项'],
     coupons: ['优惠券', '配置商户可上架、可发放和可购买的优惠券'],
     exchanges: ['置换审核', '处理用户发起的商家权益置换申请'],
+    lottery: ['抽奖', '查看参与号码并结算中奖状态'],
     orders: ['订单', '查看订单并模拟支付履约流程'],
     merchants: ['商家', '维护可置换和可购买的本地商家权益'],
     ledger: ['余额流水', '查看充值、退回与账户额度变化'],
@@ -213,6 +214,23 @@ async function renderExchanges() {
     : empty('暂无置换记录');
 }
 
+async function renderLottery() {
+  const payload = await api('/api/lottery/records');
+  const records = payload.records || [];
+
+  document.querySelector('#lottery-list').innerHTML = records.length
+    ? records.map((item) => row({
+      title: `四位数抽奖 · ${item.number}`,
+      meta: `奖品 ${item.prize || '优惠券'} · ${item.createdAt || ''}`,
+      badge: item.status,
+      actions: item.status === 'pending'
+        ? `<button class="small-btn" data-action="settle-lottery-win" data-id="${item.id}" type="button">设为中奖</button>
+          <button class="danger-btn" data-action="settle-lottery-lose" data-id="${item.id}" type="button">设为未中奖</button>`
+        : '',
+    })).join('')
+    : empty('暂无抽奖记录');
+}
+
 async function renderOrders() {
   const payload = await api('/api/orders');
   document.querySelector('#order-list').innerHTML = payload.orders.length
@@ -339,6 +357,14 @@ async function recharge() {
   await refresh();
 }
 
+async function settleLottery(id, won) {
+  await api('/api/admin/lottery/settle', {
+    method: 'POST',
+    body: { recordId: id, won },
+  });
+  await refresh();
+}
+
 function readFileAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -385,6 +411,7 @@ async function refresh() {
     overview: renderOverview,
     coupons: renderCoupons,
     exchanges: renderExchanges,
+    lottery: renderLottery,
     orders: renderOrders,
     merchants: renderMerchants,
     ledger: renderLedger,
@@ -422,6 +449,10 @@ document.addEventListener('click', async (event) => {
     await reviewExchange(id, 'completed');
   } else if (action === 'return-exchange') {
     await reviewExchange(id, 'returned');
+  } else if (action === 'settle-lottery-win') {
+    await settleLottery(id, true);
+  } else if (action === 'settle-lottery-lose') {
+    await settleLottery(id, false);
   } else if (action === 'pay-order') {
     await payOrder(id);
   }

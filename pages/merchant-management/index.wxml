@@ -1,0 +1,112 @@
+<view class="ds-page merchant-management-page {{view === 'records' ? 'records-page' : ''}}">
+  <view class="ds-top merchant-top {{view === 'scan' ? 'scan-top' : ''}}">
+    <view class="ds-back" bindtap="goBack">‹</view>
+    <view class="ds-title">{{view === 'scan' ? '扫码核销' : view === 'confirm' ? '确认核销' : view === 'result' ? '核销结果' : '核销记录'}}</view>
+    <view wx:if="{{view === 'scan'}}" class="top-link" bindtap="goRecords">记录</view>
+    <view wx:elif="{{view === 'result'}}" class="ds-capsule"><text>•••</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view wx:else></view>
+  </view>
+
+  <block wx:if="{{view === 'scan'}}">
+    <view class="scan-head">
+      <text class="scan-title">请扫描用户核销码</text>
+      <text class="scan-sub">将用户的核销码放入框内，即可自动识别</text>
+    </view>
+    <view class="scan-frame">
+      <view class="scan-line"></view>
+    </view>
+    <view class="scan-actions">
+      <view class="ds-btn ds-btn-block scan-main-btn" bindtap="goConfirm">▣　开始扫码</view>
+      <view class="ds-outline-btn manual-btn" bindtap="goConfirm">⌨　手动输入核销码</view>
+    </view>
+    <view class="ds-card today-card">
+      <text class="today-title">今日核销</text>
+      <view class="today-grid">
+        <view><text class="ds-muted">已核销</text><text class="today-ok">18</text></view>
+        <view class="today-line"></view>
+        <view><text class="ds-muted">待确认</text><text class="today-wait">3</text></view>
+      </view>
+    </view>
+    <text class="scan-note">ⓘ 支持套餐、优惠券、预约订单核销</text>
+  </block>
+
+  <block wx:elif="{{view === 'confirm'}}">
+    <view class="confirm-head">
+      <view class="confirm-check">✓</view>
+      <view>
+        <text class="confirm-title">扫码成功</text>
+        <text class="ds-muted">请核对信息，确认无误后完成核销</text>
+      </view>
+    </view>
+    <view class="ds-card info-card">
+      <text class="card-title">服务信息</text>
+      <view class="info-row"><text>用户昵称</text><text>李**</text></view>
+      <view class="info-row"><text>服务名称</text><text>西湖悦享KTV · 双人欢唱套餐</text></view>
+      <view class="info-row"><text>订单类型</text><text>预约套餐</text></view>
+      <view class="info-row"><text>预约时间</text><text>今天 19:30</text></view>
+      <view class="info-row"><text>核销码</text><text class="code-value">{{verifyCode}} ▢</text></view>
+    </view>
+    <view class="ds-card info-card">
+      <text class="card-title">核销详情</text>
+      <view class="info-row"><text>核销数量</text><text>1份</text></view>
+      <view class="info-row"><text>实付金额</text><text class="amount-red">￥108</text></view>
+      <view class="info-row"><text>优惠券抵扣</text><text class="amount-teal">-￥20</text></view>
+      <view class="info-row divider"><text>适用门店</text><text>湖滨店 ›</text></view>
+    </view>
+    <view class="warning-box">ⓘ　核销后不可撤销，请确认用户已到店</view>
+    <view class="fixed-actions two-actions">
+      <view class="ds-outline-btn" bindtap="goScan">取消</view>
+      <view class="ds-btn" bindtap="goResult">确认核销</view>
+    </view>
+  </block>
+
+  <block wx:elif="{{view === 'result'}}">
+    <view class="result-hero">
+      <view class="result-ring"><view class="result-check">✓</view></view>
+      <text class="result-title">核销成功</text>
+      <text class="result-sub">套餐已完成到店核销</text>
+    </view>
+    <view class="ds-card result-card">
+      <view class="result-row"><text>商家</text><text>西湖悦享KTV（湖滨店）</text></view>
+      <view class="result-row"><text>服务</text><text>双人欢唱套餐</text></view>
+      <view class="result-row"><text>核销时间</text><text>2026-06-15 19:42</text></view>
+      <view class="result-row"><text>核销码</text><text>{{verifyCode}} ▢</text></view>
+    </view>
+    <view class="ds-soft-card credit-card">
+      <view class="credit-icon">￥</view>
+      <view>
+        <text class="credit-title">优惠券抵扣已计入本单</text>
+        <text class="ds-muted">抵扣金额 <text class="amount-red">￥20.00</text></text>
+      </view>
+    </view>
+    <view class="fixed-actions">
+      <view class="ds-btn ds-btn-block" bindtap="goRecords">查看核销记录</view>
+      <view class="ds-outline-btn result-outline" bindtap="goScan">返回首页</view>
+    </view>
+  </block>
+
+  <block wx:elif="{{view === 'records'}}">
+    <view class="record-tabs">
+      <view class="{{activeRecordFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="switchRecordFilter">全部</view>
+      <view class="{{activeRecordFilter === 'verified' ? 'active' : ''}}" data-filter="verified" bindtap="switchRecordFilter">已核销</view>
+      <view class="{{activeRecordFilter === 'expired' ? 'active' : ''}}" data-filter="expired" bindtap="switchRecordFilter">已失效</view>
+    </view>
+    <view class="filter-row">近30天⌄</view>
+    <view class="ds-card record-list">
+      <view wx:for="{{records}}" wx:key="merchant" wx:if="{{activeRecordFilter === 'all' || item.type === activeRecordFilter}}" class="record-item">
+        <image src="{{item.image}}" mode="aspectFill"></image>
+        <view class="record-main">
+          <text class="record-title">{{item.merchant}}</text>
+          <text class="record-tag">{{item.service}}</text>
+          <text class="record-meta {{item.expired ? 'expired-text' : ''}}">{{item.expired ? '失效时间：' : '核销时间：'}}{{item.time}}</text>
+          <text class="record-meta">{{item.expired ? '预约门店：' : '核销门店：'}}{{item.store}}</text>
+        </view>
+        <view class="record-side">
+          <text class="status-tag {{item.expired ? 'status-expired' : ''}}">{{item.status}}</text>
+          <text class="record-amount {{item.expired ? 'amount-expired' : ''}}">{{item.amount}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="end-line"><view></view><text>没有更多了</text><view></view></view>
+  </block>
+</view>

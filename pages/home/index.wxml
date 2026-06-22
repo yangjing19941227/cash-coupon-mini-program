@@ -93,7 +93,7 @@
           <text class="coupon-badge">{{item.badge}}</text>
           <view class="price-row">
             <text class="price">{{item.price}}</text>
-            <view class="view-button" role="button" bindtap="goLatestCoupon">购买</view>
+            <view class="view-button" role="button" data-index="{{index}}" bindtap="goLocalDealOrderConfirm">购买</view>
           </view>
         </view>
       </view>

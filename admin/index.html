@@ -20,6 +20,7 @@
         <button class="nav-item active" data-view="overview" type="button">总览</button>
         <button class="nav-item" data-view="coupons" type="button">优惠券</button>
         <button class="nav-item" data-view="exchanges" type="button">置换审核</button>
+        <button class="nav-item" data-view="lottery" type="button">抽奖</button>
         <button class="nav-item" data-view="orders" type="button">订单</button>
         <button class="nav-item" data-view="merchants" type="button">商家</button>
         <button class="nav-item" data-view="ledger" type="button">余额流水</button>
@@ -120,6 +121,16 @@
         <article class="panel">
           <h3>置换审核</h3>
           <div id="exchange-list" class="table-list"></div>
+        </article>
+      </section>
+
+      <section class="view-panel" id="view-lottery">
+        <article class="panel">
+          <div class="panel-head">
+            <h3>抽奖管理</h3>
+            <span class="panel-note">查看用户参与号码，并手动结算中奖或未中奖状态</span>
+          </div>
+          <div id="lottery-list" class="table-list"></div>
         </article>
       </section>
 

@@ -17,6 +17,7 @@
     "pages/payment-select/index",
     "pages/payment-success/index",
     "pages/orders/index",
+    "pages/merchant-management/index",
     "pages/rules/index"
   ],
   "window": {

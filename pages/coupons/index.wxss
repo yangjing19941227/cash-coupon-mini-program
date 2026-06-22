@@ -97,7 +97,7 @@ page {
 }
 
 .filter-row {
-  margin-top: 24rpx;
+  margin-top: 32rpx;
   display: flex;
   gap: 14rpx;
   overflow: hidden;
@@ -125,7 +125,7 @@ page {
 }
 
 .deal-list {
-  margin-top: 48rpx;
+  margin-top: 24rpx;
   display: flex;
   flex-direction: column;
   gap: 18rpx;

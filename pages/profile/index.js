@@ -270,4 +270,10 @@ Page({
       url: '/pages/coupon-code/index',
     });
   },
+
+  goMerchantManagement() {
+    wx.navigateTo({
+      url: '/pages/merchant-management/index',
+    });
+  },
 });

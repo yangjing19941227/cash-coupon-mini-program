@@ -1,7 +1,7 @@
 @import "../../styles/downstream.wxss";
 
 .lottery-head {
-  margin-top: 92rpx;
+  margin-top: 32rpx;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -10,20 +10,12 @@
 
 .lottery-kicker {
   color: #071426;
-  font-size: 28rpx;
-  font-weight: 900;
-}
-
-.lottery-title {
-  margin-top: 36rpx;
-  color: #071426;
-  font-size: 64rpx;
-  line-height: 1.08;
+  font-size: 36rpx;
   font-weight: 900;
 }
 
 .lottery-box {
-  margin-top: 72rpx;
+  margin-top: 24rpx;
   padding: 48rpx;
   text-align: center;
   display: flex;
@@ -33,7 +25,7 @@
 
 .lottery-tip {
   color: #006b68;
-  font-size: 30rpx;
+  font-size: 40rpx;
   font-weight: 900;
 }
 
@@ -70,9 +62,24 @@
 .random-text {
   color: #006b68;
   font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+
+.random-icon {
+  color: #006b68;
+  font-size: 34rpx;
+  line-height: 1;
+  font-weight: 800;
 }
 
 .random-disabled {
+  color: #9aa6b2;
+}
+
+.random-disabled .random-icon {
   color: #9aa6b2;
 }
 
@@ -80,6 +87,11 @@
   margin-top: 8rpx;
   color: #6f7d8c;
   font-size: 26rpx;
+}
+
+.wait-number {
+  color: #e84d33;
+  font-weight: 900;
 }
 
 .submit-button {
@@ -91,7 +103,9 @@
   color: #ffffff;
   font-size: 32rpx;
   font-weight: 900;
-  line-height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .submit-button::after,
@@ -100,8 +114,13 @@
 }
 
 .submit-disabled {
-  background: #cfd8dc;
-  color: #6f7d8c;
+  background: #F4F5F9;
+  color: #667185;
+  opacity: 1;
+}
+
+.submit-button[disabled] {
+  opacity: 1;
 }
 
 .rule-text {
@@ -113,7 +132,7 @@
   margin-top: 40rpx;
   padding: 36rpx;
   display: grid;
-  grid-template-columns: 84rpx 1fr 208rpx;
+  grid-template-columns: 84rpx 1fr 196rpx;
   gap: 24rpx;
   align-items: center;
 }
@@ -127,14 +146,15 @@
 
 .note-title {
   color: #071426;
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: 800;
 }
 
 .small-outline {
-  min-height: 62rpx;
-  padding: 0 18rpx;
-  font-size: 24rpx;
+  min-height: 52rpx;
+  padding: 0 20rpx;
+  font-size: 22rpx;
+  justify-self: end;
 }
 
 .result-mask {

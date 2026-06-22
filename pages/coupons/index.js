@@ -120,6 +120,8 @@ Page({
       `store=${encodeQueryValue(deal.store)}`,
       `category=${encodeQueryValue(deal.category)}`,
       `amount=${encodeQueryValue(deal.salePrice || deal.amount)}`,
+      `discountAmount=${encodeQueryValue(deal.amount)}`,
+      `image=${encodeQueryValue(deal.image)}`,
     ].join('&');
 
     wx.navigateTo({

@@ -55,9 +55,10 @@
   </view>
 
   <view class="ds-card menu-card">
-    <view class="menu-line" bindtap="goCouponAssets"><text class="menu-icon">▱</text><text>我的优惠券</text><text class="ds-muted">12张可用</text><text>›</text></view>
-    <view class="menu-line" bindtap="goLotteryRecords"><text class="menu-icon">▣</text><text>抽奖记录</text><text class="ds-muted">查看我的中奖记录</text><text>›</text></view>
-    <view class="menu-line" bindtap="goExchangeRecords"><text class="menu-icon">↔</text><text>置换记录</text><text class="ds-muted">查看置换进度与记录</text><text>›</text></view>
-    <view class="menu-line"><text class="menu-icon">▤</text><text>核销记录</text><text class="ds-muted">查看使用与核销明细</text><text>›</text></view>
+    <view class="menu-line" bindtap="goCouponAssets"><text class="menu-icon">▱</text><text class="menu-title">我的优惠券</text><text class="ds-muted">12张可用</text><text>›</text></view>
+    <view class="menu-line" bindtap="goLotteryRecords"><text class="menu-icon">▣</text><text class="menu-title">抽奖记录</text><text class="ds-muted">查看我的中奖记录</text><text>›</text></view>
+    <view class="menu-line" bindtap="goExchangeRecords"><text class="menu-icon">↔</text><text class="menu-title">置换记录</text><text class="ds-muted">查看置换进度与记录</text><text>›</text></view>
+    <view class="menu-line"><text class="menu-icon">▤</text><text class="menu-title">核销记录</text><text class="ds-muted">查看使用与核销明细</text><text>›</text></view>
+    <view class="menu-line" bindtap="goMerchantManagement"><text class="menu-icon">▥</text><text class="menu-title">商家管理</text><text class="ds-muted">核销优惠券</text><text>›</text></view>
   </view>
 </view>

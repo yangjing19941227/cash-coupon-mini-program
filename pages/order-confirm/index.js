@@ -12,8 +12,19 @@ function decodeQueryText(value, fallback = '') {
   }
 }
 
+function toAmount(value, fallback = 128) {
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount > 0 ? amount : fallback;
+}
+
+function formatCurrency(value) {
+  const amount = Number(value || 0);
+  return Number.isInteger(amount) ? `￥${amount}` : `￥${amount.toFixed(2)}`;
+}
+
 function buildOrderDraft(query = {}) {
-  const amount = Number(query.amount || 128);
+  const amount = toAmount(query.amount, 128);
+  const discountAmount = toAmount(query.discountAmount, 68);
   const merchantName = decodeQueryText(query.merchantName, '海岛小院');
 
   return {
@@ -22,8 +33,10 @@ function buildOrderDraft(query = {}) {
     merchantName,
     store: decodeQueryText(query.store, merchantName),
     amount,
+    discountAmount,
     quantity: 1,
     category: decodeQueryText(query.category, '餐饮'),
+    image: decodeQueryText(query.image, '/assets/images/deal-seafood.png'),
   };
 }
 
@@ -32,13 +45,15 @@ Page({
     submitting: false,
     orderDraft: buildOrderDraft(),
     payableAmount: '￥128',
+    discountText: '-￥68',
   },
 
   onLoad(query) {
     const orderDraft = buildOrderDraft(query);
     this.setData({
       orderDraft,
-      payableAmount: `￥${orderDraft.amount}`,
+      payableAmount: formatCurrency(orderDraft.amount),
+      discountText: `-${formatCurrency(orderDraft.discountAmount)}`,
     });
   },
 

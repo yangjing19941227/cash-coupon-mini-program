@@ -5,15 +5,9 @@
     <view class="ds-capsule"><text>•••</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
   </view>
 
-  <view class="lottery-head">
-    <text class="lottery-kicker">一 · 四位数抽奖 · 一</text>
-    <text class="lottery-title">输入四位数参与</text>
-    <text class="ds-muted">中奖奖励自动发放优惠券</text>
-  </view>
-
   <view class="ds-soft-card lottery-box">
     <text class="lottery-tip">输入4位数字，猜对即可获奖</text>
-    <text class="ds-muted">开奖时间为每晚21:38分</text>
+    <text class="ds-muted">每晚21:38开奖，中奖即发券</text>
 
     <view class="digits">
       <input
@@ -54,9 +48,16 @@
       />
     </view>
 
-    <view class="random-text {{isSubmitted ? 'random-disabled' : ''}}" bindtap="generateRandomDigits">随机生成一组数字</view>
+    <view class="random-text {{isSubmitted ? 'random-disabled' : ''}}" bindtap="generateRandomDigits">
+      <text class="random-icon">↻</text>
+      <text>随机生成一组数字</text>
+    </view>
 
-    <view wx:if="{{isSubmitted}}" class="wait-state">{{countdownText}}</view>
+    <view wx:if="{{isSubmitted}}" class="wait-state">
+      <block wx:for="{{countdownParts}}" wx:key="index">
+        <text class="{{item.highlight ? 'wait-number' : ''}}">{{item.text}}</text>
+      </block>
+    </view>
 
     <button class="submit-button {{isSubmitted ? 'submit-disabled' : ''}}" disabled="{{isSubmitted}}" bindtap="submitNumber">
       {{submitButtonText}}
@@ -68,10 +69,10 @@
   <view class="ds-soft-card note-card" bindtap="goLotteryRecords">
     <view class="ds-round-icon">▣</view>
     <view class="note-main">
-      <text class="note-title">参与记录 / 开奖记录 / 发券记录 可追溯</text>
+      <text class="note-title">我的抽奖</text>
       <text class="ds-muted">所有记录均可在个人中心查看</text>
     </view>
-    <view class="ds-outline-btn small-outline">查看抽奖记录 ›</view>
+    <view class="ds-outline-btn small-outline">抽奖记录</view>
   </view>
 
   <view wx:if="{{showResultModal}}" class="result-mask">

@@ -37,7 +37,7 @@
         <view><text class="amount">300</text><text> 额度起置换</text></view>
         <text class="ds-muted">双人套餐券 · 到店核销</text>
       </view>
-      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
+      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换</text></view>
     </view>
 
     <view class="merchant-row" data-id="merchant-bay-dessert" bindtap="goExchangeSubmit">
@@ -48,7 +48,7 @@
         <view><text class="amount">120</text><text> 额度起置换</text></view>
         <text class="ds-muted">下午茶券 · 门店通用</text>
       </view>
-      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
+      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换</text></view>
     </view>
 
     <view class="merchant-row" data-id="merchant-family-park" bindtap="goExchangeSubmit">
@@ -59,7 +59,7 @@
         <view><text class="amount">500</text><text> 额度起置换</text></view>
         <text class="ds-muted">门票券 · 指定门店可用</text>
       </view>
-      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换 ›</text></view>
+      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换</text></view>
     </view>
   </view>
 </view>

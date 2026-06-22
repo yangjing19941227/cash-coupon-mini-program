@@ -113,7 +113,7 @@
 
 .ds-outline-btn {
   min-height: 66rpx;
-  padding: 0 28rpx;
+  padding: 0 12rpx;
   border: 2rpx solid #00706f;
   border-radius: 36rpx;
   color: #006b68;
@@ -134,7 +134,7 @@
   border-radius: 8rpx;
   background: #f0f2f3;
   color: #596475;
-  font-size: 22rpx;
+  font-size: 20rpx;
   line-height: 1;
   white-space: nowrap;
 }
@@ -150,10 +150,6 @@
 
 .ds-red {
   color: #ef4b2e;
-}
-
-.ds-muted {
-  color: #667185;
 }
 
 .ds-section-head {

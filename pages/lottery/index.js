@@ -20,18 +20,23 @@ function getNextDrawTime(now = new Date()) {
   return drawTime;
 }
 
-function formatCountdown(targetTime) {
+function getCountdownParts(targetTime) {
   const diff = Math.max(0, targetTime.getTime() - Date.now());
   const totalSeconds = Math.ceil(diff / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
 
-  if (hours > 0) {
-    return `距离开奖还有 ${hours} 小时 ${pad(minutes)} 分钟`;
-  }
+  return [
+    { text: '距离开奖还有 ' },
+    { text: String(hours), highlight: true },
+    { text: ' 小时 ' },
+    { text: pad(minutes), highlight: true },
+    { text: ' 分钟' },
+  ];
+}
 
-  return `距离开奖还有 ${pad(minutes)}:${pad(seconds)}`;
+function formatCountdown(targetTime) {
+  return getCountdownParts(targetTime).map((part) => part.text).join('');
 }
 
 function generateNumber() {
@@ -47,6 +52,7 @@ Page({
     isSubmitted: false,
     submitButtonText: '提交号码',
     countdownText: '',
+    countdownParts: [],
     showResultModal: false,
     resultTitle: '',
     resultButtonText: '',
@@ -102,6 +108,7 @@ Page({
       submitButtonText: '已提交，等待开奖',
       userNumber: digits.join(''),
       countdownText: formatCountdown(this._drawTime),
+      countdownParts: getCountdownParts(this._drawTime),
     });
 
     this.startDrawTimer();
@@ -123,6 +130,7 @@ Page({
 
       this.setData({
         countdownText: formatCountdown(this._drawTime),
+        countdownParts: getCountdownParts(this._drawTime),
       });
     }, 1000);
   },
@@ -165,6 +173,7 @@ Page({
       isSubmitted: false,
       submitButtonText: '提交号码',
       countdownText: '',
+      countdownParts: [],
       showResultModal: false,
       resultTitle: '',
       resultButtonText: '',
