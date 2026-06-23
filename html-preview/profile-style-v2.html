@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的 - 同城名惠</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background: #e9eeee;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #071226;
+    }
+
+    .phone {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 250px 190px at 0 0, rgba(176, 236, 224, 0.72) 0, rgba(225, 248, 244, 0.45) 38%, rgba(255, 255, 255, 0) 72%),
+        linear-gradient(180deg, #effbf8 0%, #fbfdfd 26%, #ffffff 58%, #f8fbfb 100%);
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      padding: 0 16px 110px;
+    }
+
+    .status-bar {
+      height: 44px;
+      padding: 14px 20px 0;
+      margin: 0 -16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      font-size: 15px;
+      font-weight: 800;
+      color: #020509;
+    }
+
+    .sys {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bars {
+      width: 19px;
+      height: 13px;
+      display: grid;
+      grid-template-columns: repeat(4, 3px);
+      align-items: end;
+      gap: 2px;
+    }
+
+    .bars i {
+      width: 3px;
+      border-radius: 2px;
+      background: #020509;
+    }
+
+    .bars i:nth-child(1) { height: 4px; }
+    .bars i:nth-child(2) { height: 7px; }
+    .bars i:nth-child(3) { height: 10px; }
+    .bars i:nth-child(4) { height: 13px; }
+
+    .wifi {
+      width: 17px;
+      height: 13px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wifi::before,
+    .wifi::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 2px solid #020509;
+      border-bottom: 0;
+      border-radius: 18px 18px 0 0;
+    }
+
+    .wifi::before {
+      top: 1px;
+      width: 18px;
+      height: 10px;
+    }
+
+    .wifi::after {
+      top: 6px;
+      width: 9px;
+      height: 6px;
+    }
+
+    .battery {
+      position: relative;
+      width: 23px;
+      height: 12px;
+      border: 2px solid #020509;
+      border-radius: 3px;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      right: -5px;
+      top: 3px;
+      width: 3px;
+      height: 4px;
+      border-radius: 0 2px 2px 0;
+      background: #020509;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 1px;
+      background: #020509;
+    }
+
+    .head {
+      height: 82px;
+      padding-top: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title {
+      font-size: 36px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .gear {
+      width: 35px;
+      height: 35px;
+      border: 3px solid #101418;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .gear::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 3px solid #101418;
+      border-radius: 50%;
+    }
+
+    .gear::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      background:
+        linear-gradient(#101418, #101418) center top / 5px 7px no-repeat,
+        linear-gradient(#101418, #101418) center bottom / 5px 7px no-repeat,
+        linear-gradient(90deg, #101418, #101418) left center / 7px 5px no-repeat,
+        linear-gradient(90deg, #101418, #101418) right center / 7px 5px no-repeat;
+    }
+
+    .profile {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr) 24px;
+      gap: 17px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #dcefed;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .name {
+      font-size: 27px;
+      line-height: 1.1;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .member {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 30px;
+      padding: 0 14px;
+      border: 1px solid rgba(210, 138, 41, 0.34);
+      border-radius: 16px;
+      color: #b86a10;
+      background: rgba(255, 249, 239, 0.86);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .crown {
+      color: #c88319;
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .arrow {
+      color: #8d939b;
+      font-size: 35px;
+      line-height: 1;
+      font-weight: 300;
+    }
+
+    .card {
+      margin-top: 18px;
+      border: 1px solid rgba(7, 18, 38, 0.09);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.78);
+      overflow: hidden;
+    }
+
+    .stats {
+      height: 102px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      text-align: center;
+    }
+
+    .stat {
+      position: relative;
+    }
+
+    .stat:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 15px;
+      width: 1px;
+      height: 72px;
+      background: rgba(7, 18, 38, 0.09);
+    }
+
+    .stat-label {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .stat-value {
+      margin-top: 12px;
+      color: #006b68;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 37px;
+      line-height: 1;
+    }
+
+    .stat small {
+      margin-top: 9px;
+      display: block;
+      color: #7b828a;
+      font-size: 14px;
+    }
+
+    .lottery-card {
+      height: 72px;
+      margin-top: 12px;
+      padding: 0 14px 0 18px;
+      display: grid;
+      grid-template-columns: 64px 1fr 91px;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid rgba(222, 156, 61, 0.16);
+      border-radius: 13px;
+      background: linear-gradient(90deg, rgba(255, 238, 211, 0.96) 0%, rgba(255, 249, 240, 0.86) 54%, rgba(255, 255, 255, 0.78) 100%);
+    }
+
+    .gift {
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #fff1d2;
+    }
+
+    .gift img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+
+    .lottery-main b {
+      font-size: 21px;
+      line-height: 1.1;
+    }
+
+    .lottery-main em {
+      margin: 0 5px;
+      color: #cf5c18;
+      font-style: normal;
+      font-size: 27px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+    }
+
+    .lottery-main p {
+      margin: 9px 0 0;
+      color: #7b828a;
+      font-size: 15px;
+    }
+
+    .lottery-btn {
+      height: 42px;
+      border: 1px solid #006b68;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #006b68;
+      font-size: 18px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status-card {
+      margin-top: 12px;
+      padding: 16px 0 14px;
+    }
+
+    .order-title {
+      padding: 0 18px 14px;
+      color: #071226;
+      font-size: 21px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .order-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      text-align: center;
+    }
+
+    .status-item img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      opacity: 0.92;
+    }
+
+    .status-item span {
+      margin-top: 10px;
+      display: block;
+      color: #20242a;
+      font-size: 17px;
+    }
+
+    .menu {
+      margin-top: 12px;
+      padding: 12px 18px;
+    }
+
+    .menu-row {
+      height: 61px;
+      display: grid;
+      grid-template-columns: 34px 1fr auto 20px;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .menu-row:not(:last-child) {
+      border-bottom: 1px solid rgba(7, 18, 38, 0.08);
+    }
+
+    .menu-row img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      opacity: 0.9;
+    }
+
+    .menu-row span {
+      font-size: 21px;
+      font-weight: 500;
+    }
+
+    .menu-row .menu-title {
+      font-weight: 800;
+    }
+
+    .menu-row .menu-desc {
+      color: #667185;
+      font-size: 13px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .menu-row .arrow {
+      font-size: 28px;
+      color: #9a9fa5;
+    }
+
+    .tabbar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 74px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(7, 18, 38, 0.08);
+      background: rgba(255, 255, 255, 0.98);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      z-index: 5;
+    }
+
+    .tab {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      color: #6f7d8c;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .tab img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .tab.active {
+      color: #006b68;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <section class="page">
+      <header class="head">
+        <div class="title">我的</div>
+      </header>
+
+      <section class="profile">
+        <div class="avatar">
+          <img src="../assets/images/profile-avatar.png" alt="头像">
+        </div>
+        <div>
+          <div class="name">本地生活用户</div>
+          <div class="member"><span class="crown">♛</span><span>会员折扣已开通</span></div>
+        </div>
+        <div class="arrow">›</div>
+      </section>
+
+      <section class="card stats">
+        <div class="stat">
+          <div class="stat-label">优惠券</div>
+          <div class="stat-value">￥128</div>
+          <small>余额可用</small>
+        </div>
+        <div class="stat">
+          <div class="stat-label">置换额度</div>
+          <div class="stat-value">320</div>
+          <small>可置换权益</small>
+        </div>
+        <div class="stat">
+          <div class="stat-label">积分</div>
+          <div class="stat-value">860</div>
+          <small>可抵扣订单</small>
+        </div>
+      </section>
+
+      <section class="lottery-card">
+        <div class="gift"><img src="../assets/icons/gift-active.png" alt=""></div>
+        <div class="lottery-main">
+          <b>今日免费抽奖 <em>1</em>次</b>
+          <p>好运随时来，奖品自动到账</p>
+        </div>
+        <div class="lottery-btn">去抽奖 ›</div>
+      </section>
+
+      <section class="card status-card">
+        <div class="order-title">我的订单</div>
+        <div class="order-grid">
+          <div class="status-item">
+            <img src="../assets/icons/ticket.png" alt="">
+            <span>待使用</span>
+          </div>
+          <div class="status-item">
+            <img src="../assets/icons/ticket.png" alt="">
+            <span>待核销</span>
+          </div>
+          <div class="status-item">
+            <img src="../assets/icons/ticket-active.png" alt="">
+            <span>已完成</span>
+          </div>
+          <div class="status-item">
+            <img src="../assets/icons/exchange.png" alt="">
+            <span>退款/售后</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card menu">
+        <div class="menu-row">
+          <img src="../assets/icons/ticket.png" alt="">
+          <span class="menu-title">抽奖记录</span>
+          <span class="menu-desc">查看我的中奖记录</span>
+          <div class="arrow">›</div>
+        </div>
+        <div class="menu-row">
+          <img src="../assets/icons/ticket.png" alt="">
+          <span class="menu-title">券包与核销</span>
+          <span class="menu-desc">12张可用</span>
+          <div class="arrow">›</div>
+        </div>
+        <div class="menu-row">
+          <img src="../assets/icons/exchange.png" alt="">
+          <span class="menu-title">置换记录</span>
+          <span class="menu-desc">查看置换进度与记录</span>
+          <div class="arrow">›</div>
+        </div>
+        <div class="menu-row">
+          <img src="../assets/icons/user.png" alt="">
+          <span class="menu-title">核销记录</span>
+          <span class="menu-desc">查看使用与核销明细</span>
+          <div class="arrow">›</div>
+        </div>
+        <div class="menu-row">
+          <img src="../assets/icons/gift.png" alt="">
+          <span class="menu-title">公益活动</span>
+          <span class="menu-desc">参与本地公益</span>
+          <div class="arrow">›</div>
+        </div>
+        <div class="menu-row">
+          <img src="../assets/icons/user-active.png" alt="">
+          <span class="menu-title">商家管理</span>
+          <span class="menu-desc">核销优惠券</span>
+          <div class="arrow">›</div>
+        </div>
+      </section>
+    </section>
+
+    <nav class="tabbar">
+      <div class="tab">
+        <img src="../assets/icons/home.png" alt="">
+        <span>首页</span>
+      </div>
+      <div class="tab">
+        <img src="../assets/icons/ticket.png" alt="">
+        <span>优惠券</span>
+      </div>
+      <div class="tab">
+        <img src="../assets/icons/exchange.png" alt="">
+        <span>置换</span>
+      </div>
+      <div class="tab">
+        <img src="../assets/icons/gift.png" alt="">
+        <span>抽奖</span>
+      </div>
+      <div class="tab active">
+        <img src="../assets/icons/user-active.png" alt="">
+        <span>我的</span>
+      </div>
+    </nav>
+  </main>
+</body>
+</html>

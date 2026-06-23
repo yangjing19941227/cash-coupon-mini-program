@@ -1,4 +1,5 @@
 const { loginWithWechat } = require('./utils/auth-service');
+const { enableShareMenu } = require('./utils/share-service');
 
 App({
   globalData: {
@@ -7,6 +8,8 @@ App({
   },
 
   onLaunch() {
+    enableShareMenu();
+
     loginWithWechat().then((payload) => {
       this.globalData.userProfile = payload.profile;
       this.globalData.sessionToken = payload.sessionToken;

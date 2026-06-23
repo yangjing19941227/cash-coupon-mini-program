@@ -2,21 +2,16 @@
 
 .exchange-summary {
   height: 208rpx;
-  padding: 48rpx 36rpx;
+  padding: 24rpx 36rpx;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 192rpx;
+  grid-template-columns: 1fr auto;
   align-items: center;
 }
 
-.summary-item {
+.summary-item {  
   min-width: 0;
-  border-right: 1rpx solid rgba(34, 76, 90, 0.18);
   color: #071426;
   font-size: 26rpx;
-}
-
-.summary-item:nth-child(3) {
-  border-right: 0;
 }
 
 .summary-num {
@@ -34,12 +29,21 @@
   font-size: 24rpx;
 }
 
+.summary-note {
+  display: block;
+  margin-top: 12rpx;
+  color: #667185;
+  font-size: 24rpx;
+  line-height: 1.2;
+}
+
 .recharge-btn {
   height: 64rpx;
   min-height: 64rpx;
   padding: 0 20rpx;
   border-radius: 34rpx;
   font-size: 28rpx;
+  justify-self: end;
 }
 
 .exchange-hint {
@@ -58,7 +62,7 @@
   padding: 34rpx 0;
   border-bottom: 1rpx solid rgba(8, 23, 43, 0.08);
   display: grid;
-  grid-template-columns: 196rpx 1fr 172rpx;
+  grid-template-columns: 156rpx 1fr 172rpx;
   gap: 28rpx;
   box-sizing: border-box;
 }
@@ -68,8 +72,8 @@
 }
 
 .merchant-img {
-  width: 196rpx;
-  height: 196rpx;
+  width: 156rpx;
+  height: 156rpx;
   border-radius: 16rpx;
   background: #e8f4f3;
 }

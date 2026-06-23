@@ -85,11 +85,12 @@
     .teal { color: #006b68; }
     .muted { color: #667185; }
     .feed-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:0 2px; }
-    .metric-card { height:104px; padding:24px 18px; display:grid; grid-template-columns: 1fr 1fr 1fr 96px; align-items:center; }
-    .metric-card .m { border-right:1px solid rgba(34,76,90,.18); padding-right:10px; }
-    .metric-card .m:nth-child(3){ border-right:0; }
+    .metric-card { height:104px; padding:24px 18px; display:grid; grid-template-columns: 1fr auto; align-items:center; }
+    .metric-card .m { padding-right:10px; }
+    .metric-card .btn { justify-self:end; }
     .m label { display:block; font-size:13px; margin-bottom:12px; }
     .m b { font-size:29px; color:#006b68; }
+    .m small { display:block; margin-top:7px; color:#667185; font-size:12px; font-weight:400; }
     .hint { margin:20px 0; text-align:center; color:#5c6878; font-size:14px; }
     .merchant-list { padding:20px 15px; }
     .merchant { position:relative; display:grid; grid-template-columns:98px 1fr 86px; gap:14px; padding:18px 0; border-bottom:1px solid rgba(7,20,38,.08); }
@@ -167,7 +168,7 @@
     </header>
     <section class="grid">
       <div id="exchange"><h2 class="wrap-title">03 置换</h2><div class="phone"><div class="status"><span>9:41</span><div class="sys"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="wifi"></div><div class="battery"></div></div></div><div class="top main"><div class="city">⌖ 海口可用⌄</div><div class="title-center">权益置换</div><div class="capsule"><span class="mini-dot">···</span><span class="mini-circle"></span></div></div><div class="content">
-        <section class="soft-card metric-card"><div class="m"><label>可置换额度</label><b>860</b></div><div class="m"><label>闲置优惠券</label><b>4<small>张</small></b></div><div class="m"><label>临期可盘活</label><b>2<small>张</small></b></div><a class="btn" href="payment-flow-ui.html#recharge">充值额度</a></section>
+        <section class="soft-card metric-card"><div class="m"><label>可置换额度</label><b>860</b><small>1元 = 1额度，充值即得</small></div><a class="btn" href="payment-flow-ui.html#recharge">充值额度</a></section>
         <p class="hint">↻ 把闲置优惠券换成更适合你的同城权益</p>
         <section class="card merchant-list"><div class="feed-head"><b>置换商家权益</b><a class="muted" href="missing-flow-ui.html#merchants">更多商家 ›</a></div>
           <div class="merchant"><img src="../assets/merchant-restaurant.png"><div><h3>海岛小院</h3><span class="tag">餐饮美食</span> <span class="tag">龙华区</span><p><b class="teal">300</b> 额度起置换</p><p class="muted">双人套餐券 · 到店核销</p></div><div class="swap"><div class="swap-icon">↻</div>发起置换 ›</div></div>

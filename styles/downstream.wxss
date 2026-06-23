@@ -1,10 +1,7 @@
 .ds-page {
   min-height: 100vh;
   box-sizing: border-box;
-  padding: 110rpx 32rpx 54rpx;
-  background:
-    radial-gradient(ellipse 380rpx 520rpx at 0% 0%, rgba(184, 236, 225, 0.58) 0, rgba(219, 246, 241, 0.26) 36%, rgba(255, 255, 255, 0) 68%),
-    linear-gradient(180deg, #f8fdfc 0%, #f7fbfa 44%, #ffffff 100%);
+  padding: 110rpx 30rpx 54rpx;
   color: #071426;
 }
 
@@ -13,14 +10,21 @@
 }
 
 .ds-top {
-  position: relative;
-  z-index: 2;
+  position: sticky;
+  top: 0;
+  z-index: 60;
   height: 72rpx;
   display: grid;
   grid-template-columns: 120rpx 1fr 154rpx;
   gap: 16rpx;
   align-items: center;
+  box-sizing: border-box;
+  margin-left: -32rpx;
+  margin-right: -32rpx;
   margin-bottom: 28rpx;
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+  background: transparent;
 }
 
 .ds-top-main {
@@ -77,7 +81,6 @@
 }
 
 .ds-card {
-  border: 1rpx solid rgba(8, 23, 43, 0.08);
   border-radius: 28rpx;
   background: rgba(255, 255, 255, 0.82);
   box-sizing: border-box;
@@ -85,7 +88,6 @@
 }
 
 .ds-soft-card {
-  border: 1rpx solid rgba(0, 104, 103, 0.18);
   border-radius: 28rpx;
   background: rgba(255, 255, 255, 0.64);
   box-sizing: border-box;
@@ -130,7 +132,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 38rpx;
-  padding: 0 14rpx;
+  padding: 0 12rpx;
   border-radius: 8rpx;
   background: #f0f2f3;
   color: #596475;

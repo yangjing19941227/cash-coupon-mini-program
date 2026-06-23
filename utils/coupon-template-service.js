@@ -124,6 +124,24 @@ function normalizeTemplate(template, index = 0) {
   };
 }
 
+function mergeTemplates(primaryTemplates = [], fallbackTemplates = []) {
+  const seen = new Set();
+  const merged = [];
+
+  for (const template of [...primaryTemplates, ...fallbackTemplates]) {
+    const id = template && (template.id || template.templateId);
+
+    if (!id || seen.has(id)) {
+      continue;
+    }
+
+    seen.add(id);
+    merged.push(template);
+  }
+
+  return merged;
+}
+
 async function getCouponTemplates(category = '全部', options = {}) {
   try {
     const query = buildQuery({
@@ -131,7 +149,9 @@ async function getCouponTemplates(category = '全部', options = {}) {
       category: category && !['全部', '附近美食'].includes(category) ? category : '',
     });
     const payload = await requestJson(`/api/coupon-templates${query}`, options);
-    return (payload.templates || []).map(normalizeTemplate);
+    const remoteTemplates = payload.templates || [];
+    const localTemplates = getMockCouponTemplates(category);
+    return mergeTemplates(remoteTemplates, localTemplates).map(normalizeTemplate);
   } catch (error) {
     return getMockCouponTemplates(category).map(normalizeTemplate);
   }
@@ -144,5 +164,6 @@ function getLocalCouponTemplates(category = '全部') {
 module.exports = {
   getCouponTemplates,
   getLocalCouponTemplates,
+  mergeTemplates,
   normalizeTemplate,
 };

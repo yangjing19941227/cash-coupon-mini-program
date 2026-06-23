@@ -6,17 +6,23 @@ page {
   min-height: 100vh;
   box-sizing: border-box;
   padding: 110rpx 32rpx 154rpx;
-  background:
-    radial-gradient(ellipse 420rpx 360rpx at 0% 0%, rgba(180, 236, 225, 0.58) 0, rgba(219, 246, 241, 0.34) 34%, rgba(255, 255, 255, 0) 68%),
-    linear-gradient(180deg, #ecfbf8 0%, #f8fcfc 28%, #ffffff 78%, #f8fbfb 100%);
 }
 
 .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
   height: 68rpx;
+  margin-left: -32rpx;
+  margin-right: -32rpx;
+  padding-left: 32rpx;
+  padding-right: 32rpx;
   display: grid;
   grid-template-columns: 116rpx 1fr 154rpx;
   gap: 34rpx;
   align-items: center;
+  box-sizing: border-box;
+  background: transparent;
 }
 
 .city {
@@ -129,13 +135,12 @@ page {
   margin-top: 24rpx;
   display: flex;
   flex-direction: column;
-  gap: 18rpx;
+  gap: 20rpx;
 }
 
 .deal-card {
   min-height: 210rpx;
-  padding: 14rpx;
-  border: 1rpx solid rgba(8, 23, 43, 0.08);
+  padding: 16rpx;
   border-radius: 18rpx;
   background: rgba(255, 255, 255, 0.9);
   box-sizing: border-box;

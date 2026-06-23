@@ -119,7 +119,11 @@
   opacity: 1;
 }
 
-.submit-button[disabled] {
+.submit-button[disabled],
+button.submit-button[disabled]:not([type]),
+wx-button.submit-button[disabled][type=default] {
+  background-color: #F4F5F9 !important;
+  color: #667185 !important;
   opacity: 1;
 }
 

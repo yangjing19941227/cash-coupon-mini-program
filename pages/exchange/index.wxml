@@ -1,7 +1,7 @@
 <view class="ds-page with-tab exchange-page">
   <view class="ds-top ds-top-main">
     <view class="ds-location">⌖ 海口可用⌄</view>
-    <view class="ds-title">权益置换</view>
+    <view class="ds-title">置换宝</view>
     <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
   </view>
 
@@ -9,14 +9,7 @@
     <view class="summary-item">
       <text>可置换额度</text>
       <view><text class="summary-num">860</text></view>
-    </view>
-    <view class="summary-item">
-      <text>闲置优惠券</text>
-      <view><text class="summary-num">4</text><text class="summary-unit">张</text></view>
-    </view>
-    <view class="summary-item">
-      <text>临期可盘活</text>
-      <view><text class="summary-num">2</text><text class="summary-unit">张</text></view>
+      <text class="summary-note">1元 = 1额度，充值即得</text>
     </view>
     <view class="ds-btn recharge-btn" bindtap="goRecharge">充值额度</view>
   </view>
@@ -25,7 +18,7 @@
 
   <view class="ds-card merchant-panel">
     <view class="ds-section-head">
-      <text class="ds-section-title">置换商家权益</text>
+      <text class="ds-section-title">置换商家</text>
       <text class="ds-muted">更多商家 ›</text>
     </view>
 

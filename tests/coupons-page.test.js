@@ -58,6 +58,12 @@ function createCouponsPageHarness() {
         };
       }
 
+      if (request === '../../utils/tabbar-service') {
+        return {
+          syncTabBar() {},
+        };
+      }
+
       throw new Error(`Unexpected require: ${request}`);
     },
     Page(definition) {
@@ -180,4 +186,28 @@ test('coupon template service turns uploaded backend images into loadable URLs',
   });
 
   assert.equal(deal.image, 'http://127.0.0.1:8787/uploads/coupon-test.png');
+});
+
+test('coupon template service supplements short backend lists with local discovery templates', async () => {
+  const seed = require('../data/mock');
+  const { getCouponTemplates } = require('../utils/coupon-template-service');
+  const remoteTemplates = seed.couponTemplates.slice(0, 3);
+  const wxApi = {
+    request({ success }) {
+      success({
+        statusCode: 200,
+        data: {
+          ok: true,
+          templates: remoteTemplates,
+        },
+      });
+    },
+  };
+
+  const templates = await getCouponTemplates('附近美食', { wxApi });
+  const ids = new Set(templates.map((item) => item.id));
+
+  assert.ok(templates.length >= seed.couponTemplates.length);
+  assert.equal(templates[0].id, remoteTemplates[0].id);
+  assert.equal(ids.size, templates.length);
 });

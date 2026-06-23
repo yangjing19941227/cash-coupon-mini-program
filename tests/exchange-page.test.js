@@ -19,16 +19,17 @@ test('exchange tab exposes recharge and exchange submit navigation', () => {
   assert.match(js, /\/pages\/recharge\/index/);
 
   for (const text of [
-    '权益置换',
+    '置换宝',
     '可置换额度',
-    '闲置优惠券',
-    '临期可盘活',
     '充值额度',
-    '置换商家权益',
+    '置换商家',
     '发起置换',
   ]) {
     assert.match(wxml, new RegExp(text));
   }
+
+  assert.doesNotMatch(wxml, /<text>闲置优惠券<\/text>/);
+  assert.doesNotMatch(wxml, /<text>临期可盘活<\/text>/);
 
   assert.match(wxml, /bindtap="goExchangeSubmit"/);
   assert.match(wxml, /bindtap="goRecharge"/);

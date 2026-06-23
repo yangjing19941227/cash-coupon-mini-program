@@ -5,6 +5,7 @@ const {
   mergeProfiles,
   syncWechatProfile,
 } = require('../../utils/auth-service');
+const { syncTabBar } = require('../../utils/tabbar-service');
 
 function normalizeWechatProfile(userInfo = {}) {
   return {
@@ -119,6 +120,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 4);
     const profile = this.loadProfile();
     this.promptProfileSyncIfNeeded(profile);
   },
@@ -275,5 +277,21 @@ Page({
     wx.navigateTo({
       url: '/pages/merchant-management/index',
     });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '同城名惠 - 本地优惠券、置换、抽奖一站管理',
+      path: '/pages/home/index',
+      imageUrl: '/assets/images/home-banners/banner-1.jpg',
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '同城名惠 - 本地优惠券、置换、抽奖一站管理',
+      query: '',
+      imageUrl: '/assets/images/home-banners/banner-1.jpg',
+    };
   },
 });

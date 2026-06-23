@@ -27,6 +27,7 @@
     "backgroundColor": "#f7fbfb"
   },
   "tabBar": {
+    "custom": true,
     "color": "#6f7d8c",
     "selectedColor": "#006b68",
     "backgroundColor": "#ffffff",

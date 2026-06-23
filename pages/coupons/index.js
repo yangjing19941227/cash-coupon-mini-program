@@ -2,6 +2,7 @@ const {
   getCouponTemplates,
   getLocalCouponTemplates,
 } = require('../../utils/coupon-template-service');
+const { syncTabBar } = require('../../utils/tabbar-service');
 
 const CATEGORY_DEFS = [
   { label: '附近美食', icon: '/assets/images/coupon-cat-recommend.png' },
@@ -16,7 +17,7 @@ const CATEGORY_DEFS = [
   { label: '清淡口味', icon: '/assets/images/coupon-cat-coffee.png' },
 ];
 
-const FILTER_DEFS = ['附近', '排序', '1km内', '神券膨胀'];
+const FILTER_DEFS = ['附近', '距离', '1km内', '神券膨胀'];
 const CATEGORY_FILTER_MAP = {
   小吃快餐: '餐饮',
   午餐: '餐饮',
@@ -53,6 +54,56 @@ function filterDeals(category, deals = []) {
   return deals.filter((deal) => deal.category === targetCategory);
 }
 
+function parseDistance(distance) {
+  const value = String(distance || '').trim();
+  const number = Number((value.match(/[\d.]+/) || [Infinity])[0]);
+
+  if (!Number.isFinite(number)) {
+    return Infinity;
+  }
+
+  return value.includes('m') && !value.includes('km') ? number / 1000 : number;
+}
+
+function getDealText(deal) {
+  return [
+    deal.title,
+    deal.merchantName,
+    deal.category,
+    deal.badge,
+    deal.rank,
+    deal.discount,
+    ...(Array.isArray(deal.tags) ? deal.tags : []),
+  ].filter(Boolean).join(' ');
+}
+
+function isStrongCoupon(deal) {
+  return Number(deal.amount || 0) >= 50 || getDealText(deal).includes('神券');
+}
+
+function sortByDistance(deals) {
+  return [...deals].sort((a, b) => parseDistance(a.distance) - parseDistance(b.distance));
+}
+
+function applyFilters(category, activeFilter, deals = []) {
+  const categoryDeals = filterDeals(category, deals);
+  let result = [...categoryDeals];
+
+  if (activeFilter === '1km内') {
+    result = result.filter((deal) => parseDistance(deal.distance) <= 1);
+  }
+
+  if (activeFilter === '神券膨胀') {
+    result = result.filter(isStrongCoupon);
+  }
+
+  if (activeFilter === '附近' || activeFilter === '距离' || activeFilter === '1km内') {
+    result = sortByDistance(result);
+  }
+
+  return result.length ? result : categoryDeals;
+}
+
 function encodeQueryValue(value) {
   return encodeURIComponent(String(value ?? ''));
 }
@@ -72,6 +123,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 1);
     this.loadDeals();
   },
 
@@ -80,7 +132,7 @@ Page({
 
     this.setData({
       deals,
-      visibleDeals: filterDeals(this.data.activeCategory, deals),
+      visibleDeals: applyFilters(this.data.activeCategory, this.data.activeFilter, deals),
     });
   },
 
@@ -94,7 +146,7 @@ Page({
     this.setData({
       activeCategory: label,
       categories: buildCategories(label),
-      visibleDeals: filterDeals(label, this.data.deals),
+      visibleDeals: applyFilters(label, this.data.activeFilter, this.data.deals),
     });
     this.loadDeals();
   },
@@ -109,6 +161,7 @@ Page({
     this.setData({
       activeFilter: label,
       filters: buildFilters(label),
+      visibleDeals: applyFilters(this.data.activeCategory, label, this.data.deals),
     });
   },
 
@@ -138,5 +191,21 @@ Page({
     wx.navigateTo({
       url: `/pages/order-confirm/index?${query}`,
     });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '同城名惠 - 本地优惠券、置换、抽奖一站管理',
+      path: '/pages/home/index',
+      imageUrl: '/assets/images/home-banners/banner-1.jpg',
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '同城名惠 - 本地优惠券、置换、抽奖一站管理',
+      query: '',
+      imageUrl: '/assets/images/home-banners/banner-1.jpg',
+    };
   },
 });
