@@ -154,7 +154,7 @@ test('profile page exposes asset, lottery, exchange and code navigation', () => 
   }
 
   for (const text of [
-    '我的优惠券',
+    '优惠券',
     '抽奖记录',
     '置换记录',
     '核销记录',
@@ -163,6 +163,8 @@ test('profile page exposes asset, lottery, exchange and code navigation', () => 
   ]) {
     assert.match(wxml, new RegExp(text));
   }
+
+  assert.doesNotMatch(wxml, /menu-title">我的优惠券/);
 
   for (const binding of [
     'bindtap="goCouponAssets"',

@@ -25,10 +25,9 @@
     <text class="save-money">￥{{profile.savedAmount}}</text>
     <text class="ds-muted">精打细算 · 生活更值得</text>
     <view class="profile-stats">
-      <view><text>优惠券</text><text class="stat-value">{{profile.couponCount}}</text></view>
-      <view><text>抽奖次数</text><text class="stat-value">{{profile.lotteryLeft}}</text></view>
-      <view><text>即将过期</text><text class="stat-value">{{profile.expiringCount}}</text></view>
-      <view><text>置换额度</text><text class="stat-value">{{profile.exchangeAmount}}</text></view>
+      <view bindtap="goCouponAssets"><text>优惠券</text><text class="stat-value">{{profile.couponCount}}</text></view>
+      <view bindtap="goLottery"><text>抽奖次数</text><text class="stat-value">{{profile.lotteryLeft}}</text></view>
+      <view bindtap="goExchange"><text>置换额度</text><text class="stat-value">{{profile.exchangeAmount}}</text></view>
     </view>
   </view>
 
@@ -77,7 +76,6 @@
   </view>
 
   <view class="ds-card menu-card">
-    <view class="menu-line" bindtap="goCouponAssets"><text class="iconfont icon-youhuiquan menu-icon"></text><text class="menu-title">我的优惠券</text><text class="ds-muted">12张可用</text><text class="iconfont icon-arrow-right menu-arrow"></text></view>
     <view class="menu-line" bindtap="goLotteryRecords"><text class="iconfont icon-choujiang menu-icon"></text><text class="menu-title">抽奖记录</text><text class="iconfont icon-arrow-right menu-arrow"></text></view>
     <view class="menu-line" bindtap="goExchangeRecords"><text class="iconfont icon-zhuanhuan menu-icon"></text><text class="menu-title">置换记录</text><text class="iconfont icon-arrow-right menu-arrow"></text></view>
     <view class="menu-line"><text class="iconfont icon-hexiao menu-icon"></text><text class="menu-title">核销记录</text><text class="iconfont icon-arrow-right menu-arrow"></text></view>

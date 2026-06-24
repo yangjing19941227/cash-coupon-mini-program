@@ -201,7 +201,7 @@
   right: 40rpx;
   bottom: 32rpx;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .profile-stats view {
@@ -209,6 +209,9 @@
   border-right: 1rpx solid rgba(34, 76, 90, 0.14);
   color: #667185;
   font-size: 24rpx;
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .profile-stats view:last-child {

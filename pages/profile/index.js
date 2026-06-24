@@ -255,6 +255,18 @@ Page({
     });
   },
 
+  goLottery() {
+    wx.switchTab({
+      url: '/pages/lottery/index',
+    });
+  },
+
+  goExchange() {
+    wx.switchTab({
+      url: '/pages/exchange/index',
+    });
+  },
+
   goLotteryRecords() {
     wx.navigateTo({
       url: '/pages/lottery-records/index',
