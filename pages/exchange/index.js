@@ -1,8 +1,16 @@
 const { syncTabBar } = require('../../utils/tabbar-service');
+const { getMerchantBenefits } = require('../../utils/mock-service');
 
 Page({
+  data: {
+    merchants: [],
+  },
+
   onShow() {
     syncTabBar(this, 2);
+    this.setData({
+      merchants: getMerchantBenefits(),
+    });
   },
 
   goExchangeSubmit(event) {

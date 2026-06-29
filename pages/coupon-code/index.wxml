@@ -1,8 +1,8 @@
-<view class="ds-page coupon-code-page">
+﻿<view class="ds-page coupon-code-page">
   <view class="ds-top">
     <view class="ds-back" bindtap="goBack">‹</view>
     <view class="ds-title">出示券码</view>
-    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view class="ds-capsule" aria-hidden="true"></view>
   </view>
 
   <view class="ds-card coupon-brief">

@@ -1,8 +1,8 @@
-<view class="ds-page with-tab exchange-page">
+﻿<view class="ds-page with-tab exchange-page">
   <view class="ds-top ds-top-main">
     <view class="ds-location">⌖ 海口可用⌄</view>
     <view class="ds-title">置换宝</view>
-    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view class="ds-capsule" aria-hidden="true"></view>
   </view>
 
   <view class="ds-soft-card exchange-summary">
@@ -22,35 +22,13 @@
       <text class="ds-muted">更多商家 ›</text>
     </view>
 
-    <view class="merchant-row" data-id="merchant-island-yard" bindtap="goExchangeSubmit">
-      <image class="merchant-img" src="/assets/images/merchant-restaurant.png" mode="aspectFill"></image>
+    <view wx:for="{{merchants}}" wx:key="id" class="merchant-row" data-id="{{item.id}}" bindtap="goExchangeSubmit">
+      <image class="merchant-img" src="{{item.image}}" mode="aspectFill"></image>
       <view class="merchant-main">
-        <text class="merchant-title">海岛小院</text>
-        <view class="tag-row"><text class="ds-tag">餐饮美食</text><text class="ds-tag">龙华区</text></view>
-        <view><text class="amount">300</text><text> 额度起置换</text></view>
-        <text class="ds-muted">双人套餐券 · 到店核销</text>
-      </view>
-      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换</text></view>
-    </view>
-
-    <view class="merchant-row" data-id="merchant-bay-dessert" bindtap="goExchangeSubmit">
-      <image class="merchant-img" src="/assets/images/merchant-dessert.png" mode="aspectFill"></image>
-      <view class="merchant-main">
-        <text class="merchant-title">海口湾甜品</text>
-        <view class="tag-row"><text class="ds-tag">甜品饮品</text><text class="ds-tag">秀英区</text></view>
-        <view><text class="amount">120</text><text> 额度起置换</text></view>
-        <text class="ds-muted">下午茶券 · 门店通用</text>
-      </view>
-      <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换</text></view>
-    </view>
-
-    <view class="merchant-row" data-id="merchant-family-park" bindtap="goExchangeSubmit">
-      <image class="merchant-img" src="/assets/images/merchant-playground.png" mode="aspectFill"></image>
-      <view class="merchant-main">
-        <text class="merchant-title">亲子乐园</text>
-        <view class="tag-row"><text class="ds-tag">亲子娱乐</text><text class="ds-tag">美兰区</text></view>
-        <view><text class="amount">500</text><text> 额度起置换</text></view>
-        <text class="ds-muted">门票券 · 指定门店可用</text>
+        <text class="merchant-title">{{item.name}}</text>
+        <view class="tag-row"><text class="ds-tag">{{item.category}}</text><text class="ds-tag">{{item.district}}</text></view>
+        <view><text class="amount">{{item.exchangeAmount}}</text><text> 额度起置换</text></view>
+        <text class="ds-muted">{{item.description}}</text>
       </view>
       <view class="swap-cell"><view class="swap-icon">↻</view><text>发起置换</text></view>
     </view>

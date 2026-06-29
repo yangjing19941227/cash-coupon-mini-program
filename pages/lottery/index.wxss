@@ -122,7 +122,7 @@
 .submit-button[disabled],
 button.submit-button[disabled]:not([type]),
 wx-button.submit-button[disabled][type=default] {
-  background-color: #F4F5F9 !important;
+  background-color: #e8e9f0 !important;
   color: #667185 !important;
   opacity: 1;
 }

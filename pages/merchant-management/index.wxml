@@ -1,9 +1,9 @@
-<view class="ds-page merchant-management-page {{view === 'records' ? 'records-page' : ''}}">
+﻿<view class="ds-page merchant-management-page {{view === 'records' ? 'records-page' : ''}}">
   <view class="ds-top merchant-top {{view === 'scan' ? 'scan-top' : ''}}">
     <view class="ds-back" bindtap="goBack">‹</view>
     <view class="ds-title">{{view === 'scan' ? '扫码核销' : view === 'confirm' ? '确认核销' : view === 'result' ? '核销结果' : '核销记录'}}</view>
     <view wx:if="{{view === 'scan'}}" class="top-link" bindtap="goRecords">记录</view>
-    <view wx:elif="{{view === 'result'}}" class="ds-capsule"><text>•••</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view wx:elif="{{view === 'result'}}" class="ds-capsule" aria-hidden="true"></view>
     <view wx:else></view>
   </view>
 

@@ -1,8 +1,8 @@
-<view class="ds-page with-tab lottery-page">
+﻿<view class="ds-page with-tab lottery-page">
   <view class="ds-top ds-top-main">
     <view></view>
     <view></view>
-    <view class="ds-capsule"><text>•••</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view class="ds-capsule" aria-hidden="true"></view>
   </view>
 
   <view class="ds-soft-card lottery-box">
@@ -48,7 +48,7 @@
       />
     </view>
 
-    <view class="random-text {{isSubmitted ? 'random-disabled' : ''}}" bindtap="generateRandomDigits">
+    <view wx:if="{{!isSubmitted}}" class="random-text" bindtap="generateRandomDigits">
       <text class="random-icon">↻</text>
       <text>随机生成一组数字</text>
     </view>

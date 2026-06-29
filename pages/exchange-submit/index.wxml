@@ -1,8 +1,8 @@
-<view class="ds-page exchange-submit-page">
+﻿<view class="ds-page exchange-submit-page">
   <view class="ds-top">
     <view class="ds-back" bindtap="goBack">‹</view>
     <view class="ds-title">发起置换</view>
-    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view class="ds-capsule" aria-hidden="true"></view>
   </view>
 
   <view class="ds-soft-card credit-card">

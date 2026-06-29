@@ -197,6 +197,7 @@
       if (userNumber.length !== 4) return;
       inputs.forEach(i => i.disabled = true);
       random.classList.add('disabled');
+      random.style.display = 'none';
       submit.textContent = '已提交，等待开奖';
       submit.disabled = true;
       wait.style.display = 'block';

@@ -4,6 +4,7 @@
       <text class="location-icon">●</text>
       <text>海口市</text>
     </view>
+    <view class="capsule-space" aria-hidden="true"></view>
   </view>
 
   <swiper

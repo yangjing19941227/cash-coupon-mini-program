@@ -1,8 +1,8 @@
-<view class="ds-page with-tab profile-page">
+﻿<view class="ds-page with-tab profile-page">
   <view class="ds-top">
     <view></view>
     <view class="ds-title">我的</view>
-    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view class="ds-capsule" aria-hidden="true"></view>
   </view>
 
   <view class="profile-top">
@@ -31,32 +31,32 @@
     </view>
   </view>
 
-  <view class="ds-card order-card">
+  <view class="ds-card order-card" bindtap="goOrders" data-status="pending">
     <text class="order-title">我的订单</text>
     <view class="order-grid">
-      <view class="order-item">
+      <view class="order-item" catchtap="goOrders" data-status="pending">
         <text class="iconfont icon-youhuiquan order-icon"></text>
-        <text>待使用</text>
+        <text>待付款</text>
       </view>
-      <view class="order-item">
+      <view class="order-item" catchtap="goOrders" data-status="verify">
         <text class="iconfont icon-hexiao order-icon"></text>
         <text>待核销</text>
       </view>
-      <view class="order-item">
+      <view class="order-item" catchtap="goOrders" data-status="completed">
         <text class="iconfont icon-youhuiquan order-icon"></text>
         <text>已完成</text>
       </view>
-      <view class="order-item">
+      <view class="order-item" catchtap="goOrders" data-status="refund">
         <text class="iconfont icon-zhuanhuan order-icon"></text>
-        <text>退款/售后</text>
+        <text>退款中</text>
       </view>
     </view>
   </view>
 
   <view class="ds-card activity-card">
     <view class="ds-section-head">
-      <text class="ds-section-title">最近权益动态</text>
-      <text class="ds-muted">全部动态 ›</text>
+      <text class="ds-section-title">最新消息</text>
+      <text class="ds-muted">全部 ›</text>
     </view>
     <view class="activity-row">
       <view class="ds-round-icon">🎁</view>

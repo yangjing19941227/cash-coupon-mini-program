@@ -210,8 +210,6 @@
   color: #667185;
   font-size: 24rpx;
   cursor: pointer;
-  text-align: center;
-  box-sizing: border-box;
 }
 
 .profile-stats view:last-child {

@@ -279,6 +279,16 @@ Page({
     });
   },
 
+  goOrders(event = {}) {
+    const status = event.currentTarget && event.currentTarget.dataset
+      ? event.currentTarget.dataset.status || 'pending'
+      : 'pending';
+
+    wx.navigateTo({
+      url: `/pages/orders/index?status=${status}`,
+    });
+  },
+
   goCouponCode() {
     wx.navigateTo({
       url: '/pages/coupon-code/index',

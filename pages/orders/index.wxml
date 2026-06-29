@@ -1,27 +1,43 @@
-<view class="ds-page payment-page">
+<view class="ds-page orders-page">
   <view class="ds-top">
     <view class="ds-back" bindtap="goBack">‹</view>
     <view class="ds-title">我的订单</view>
-    <view class="ds-capsule"><text>···</text><view class="ds-capsule-line"></view><view class="ds-mini-circle"></view></view>
+    <view class="ds-capsule" aria-hidden="true"></view>
   </view>
 
-  <view class="filter-tabs order-tabs"><text class="active">全部</text><text>待使用</text><text>售后</text></view>
-
-  <view class="ds-card order-card">
-    <view class="order-head"><text>海岛小院龙华店</text><text class="ds-teal">待使用</text></view>
-    <view class="order-body"><image src="/assets/images/deal-seafood.png" mode="aspectFill"></image><view><text class="order-title">双人海鲜套餐券</text><text class="ds-muted">下单时间 今天 09:41</text><text class="ds-red">￥128</text></view></view>
-    <view class="order-foot"><text class="ds-muted">积分 +128</text><view class="ds-btn order-btn" bindtap="goCouponCode">出示券码</view></view>
+  <view class="order-tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="status"
+      class="order-tab {{activeStatus === item.status ? 'order-tab-active' : ''}}"
+      data-status="{{item.status}}"
+      bindtap="setStatus"
+    >
+      {{item.label}}
+    </view>
   </view>
 
-  <view class="ds-card order-card">
-    <view class="order-head"><text>海口湾甜品</text><text class="ds-muted">已完成</text></view>
-    <view class="order-body"><image src="/assets/images/merchant-dessert.png" mode="aspectFill"></image><view><text class="order-title">下午茶双人券</text><text class="ds-muted">昨天 15:20 已核销</text><text class="ds-red">￥68</text></view></view>
-    <view class="order-foot"><text class="ds-muted">售后截止 06-25</text><view class="ds-outline-btn order-outline">申请售后</view></view>
-  </view>
+  <view class="order-list">
+    <view wx:for="{{visibleOrders}}" wx:key="id" class="order-card">
+      <view class="order-title-row">
+        <text class="order-title">{{item.title}}</text>
+        <text class="order-status order-status-{{item.statusTone}}">{{item.statusText}}</text>
+      </view>
 
-  <view class="ds-card order-card">
-    <view class="order-head"><text>亲子乐园</text><text class="ds-red">退款中</text></view>
-    <view class="order-body"><image src="/assets/images/merchant-playground.png" mode="aspectFill"></image><view><text class="order-title">周末亲子门票券</text><text class="ds-muted">退款原路返回中</text><text class="ds-red">￥96</text></view></view>
-    <view class="order-foot"><text class="ds-muted">预计1-3天到账</text><view class="ds-outline-btn order-outline">查看进度</view></view>
+      <view class="order-content-row">
+        <image class="order-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="order-info">
+          <view class="order-tags">
+            <text wx:for="{{item.tags}}" wx:key="*this" class="order-tag">{{item}}</text>
+          </view>
+          <text class="order-meta">{{item.meta}}</text>
+          <text class="order-sub-meta">{{item.subMeta}}</text>
+          <view class="order-bottom-row">
+            <text class="order-price">{{item.price}}</text>
+            <view class="order-action" data-id="{{item.id}}" bindtap="handleOrderAction">{{item.action}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
